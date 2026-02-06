@@ -51,13 +51,15 @@
 | Layer | Technology | Version | Purpose |
 |-------|------------|---------|---------|
 | Runtime | Node.js | 20 LTS | Server runtime for API routes |
-| Framework | Next.js (App Router) | 14.2.x | Static site generation, API routes, image optimization |
+| Framework | Next.js (App Router) | 15.x | SSG, API routes, image optimization, middleware |
 | Language | TypeScript | 5.x | Type safety, better DX, fewer runtime errors |
+| UI | React | 19.x | Component library |
 | Styling | Tailwind CSS | 3.4.x | Utility-first styling, design system consistency |
 | Components | shadcn/ui | Latest | Accessible, customizable base components |
-| Animations | Framer Motion | 11.x | Scroll animations, hover effects, transitions |
+| Animations | Framer Motion | 12.x | Scroll animations, hover effects, transitions |
+| Auth | NextAuth.js (Auth.js) | v5 beta | Credentials login, JWT sessions, middleware protection |
 | Forms | React Hook Form | 7.x | Performant form state management |
-| Validation | Zod | 3.x | Schema validation for forms and API |
+| Validation | Zod | 4.x | Schema validation for forms and API |
 | Video Comparison | react-compare-slider | 3.x | Comparison slider UI with drag/touch/keyboard support |
 | Google API | googleapis | 140.x | Google Sheets API integration |
 | Deployment | Vercel | — | Zero-config hosting, global CDN, serverless |
@@ -66,11 +68,23 @@
 ```
 jedeye-landing/
 ├── src/
+│   ├── auth.ts                     # NextAuth.js v5 config (Credentials, JWT, callbacks)
+│   ├── middleware.ts                # Route protection (redirects unauthenticated to /login)
 │   ├── app/
-│   │   ├── layout.tsx              # Root layout with metadata, fonts
-│   │   ├── page.tsx                # Main landing page (assembles all sections)
-│   │   ├── globals.css             # Global styles, Tailwind imports
+│   │   ├── layout.tsx              # Root layout (background, fonts, SessionProvider)
+│   │   ├── globals.css             # Global styles, glass classes, Tailwind imports
+│   │   ├── favicon.ico             # JEDeye logo favicon
+│   │   ├── icon.png                # Browser icon (32x32)
+│   │   ├── apple-icon.png          # Apple touch icon (180x180)
+│   │   ├── login/
+│   │   │   └── page.tsx            # Login page (photo card selection + password)
+│   │   ├── (main)/
+│   │   │   ├── layout.tsx          # Main layout (Header + Footer, post-login)
+│   │   │   └── page.tsx            # Landing page (assembles all sections)
 │   │   ├── api/
+│   │   │   ├── auth/
+│   │   │   │   └── [...nextauth]/
+│   │   │   │       └── route.ts    # NextAuth API route (GET + POST)
 │   │   │   ├── waitlist/
 │   │   │   │   └── route.ts        # POST handler for waitlist signups
 │   │   │   └── contact/
@@ -78,38 +92,43 @@ jedeye-landing/
 │   │   ├── robots.ts               # Dynamic robots.txt generation
 │   │   └── sitemap.ts              # Dynamic sitemap generation
 │   ├── components/
+│   │   ├── auth/
+│   │   │   ├── SessionProvider.tsx  # Client wrapper for next-auth/react SessionProvider
+│   │   │   └── LoginForm.tsx       # Login form with photo cards + password
 │   │   ├── ui/                     # shadcn/ui components
 │   │   │   ├── button.tsx
 │   │   │   ├── input.tsx
 │   │   │   ├── textarea.tsx
-│   │   │   ├── card.tsx
-│   │   │   └── ... (other shadcn components)
+│   │   │   └── card.tsx
 │   │   ├── layout/
 │   │   │   ├── Header.tsx          # Sticky navigation header
 │   │   │   ├── MobileNav.tsx       # Mobile hamburger menu
 │   │   │   └── Footer.tsx          # Footer with links and info
 │   │   ├── sections/
-│   │   │   ├── Hero.tsx            # Hero section component
-│   │   │   ├── About.tsx           # Product overview section
-│   │   │   ├── Demo.tsx            # Video comparison demo section
-│   │   │   ├── Solutions.tsx       # Three sector cards section
-│   │   │   ├── HowItWorks.tsx      # Technology explanation section
-│   │   │   ├── Waitlist.tsx        # Waitlist signup section
-│   │   │   ├── Contact.tsx         # Contact form + info section
-│   │   │   └── index.ts            # Barrel export
+│   │   │   ├── Hero.tsx            # Hero section
+│   │   │   ├── Partners.tsx        # HMS + MGB logos
+│   │   │   ├── About.tsx           # Product overview
+│   │   │   ├── Demo.tsx            # Video comparison demo
+│   │   │   ├── Solutions.tsx       # Three value levers
+│   │   │   ├── WhyNow.tsx          # Market timing drivers
+│   │   │   ├── HowItWorks.tsx      # Four AI modules
+│   │   │   ├── Roadmap.tsx         # TRL milestones
+│   │   │   ├── Team.tsx            # Co-founder cards
+│   │   │   ├── Waitlist.tsx        # Waitlist signup
+│   │   │   └── Contact.tsx         # Contact form + info
 │   │   ├── demo/
+│   │   │   ├── DemoCarousel.tsx    # Multi-slide demo carousel
 │   │   │   ├── VideoComparisonSlider.tsx  # Comparison slider with videos
-│   │   │   ├── SegmentationLegend.tsx     # Interactive color key
-│   │   │   └── index.ts            # Barrel export
+│   │   │   └── SegmentationLegend.tsx     # Interactive color key
 │   │   ├── forms/
 │   │   │   ├── WaitlistForm.tsx    # Waitlist form with validation
-│   │   │   ├── ContactForm.tsx     # Contact form with validation
-│   │   │   └── index.ts            # Barrel export
+│   │   │   └── ContactForm.tsx     # Contact form with validation
+│   │   ├── motion/
+│   │   │   └── index.tsx           # FadeIn scroll-triggered animation wrapper
 │   │   └── shared/
-│   │       ├── SectionWrapper.tsx  # Reusable section container with animations
-│   │       ├── SectorCard.tsx      # Reusable card for solutions section
-│   │       ├── EngineCard.tsx      # Reusable card for How It Works section
-│   │       └── index.ts            # Barrel export
+│   │       ├── SectionWrapper.tsx  # Reusable section container
+│   │       ├── SectorCard.tsx      # Card for solutions section
+│   │       └── EngineCard.tsx      # Card for How It Works section
 │   ├── lib/
 │   │   ├── google-sheets.ts        # Google Sheets API client and helpers
 │   │   ├── utils.ts                # General utilities (cn function, etc.)
@@ -126,31 +145,32 @@ jedeye-landing/
 │       ├── useScrollTo.ts          # Smooth scroll hook
 │       ├── useMediaQuery.ts        # Responsive breakpoint hook
 │       ├── useVideoSync.ts         # Video synchronization hook
+│       ├── useParallax.ts          # Parallax scroll hook
 │       └── index.ts                # Barrel export
 ├── public/
 │   ├── images/
 │   │   ├── JEDeye_transparent_logo.png
-│   │   ├── hero-visual.png         # (placeholder or provided asset)
-│   │   ├── icon-or.svg             # OR Efficiency icon
-│   │   ├── icon-insurance.svg      # Insurance/QA icon
-│   │   ├── icon-education.svg      # Education icon
-│   │   ├── icon-vision.svg         # Vision Engine icon
-│   │   ├── icon-spatial.svg        # Spatial Engine icon
-│   │   ├── icon-scoring.svg        # Scoring Engine icon
-│   │   └── icon-interaction.svg    # Interaction Engine icon
+│   │   ├── landing-bg.jpg          # Blurred surgical background (146KB)
+│   │   ├── HMS.jpg                 # Harvard Medical School logo
+│   │   ├── MGB.png                 # Mass General Brigham logo
+│   │   ├── team/
+│   │   │   ├── AT.jpg              # Ali Tavakkoli headshot
+│   │   │   ├── FRN.webp            # Farhad R. Nezami headshot
+│   │   │   └── AH.jpg              # Ali Homaei headshot
+│   │   ├── icon-or.svg
+│   │   ├── icon-insurance.svg
+│   │   ├── icon-education.svg
+│   │   ├── icon-vision.svg
+│   │   ├── icon-spatial.svg
+│   │   ├── icon-scoring.svg
+│   │   └── icon-interaction.svg
 │   ├── videos/
-│   │   ├── surgical-original.webm  # WebM (VP9) — primary
-│   │   ├── surgical-original.mp4   # MP4 (H.264) — fallback
-│   │   ├── surgical-segmentation.webm  # WebM (VP9) — primary
-│   │   ├── surgical-segmentation.mp4   # MP4 (H.264) — fallback
-│   │   ├── demo-poster.jpg         # Static poster frame for loading
 │   │   └── README.md               # Video encoding instructions
 │   └── og-image.png                # Open Graph preview image
 ├── .env.example                    # Environment variables template
-├── .env.local                      # Local environment variables (gitignored)
+├── .env                            # Local environment variables (gitignored)
 ├── package.json
 ├── tsconfig.json
-├── tailwind.config.ts
 ├── next.config.js
 ├── postcss.config.js
 ├── components.json                 # shadcn/ui configuration
@@ -418,84 +438,51 @@ export const classesByCategory = {
 
 ### 4.1 Component Hierarchy
 ```
-App (layout.tsx)
-├── Header
-│   ├── Logo (links to #top)
-│   ├── NavLinks (About, Demo, Solutions, How It Works, Contact)
-│   ├── CTAButton ("Join Waitlist")
-│   └── MobileNav
-│       ├── HamburgerButton
-│       └── MobileMenu (slide-out panel)
-│           ├── NavLinks
-│           └── CTAButton
-├── Main (page.tsx)
-│   ├── Hero
-│   │   ├── Badge ("Coming Soon")
-│   │   ├── Headline
-│   │   ├── Subheadline
-│   │   ├── PrimaryCTA ("Join the Waitlist")
-│   │   ├── SecondaryCTA ("Learn More")
-│   │   └── HeroVisual
-│   ├── About
-│   │   ├── SectionHeading
-│   │   └── ContentBlock (paragraphs, optional diagram)
-│   ├── Demo
-│   │   ├── SectionHeading ("See It In Action")
-│   │   ├── IntroText
-│   │   ├── VideoComparisonSlider
-│   │   │   ├── OriginalVideo (master)
-│   │   │   ├── SegmentationVideo (slave)
-│   │   │   ├── SliderHandle
-│   │   │   ├── VideoLabels
-│   │   │   ├── LoadingState
-│   │   │   └── ErrorState
-│   │   └── SegmentationLegend
-│   │       ├── LegendGrid
-│   │       └── LegendItem (×12)
-│   ├── Solutions
-│   │   ├── SectionHeading
-│   │   └── CardGrid
-│   │       ├── SectorCard (OR Efficiency)
-│   │       ├── SectorCard (Insurance/QA)
-│   │       └── SectorCard (Education)
-│   ├── HowItWorks
-│   │   ├── SectionHeading
-│   │   └── EngineGrid
-│   │       ├── EngineCard (Vision Engine)
-│   │       ├── EngineCard (Spatial Engine)
-│   │       ├── EngineCard (Scoring Engine)
-│   │       └── EngineCard (Interaction Engine)
-│   ├── Waitlist
-│   │   ├── SectionHeading
-│   │   └── WaitlistForm
-│   │       ├── EmailInput
-│   │       ├── NameInput (optional)
-│   │       ├── OrganizationInput (optional)
-│   │       ├── RoleInput (optional)
-│   │       ├── HoneypotInput (hidden)
-│   │       └── SubmitButton
-│   └── Contact
-│       ├── SectionHeading
-│       ├── ContactForm
-│       │   ├── NameInput
-│       │   ├── EmailInput
-│       │   ├── OrganizationInput (optional)
-│       │   ├── SubjectInput (optional)
-│       │   ├── MessageTextarea
-│       │   ├── HoneypotInput (hidden)
-│       │   └── SubmitButton
-│       └── ContactInfo
-│           ├── Email (mailto link)
-│           ├── Phone (tel link)
-│           ├── Address
-│           ├── Hours
-│           └── InstitutionAffiliation
-└── Footer
-    ├── Logo
-    ├── NavLinks
-    ├── ExternalLinks (Nezami Lab, Privacy Policy)
-    ├── InstitutionAffiliation
-    └── Copyright
+App (layout.tsx) — Root: background, fonts, SessionProvider
+│
+├── /login (login/page.tsx) — Unauthenticated
+│   ├── JEDeye Logo
+│   ├── Glass Panel
+│   └── LoginForm
+│       ├── UserCards (3 photo cards with glass-card + teal ring)
+│       ├── PasswordInput
+│       ├── ErrorMessage
+│       └── SubmitButton
+│
+└── / (main)/layout.tsx + (main)/page.tsx — Authenticated
+    ├── Header
+    │   ├── Logo (links to #top)
+    │   ├── NavLinks (About, Demo, Solutions, How It Works, Contact)
+    │   ├── CTAButton ("Join Waitlist")
+    │   └── MobileNav
+    │       ├── HamburgerButton
+    │       └── MobileMenu (slide-out panel)
+    ├── Main (page.tsx)
+    │   ├── Hero
+    │   │   ├── Badge ("Coming Soon")
+    │   │   ├── Headline ("The Operating System for Intelligent Surgery")
+    │   │   ├── Subheadline ("Intra-operative Brain")
+    │   │   ├── PrimaryCTA ("Join the Waitlist")
+    │   │   └── SecondaryCTA ("Learn More")
+    │   ├── Partners (HMS + MGB logos)
+    │   ├── About
+    │   ├── Demo
+    │   │   ├── DemoCarousel (multi-slide)
+    │   │   ├── VideoComparisonSlider
+    │   │   └── SegmentationLegend
+    │   ├── Solutions (Time / Cost / Risk cards)
+    │   ├── WhyNow (EPA mandate + Insurer adoption)
+    │   ├── HowItWorks (Eyes / Map / Coach / Manager)
+    │   ├── Roadmap (TRL 5 milestones)
+    │   ├── Team (3 co-founder cards)
+    │   ├── Waitlist (WaitlistForm)
+    │   └── Contact (ContactForm + ContactInfo)
+    └── Footer
+
+Middleware (src/middleware.ts):
+  - Unauthenticated → redirect to /login
+  - Authenticated + /login → redirect to /
+  - Excludes: _next, images/, videos/, favicon.ico, og-image.png, api/auth
 ```
 
 ### 4.2 Component Definitions
@@ -1466,6 +1453,10 @@ export const contactContent = {
 ```bash
 # .env.example
 
+# NextAuth.js v5 — generate with: openssl rand -hex 32
+# IMPORTANT: Do NOT set NEXTAUTH_URL — v5 auto-detects, setting it causes webpack errors
+AUTH_SECRET="your-auth-secret-here"
+
 # Google Sheets API Configuration
 # Create a service account in Google Cloud Console and download the JSON credentials
 GOOGLE_SERVICE_ACCOUNT_EMAIL="your-service-account@project-id.iam.gserviceaccount.com"
@@ -1477,7 +1468,7 @@ GOOGLE_SHEET_WAITLIST_TAB="Waitlist"
 GOOGLE_SHEET_CONTACT_TAB="Contact"
 
 # Site URL (for metadata and sitemap)
-NEXT_PUBLIC_SITE_URL="https://jedeye.ai"
+NEXT_PUBLIC_SITE_URL="https://jedeye.app"
 
 # Optional: Vercel Analytics
 # (No env vars needed - automatically configured on Vercel)

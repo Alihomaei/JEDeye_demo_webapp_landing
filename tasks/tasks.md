@@ -1238,7 +1238,7 @@
 ## Phase 10: Testing & Documentation
 
 ### TASK-041: Create README with Setup Instructions
-**Status:** [ ]  
+**Status:** [X]  
 **Depends On:** TASK-034  
 **Spec Reference:** SPEC.md Section 6 (Environment Configuration)
 
@@ -1331,6 +1331,58 @@
 
 ---
 
+## Phase 11: Authentication & Login Gate
+
+### TASK-059: Add NextAuth.js v5 Login Gate
+**Status:** [X]
+**Depends On:** TASK-035
+**Spec Reference:** N/A (new requirement — investor demo access control)
+
+**Objective:** Gate the landing page behind a login screen for the three co-founders.
+
+**Instructions:**
+1. Install `next-auth@beta`
+2. Create `src/auth.ts` — Credentials provider with 3 hardcoded users (matching team members), shared password `JEDeye@2025!`, JWT sessions, `authorized` callback for route protection, custom sign-in page `/login`
+3. Create `src/middleware.ts` — Export auth as middleware, matcher excludes static assets and auth API routes
+4. Create `src/app/api/auth/[...nextauth]/route.ts` — Export GET/POST handlers
+5. Create `src/components/auth/SessionProvider.tsx` — Client wrapper for next-auth/react SessionProvider
+6. Create `src/components/auth/LoginForm.tsx` — Client component with 3 photo cards (glass-card + teal ring on select), password input, sign-in via `signIn("credentials", { redirect: false })`
+7. Create `src/app/login/page.tsx` — Server component with JEDeye logo, glass-light panel, LoginForm
+8. Move `src/app/page.tsx` → `src/app/(main)/page.tsx` (route group, URL stays `/`)
+9. Create `src/app/(main)/layout.tsx` — Layout with Header + Footer
+10. Update `src/app/layout.tsx` — Remove Header/Footer, add SessionProvider wrapper
+11. Generate `AUTH_SECRET` via `openssl rand -hex 32`, add to `.env`
+12. Generate favicon from JEDeye logo (favicon.ico, icon.png, apple-icon.png)
+
+**Acceptance Criteria:**
+- [x] `npm run build` succeeds
+- [x] Visit `/` unauthenticated → redirects to `/login`
+- [x] Login page shows 3 photo cards over blurred surgical background
+- [x] Select card + wrong password → error message
+- [x] Select card + `JEDeye@2025!` → redirects to landing page
+- [x] Landing page shows normally with Header/Footer
+- [x] Visit `/login` while authenticated → redirects to `/`
+- [x] Favicon shows JEDeye logo
+
+**Files Created:**
+- `src/auth.ts`
+- `src/middleware.ts`
+- `src/app/api/auth/[...nextauth]/route.ts`
+- `src/components/auth/SessionProvider.tsx`
+- `src/components/auth/LoginForm.tsx`
+- `src/app/login/page.tsx`
+- `src/app/(main)/layout.tsx`
+
+**Files Modified:**
+- `src/app/layout.tsx` (removed Header/Footer, added SessionProvider)
+- `src/app/page.tsx` → `src/app/(main)/page.tsx` (moved into route group)
+- `src/app/favicon.ico`, `src/app/icon.png`, `src/app/apple-icon.png` (generated from logo)
+- `.env` (added AUTH_SECRET)
+- `.env.example` (added AUTH_SECRET placeholder)
+- `package.json` (added next-auth@beta)
+
+---
+
 ## Summary
 
 | Phase | Tasks | Description |
@@ -1345,9 +1397,10 @@
 | 8 | TASK-034 to TASK-036 | Page assembly and metadata |
 | 9 | TASK-037 to TASK-040 | Assets, polish, accessibility |
 | 10 | TASK-041 to TASK-043 | Documentation and verification |
+| 11 | TASK-059 | Authentication & login gate |
 
-**Total Tasks:** 43  
-**Estimated Sessions:** 43 (one task per Coder session)
+**Total Tasks:** 44
+**Completed:** 42 (TASK-041 and TASK-042 pending)
 
 ---
 
