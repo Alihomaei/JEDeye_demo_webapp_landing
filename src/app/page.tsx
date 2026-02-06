@@ -3,6 +3,7 @@ import { Partners } from '@/components/sections/Partners';
 import { About } from '@/components/sections/About';
 import { Demo } from '@/components/sections/Demo';
 import { Solutions } from '@/components/sections/Solutions';
+import { WhyNow } from '@/components/sections/WhyNow';
 import { HowItWorks } from '@/components/sections/HowItWorks';
 import { Roadmap } from '@/components/sections/Roadmap';
 import { Team } from '@/components/sections/Team';
@@ -17,6 +18,7 @@ export default function Home() {
       <About />
       <Demo />
       <Solutions />
+      <WhyNow />
       <HowItWorks />
       <Roadmap />
       <Team />

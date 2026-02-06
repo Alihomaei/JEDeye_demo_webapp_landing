@@ -24,6 +24,13 @@ export const aboutContent = {
         'JEDeye is a hardware-agnostic, AI-driven Software as a Medical Device (SaMD) that transforms standard 2D laparoscopic video into a 3D navigational environment with predictive safety and logistical capabilities — delivering Level 4 surgical assistance: Context Awareness, Perception, and Decision Support.',
         'Unlike legacy navigation systems that require proprietary, capital-intensive hardware towers, JEDeye integrates with your existing surgical stacks (Stryker, Storz, Olympus) via a hybrid edge-cloud architecture — bringing real-time intelligence to the OR without hardware upgrades.',
     ],
+    stats: [
+        { value: '$46/min', label: 'Average OR operating cost', source: 'Literature synthesis' },
+        { value: '$230K', label: 'Potential savings per OR/year', source: 'Based on 5 min/case efficiency gain' },
+        { value: '$10.1M', label: 'Single bile duct injury verdict', source: 'Georgia Court of Appeals' },
+    ],
+    positioning:
+        'Most surgical AI is retrospective analytics — dashboards nobody reads. JEDeye delivers real-time assurance: the software upgrade for thousands of legacy endoscopic towers already installed worldwide.',
 } as const;
 
 // =============================================================================
@@ -67,45 +74,46 @@ export const demoContent = {
 // =============================================================================
 
 export const solutionsContent = {
-    heading: 'Who We Serve',
+    heading: 'Three Levers of Value',
+    subheading: 'Efficiency is the wedge — assurance is the engine. JEDeye delivers ROI across time, cost, and risk.',
     cards: [
         {
-            id: 'or-efficiency',
+            id: 'time',
             icon: 'icon-or',
-            title: 'Operating Room Efficiency',
+            title: 'Time',
             description:
-                'Automate OR logistics with AI-powered scheduling, risk prediction, and consumable tracking.',
+                'Predictive scheduling and turnover optimization. Five minutes saved per case at $46/min = $230K per OR per year.',
             benefits: [
-                'Predictive "Time to Close" optimizes OR turnover and scheduling',
-                'Automated consumable-based billing from visual instrument detection',
-                'Vision-based gauze counter eliminates expensive RFID/barcode sponges',
-                'Hardware-agnostic — works with Stryker, Storz, and Olympus stacks',
+                'Predictive "Time to Close" updates the OR schedule board in real-time',
+                'Automated phase recognition tracks case progress against historical benchmarks',
+                'Turnover prediction reduces idle time between procedures',
+                'Works with existing Stryker, Storz, and Olympus stacks — no new hardware',
             ],
         },
         {
-            id: 'insurance-qa',
+            id: 'cost',
             icon: 'icon-insurance',
-            title: 'Safety & Risk Management',
+            title: 'Cost',
             description:
-                'Proactive complication prediction and real-time safety monitoring to protect patients and reduce liability.',
+                'Visual supply tracking and automated billing. Every clip, staple, and sponge counted by AI — not by hand.',
             benefits: [
-                'Complication risk engine predicts hemorrhage probability in real-time',
-                'Auto-alerts Blood Bank and ICU when risk thresholds are exceeded',
-                'Surgeon fatigue and tremor detection with safety threshold alerts',
-                'Black box surgical recording for objective documentation and audits',
+                'YOLO-based instrument detection generates cost reports automatically',
+                'Vision-based gauze counter eliminates expensive RFID/barcode sponges',
+                'Real-time cost-per-case forecast vs. preference card baseline',
+                'Second revenue lever: de-identified benchmarking data for device companies',
             ],
         },
         {
-            id: 'education',
+            id: 'risk',
             icon: 'icon-education',
-            title: 'Education & Training',
+            title: 'Risk',
             description:
-                'Transform surgical education with 3D digital twins and quantitative performance analytics.',
+                'Complication prediction and training compliance. A single prevented "never event" pays for the platform for years.',
             benefits: [
-                'Kinematic analysis of instrument path efficiency and agility scoring',
-                'Interactive case review with navigable 3D reconstructions',
-                '"Body GPS" CT overlay for teaching anatomy and surgical planning',
-                'Quantitative competency tracking across residents and fellows',
+                'Risk engine predicts hemorrhage probability — auto-alerts Blood Bank and ICU',
+                'Surgeon fatigue and tremor detection with real-time safety threshold alerts',
+                'Black box surgical recording for objective documentation and liability protection',
+                'ABS EPA-compliant competency tracking for residency training programs',
             ],
         },
     ] as SolutionCardContent[],
@@ -172,6 +180,31 @@ export const howItWorksContent = {
 } as const;
 
 // =============================================================================
+// Why Now Section Content
+// =============================================================================
+
+export const whyNowContent = {
+    heading: 'Why Now',
+    subheading: 'Two forcing functions are creating a time-sensitive market opening.',
+    drivers: [
+        {
+            id: 'epa',
+            title: 'ABS EPA Training Mandate',
+            description: 'By July 2028, the American Board of Surgery requires Entrustable Professional Activities (EPA) data for all general surgery residents. Hundreds of thousands of assessments are already being collected nationally — but manual entry is unsustainable at scale.',
+            highlight: 'JEDeye automates EPA compliance from surgical video.',
+            timeline: '2023: EPAs go live | 2025: National rollout | 2028: Mandatory for board qualification',
+        },
+        {
+            id: 'insurer',
+            title: 'Insurer-Subsidized Black Box Adoption',
+            description: 'In January 2025, MedPro Group (Berkshire Hathaway) partnered with SST to subsidize surgical video recording for liability reduction. The signal is clear: insurers will pay for surgical risk assurance technology.',
+            highlight: 'We sell to risk managers and captives — not just CIOs.',
+            timeline: 'Training mandates + insurer subsidies = a time-sensitive opening',
+        },
+    ],
+} as const;
+
+// =============================================================================
 // Roadmap Section Content
 // =============================================================================
 
@@ -182,7 +215,7 @@ export const roadmapContent = {
         {
             id: 'mvp',
             label: 'MVP Complete',
-            description: 'Core AI pipeline functional — real-time segmentation, 3D reconstruction, and live demo. TRL 5 validated.',
+            description: 'Core AI pipeline functional — real-time segmentation, 3D reconstruction, and live demo. TRL 5 validated. Published in Nature Scientific Reports.',
             status: 'completed' as const,
         },
         {
@@ -192,21 +225,21 @@ export const roadmapContent = {
             status: 'active' as const,
         },
         {
-            id: 'validation',
-            label: 'Clinical Validation',
-            description: 'Multi-site validation studies and generalizability testing beyond public datasets.',
+            id: 'pilots',
+            label: 'Multi-Site Pilots',
+            description: 'Residency program workflow pilot (EPA evidence drafts) and efficiency workflow pilot (turnover prediction). PSO-ready architecture.',
             status: 'upcoming' as const,
         },
         {
             id: 'fda',
             label: 'FDA 510(k) Submission',
-            description: 'Pre-submission data and regulatory clearance as a Software as a Medical Device (SaMD).',
+            description: 'Phase 1 ships as Clinical Decision Support (no FDA needed). Phase 2 pursues clearance for time-critical safety claims.',
             status: 'upcoming' as const,
         },
         {
             id: 'launch',
             label: 'Market Launch',
-            description: 'Commercial deployment to hospital partners with full platform capabilities.',
+            description: 'Commercial deployment at $100K/OR/year SaaS. Insurance-aligned buying path targeting risk managers.',
             status: 'upcoming' as const,
         },
     ],
@@ -256,7 +289,7 @@ export const partnersContent = {
     logos: [
         {
             name: 'Harvard Medical School',
-            src: '/images/HMS.png' as string | null,
+            src: '/images/HMS.jpg' as string | null,
             width: 220,
             height: 48,
         },

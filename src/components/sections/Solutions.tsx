@@ -24,9 +24,15 @@ export function Solutions() {
     return (
         <SectionWrapper id="solutions" background="white">
             <FadeIn>
-                <h2 className={cn('text-section-mobile lg:text-section-desktop', 'text-text-primary', 'mb-8 lg:mb-12', 'text-center')}>
+                <h2 className={cn('text-section-mobile lg:text-section-desktop', 'text-text-primary', 'mb-4', 'text-center')}>
                     {solutionsContent.heading}
                 </h2>
+            </FadeIn>
+
+            <FadeIn delay={0.1}>
+                <p className={cn('text-base sm:text-lg', 'text-text-secondary', 'text-center', 'max-w-2xl mx-auto', 'mb-8 lg:mb-12')}>
+                    {solutionsContent.subheading}
+                </p>
             </FadeIn>
 
             <StaggerContainer

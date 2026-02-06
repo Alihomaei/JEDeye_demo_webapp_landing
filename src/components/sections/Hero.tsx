@@ -54,7 +54,7 @@ export function Hero() {
 
                 {/* Brand Name */}
                 <motion.h1
-                    className={cn('text-5xl sm:text-6xl lg:text-8xl', 'font-bold', 'text-text-primary', 'mb-2 sm:mb-3', 'text-balance')}
+                    className={cn('text-6xl sm:text-7xl lg:text-9xl', 'font-bold', 'text-text-primary', 'mb-2 sm:mb-3', 'text-balance')}
                     variants={{
                         hidden: { opacity: 0, y: 30 },
                         visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },

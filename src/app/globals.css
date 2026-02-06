@@ -96,7 +96,7 @@
     inset: 0;
     z-index: -10;
     background: url('/images/landing-bg.jpg') center / cover no-repeat;
-    filter: blur(14px);
+    filter: blur(8px);
 }
 
 .page-bg::after {
