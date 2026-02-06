@@ -52,9 +52,9 @@ export function Hero() {
                     </span>
                 </motion.div>
 
-                {/* Headline */}
+                {/* Brand Name */}
                 <motion.h1
-                    className={cn('text-hero-mobile lg:text-hero-desktop', 'text-text-primary', 'mb-4 sm:mb-6', 'text-balance')}
+                    className={cn('text-5xl sm:text-6xl lg:text-8xl', 'font-bold', 'text-text-primary', 'mb-2 sm:mb-3', 'text-balance')}
                     variants={{
                         hidden: { opacity: 0, y: 30 },
                         visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
@@ -63,15 +63,26 @@ export function Hero() {
                     {heroContent.headline}
                 </motion.h1>
 
-                {/* Subheadline */}
+                {/* Tagline */}
                 <motion.p
-                    className={cn('text-lg sm:text-xl lg:text-2xl', 'font-normal', 'text-text-secondary', 'mb-8 sm:mb-10', 'mx-auto max-w-2xl', 'leading-relaxed')}
+                    className={cn('text-hero-mobile lg:text-hero-desktop', 'font-semibold', 'text-primary-dark', 'mb-6 sm:mb-8', 'text-balance')}
                     variants={{
                         hidden: { opacity: 0, y: 20 },
                         visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
                     }}
                 >
-                    {heroContent.subheadline}
+                    {heroContent.subheadline_top}
+                </motion.p>
+
+                {/* Description */}
+                <motion.p
+                    className={cn('text-lg sm:text-xl lg:text-2xl', 'font-medium', 'text-text-primary', 'mb-8 sm:mb-10', 'mx-auto max-w-2xl', 'leading-relaxed')}
+                    variants={{
+                        hidden: { opacity: 0, y: 20 },
+                        visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+                    }}
+                >
+                    {heroContent.description}
                 </motion.p>
 
                 {/* CTA Buttons */}

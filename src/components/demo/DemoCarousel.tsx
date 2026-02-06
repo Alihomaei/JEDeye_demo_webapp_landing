@@ -61,23 +61,31 @@ export function DemoCarousel({ className }: { className?: string }) {
                         )}
                         {current === 1 && (
                             <div className="max-w-[900px] mx-auto">
-                                <div className="aspect-video rounded-xl overflow-hidden bg-gray-900 flex items-center justify-center border-2 border-dashed border-gray-600">
-                                    <div className="text-center text-gray-400 px-6">
-                                        <Cube3DIcon className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                                        <p className="text-lg font-medium mb-2">3D Reconstruction Demo</p>
-                                        <p className="text-sm">Video placeholder — add your Gaussian splatting demo here</p>
-                                    </div>
+                                <div className="aspect-video rounded-xl overflow-hidden bg-gray-900">
+                                    <video
+                                        autoPlay
+                                        muted
+                                        loop
+                                        playsInline
+                                        preload="auto"
+                                        className="w-full h-full object-contain"
+                                    >
+                                        <source src="/videos/3d-reconstruction.mp4" type="video/mp4" />
+                                    </video>
                                 </div>
                             </div>
                         )}
                         {current === 2 && (
                             <div className="max-w-[900px] mx-auto">
-                                <div className="aspect-video rounded-xl overflow-hidden bg-gray-900 flex items-center justify-center border-2 border-dashed border-gray-600">
-                                    <div className="text-center text-gray-400 px-6">
-                                        <PlayCircleIcon className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                                        <p className="text-lg font-medium mb-2">Pitch Video</p>
-                                        <p className="text-sm">Video placeholder — add your 8-minute pitch deck here</p>
-                                    </div>
+                                <div className="aspect-video rounded-xl overflow-hidden bg-gray-900">
+                                    <video
+                                        controls
+                                        playsInline
+                                        preload="auto"
+                                        className="w-full h-full object-contain"
+                                    >
+                                        <source src="/videos/pitch-deck.mp4" type="video/mp4" />
+                                    </video>
                                 </div>
                             </div>
                         )}

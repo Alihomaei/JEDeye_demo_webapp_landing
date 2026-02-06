@@ -6,8 +6,9 @@ import type { SolutionCardContent, EngineCardContent } from '@/types';
 
 export const heroContent = {
     badge: 'Coming Soon',
-    headline: 'The Operating System for Intelligent Surgery',
-    subheadline:
+    headline: 'JEDeye',
+    subheadline_top: 'The Operating System for Intelligent Surgery',
+    description:
         'JEDeye is the Intra-operative Brain for laparoscopic surgery — overlaying real-time 3D intelligence, predictive safety, and automated logistics onto the surgical field. No new hardware required.',
     primaryCta: 'Join the Waitlist',
     secondaryCta: 'Learn More',

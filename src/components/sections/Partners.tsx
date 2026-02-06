@@ -15,7 +15,7 @@ export function Partners() {
                     {partnersContent.logos.map((logo) => (
                         <div
                             key={logo.name}
-                            className="flex items-center gap-3 opacity-70 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
+                            className="flex items-center gap-3"
                         >
                             {logo.src ? (
                                 <Image
@@ -23,7 +23,7 @@ export function Partners() {
                                     alt={logo.name}
                                     width={logo.width ?? 180}
                                     height={logo.height ?? 48}
-                                    className="h-10 w-auto object-contain lg:h-12"
+                                    className="h-14 w-auto object-contain lg:h-16"
                                 />
                             ) : (
                                 <span className="text-lg font-semibold text-text-primary lg:text-xl">
