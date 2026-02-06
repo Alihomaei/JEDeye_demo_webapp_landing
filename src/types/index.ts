@@ -151,4 +151,5 @@ export interface EngineCardContent {
     icon: string;           // Icon identifier
     title: string;
     description: string;
+    capabilities?: string[];  // Bullet-point list of key capabilities
 }

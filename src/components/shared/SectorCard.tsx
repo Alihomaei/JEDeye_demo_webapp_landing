@@ -37,7 +37,7 @@ export function SectorCard({
     description,
     benefits,
     className,
-}: SectorCardProps): JSX.Element {
+}: SectorCardProps) {
     return (
         <Card
             className={cn(

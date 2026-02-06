@@ -31,7 +31,7 @@ export const aboutContent = {
 
 export const demoContent = {
     heading: 'See It In Action',
-    intro: "Watch JEDeye's AI transform standard endoscopic video into real-time semantic segmentation. Drag the slider to compare the original footage with AI-identified anatomical structures.",
+    intro: "Explore JEDeye's AI capabilities across multiple demos — from real-time segmentation to 3D reconstruction.",
     legendTitle: 'Segmentation Key',
     labels: {
         original: 'Original Endoscopy',
@@ -42,6 +42,23 @@ export const demoContent = {
             'Unable to load demo video. Please check your connection or contact us for a demonstration.',
         autoplayBlocked: 'Tap to play demo',
     },
+    slides: [
+        {
+            id: 'segmentation',
+            label: 'AI Segmentation',
+            description: "Drag the slider to compare original endoscopic footage with JEDeye's real-time semantic segmentation, identifying anatomical structures and instruments.",
+        },
+        {
+            id: '3d-reconstruction',
+            label: '3D Reconstruction',
+            description: 'Watch JEDeye convert standard 2D endoscopic video into a navigable 3D digital twin using Gaussian splatting technology.',
+        },
+        {
+            id: 'pitch-video',
+            label: 'Pitch Video',
+            description: 'An 8-minute overview of JEDeye — the problem, the technology, and the vision for intelligent surgery.',
+        },
+    ],
 } as const;
 
 // =============================================================================
@@ -105,32 +122,150 @@ export const howItWorksContent = {
         {
             id: 'vision',
             icon: 'icon-vision',
-            title: 'Vision Engine',
+            title: 'Computer Vision',
             description:
-                'Processes raw endoscopic video in real-time, identifying anatomical structures, instruments, and surgical actions.',
+                'Real-time pixel-level analysis of the surgical field using state-of-the-art deep learning models.',
+            capabilities: [
+                'Semantic segmentation of anatomy & tools (nnU-Net)',
+                'Instrument detection & inventory tracking (YOLO)',
+                'Surgical phase recognition & workflow context (TCN)',
+            ],
         },
         {
             id: 'spatial',
             icon: 'icon-spatial',
-            title: 'Spatial Engine',
+            title: '3D Reconstruction',
             description:
-                'Converts 2D video to 3D using Monocular Depth Estimation, providing surgeons with enhanced spatial awareness.',
+                'Converts standard 2D endoscopic video into a navigable 3D digital twin with pre-op CT overlay.',
+            capabilities: [
+                'Real-time Gaussian splatting for 3D scene reconstruction',
+                '"Body GPS" — CT-to-video registration for deep structure localization',
+                'X-ray vision for hidden anatomy (tumors, ducts, vessels)',
+            ],
         },
         {
             id: 'scoring',
             icon: 'icon-scoring',
-            title: 'Scoring Engine',
+            title: 'Safety & Performance',
             description:
-                'Evaluates surgical performance using validated metrics like GOALS, providing objective skill assessment.',
+                'Continuous monitoring of surgeon dexterity and patient safety with real-time alerts.',
+            capabilities: [
+                'Tremor & fatigue detection with safety threshold alerts',
+                'Kinematic analysis of instrument path efficiency',
+                'Vision-based gauze counter to prevent retained foreign objects',
+            ],
         },
         {
             id: 'interaction',
             icon: 'icon-interaction',
-            title: 'Interaction Engine',
+            title: 'Operational Intelligence',
             description:
-                'Delivers real-time feedback, generates educational content, and enables natural language queries about procedures.',
+                'Automates OR logistics — from scheduling and risk prediction to billing.',
+            capabilities: [
+                'Predictive "Time to Close" for OR schedule optimization',
+                'Complication risk engine with auto Blood Bank / ICU alerts',
+                'Automated consumable-based billing from visual detection',
+            ],
         },
     ] as EngineCardContent[],
+} as const;
+
+// =============================================================================
+// Roadmap Section Content
+// =============================================================================
+
+export const roadmapContent = {
+    heading: 'Roadmap',
+    subheading: 'Our path from MVP to market — building the operating system for intelligent surgery.',
+    milestones: [
+        {
+            id: 'mvp',
+            label: 'MVP Complete',
+            description: 'Core AI pipeline functional — real-time segmentation, 3D reconstruction, and live demo.',
+            status: 'completed' as const,
+        },
+        {
+            id: 'data',
+            label: 'Institutional Data Collection',
+            description: '50+ cases per procedure type, 200+ hours of annotated surgical video across three procedures.',
+            status: 'active' as const,
+        },
+        {
+            id: 'validation',
+            label: 'Clinical Validation',
+            description: 'Multi-site validation studies and performance benchmarking against existing systems.',
+            status: 'upcoming' as const,
+        },
+        {
+            id: 'fda',
+            label: 'FDA 510(k) Submission',
+            description: 'Regulatory clearance as a Software as a Medical Device (SaMD).',
+            status: 'upcoming' as const,
+        },
+        {
+            id: 'launch',
+            label: 'Market Launch',
+            description: 'Commercial deployment to hospital partners with full platform capabilities.',
+            status: 'upcoming' as const,
+        },
+    ],
+} as const;
+
+// =============================================================================
+// Team Section Content
+// =============================================================================
+
+export const teamContent = {
+    heading: 'Our Team',
+    subheading: 'Built by surgeons, engineers, and researchers at the intersection of AI and medicine.',
+    members: [
+        {
+            id: 'founder-1',
+            name: 'Founder Name',
+            title: 'Co-Founder & CEO',
+            credential: 'Harvard Medical School',
+            image: null as string | null, // Replace with '/images/team/founder-1.jpg' when available
+            linkedin: null as string | null,
+        },
+        {
+            id: 'founder-2',
+            name: 'Founder Name',
+            title: 'Co-Founder & CTO',
+            credential: 'Mass General Brigham',
+            image: null as string | null,
+            linkedin: null as string | null,
+        },
+        {
+            id: 'founder-3',
+            name: 'Founder Name',
+            title: 'Co-Founder & CSO',
+            credential: 'Harvard Medical School',
+            image: null as string | null,
+            linkedin: null as string | null,
+        },
+    ],
+} as const;
+
+// =============================================================================
+// Partners Section Content
+// =============================================================================
+
+export const partnersContent = {
+    label: 'Affiliated with',
+    logos: [
+        {
+            name: 'Harvard Medical School',
+            src: null as string | null, // Replace with '/images/harvard-medical-school-logo.png' when available
+            width: 220,
+            height: 48,
+        },
+        {
+            name: 'Mass General Brigham',
+            src: null as string | null, // Replace with '/images/mass-general-brigham-logo.png' when available
+            width: 200,
+            height: 48,
+        },
+    ],
 } as const;
 
 // =============================================================================

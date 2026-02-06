@@ -7,7 +7,7 @@ import { contactInfo } from '@/config/contact';
  * Page footer with navigation links, external links, and institutional information.
  * Responsive layout: multi-column on desktop, stacked on mobile.
  */
-export function Footer(): JSX.Element {
+export function Footer() {
     // Get current year for copyright notice
     const currentYear = new Date().getFullYear();
 

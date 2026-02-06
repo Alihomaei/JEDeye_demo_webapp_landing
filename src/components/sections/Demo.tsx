@@ -1,6 +1,5 @@
 import { SectionWrapper } from '@/components/shared/SectionWrapper';
-import { VideoComparisonSlider } from '@/components/demo/VideoComparisonSlider';
-import { SegmentationLegend } from '@/components/demo/SegmentationLegend';
+import { DemoCarousel } from '@/components/demo/DemoCarousel';
 import { demoContent } from '@/config/content';
 
 export function Demo() {
@@ -14,9 +13,8 @@ export function Demo() {
           {demoContent.intro}
         </p>
       </div>
-      
-      <VideoComparisonSlider />
-      <SegmentationLegend />
+
+      <DemoCarousel />
     </SectionWrapper>
   );
 }

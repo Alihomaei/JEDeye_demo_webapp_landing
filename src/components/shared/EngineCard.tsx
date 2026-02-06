@@ -12,6 +12,8 @@ interface EngineCardProps {
     title: string;
     /** Description of what this engine does */
     description: string;
+    /** Key capabilities (bullet points) */
+    capabilities?: string[];
     /** Additional CSS classes */
     className?: string;
 }
@@ -32,8 +34,9 @@ export function EngineCard({
     icon,
     title,
     description,
+    capabilities,
     className,
-}: EngineCardProps): JSX.Element {
+}: EngineCardProps) {
     return (
         <Card
             className={cn(
@@ -60,11 +63,21 @@ export function EngineCard({
                 </CardTitle>
             </CardHeader>
 
-            {/* Description - centered text */}
+            {/* Description */}
             <CardContent className="flex-grow pt-0 text-center">
                 <CardDescription className="text-sm text-text-secondary leading-relaxed">
                     {description}
                 </CardDescription>
+                {capabilities && capabilities.length > 0 && (
+                    <ul className="mt-3 space-y-1.5 text-left">
+                        {capabilities.map((cap) => (
+                            <li key={cap} className="flex items-start gap-2 text-xs text-text-secondary">
+                                <span className="mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary" />
+                                {cap}
+                            </li>
+                        ))}
+                    </ul>
+                )}
             </CardContent>
         </Card>
     );

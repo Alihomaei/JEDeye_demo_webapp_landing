@@ -68,7 +68,7 @@ export function SectionWrapper({
     children,
     className,
     background = 'white',
-}: SectionWrapperProps): JSX.Element {
+}: SectionWrapperProps) {
     // Check if user prefers reduced motion
     const prefersReducedMotion = useReducedMotion();
 

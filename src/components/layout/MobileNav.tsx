@@ -22,7 +22,7 @@ interface MobileNavProps {
  * Features focus trapping, escape key handling, and overlay dismiss.
  * Fully accessible with proper ARIA attributes.
  */
-export function MobileNav({ isOpen, onClose }: MobileNavProps): JSX.Element | null {
+export function MobileNav({ isOpen, onClose }: MobileNavProps) {
     const { scrollTo } = useScrollTo();
     const menuRef = useRef<HTMLDivElement>(null);
     const firstFocusableRef = useRef<HTMLButtonElement>(null);

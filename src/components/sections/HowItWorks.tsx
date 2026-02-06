@@ -111,6 +111,7 @@ export function HowItWorks() {
                         icon={<EngineIcon iconKey={engine.icon} />}
                         title={engine.title}
                         description={engine.description}
+                        capabilities={engine.capabilities}
                     />
                 ))}
             </div>

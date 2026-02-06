@@ -19,7 +19,7 @@ const SCROLL_THRESHOLD = 10;
  * Transforms background from transparent to white/blur when scrolled.
  * Contains logo, navigation links, CTA button, and mobile menu.
  */
-export function Header(): JSX.Element {
+export function Header() {
     // Track scroll position for background change
     const [isScrolled, setIsScrolled] = useState(false);
     // Track mobile menu open state

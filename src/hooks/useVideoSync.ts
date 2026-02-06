@@ -19,8 +19,8 @@ export interface UseVideoSyncReturn {
 }
 
 export function useVideoSync(
-  masterRef: RefObject<HTMLVideoElement>,
-  slaveRef: RefObject<HTMLVideoElement>,
+  masterRef: RefObject<HTMLVideoElement | null>,
+  slaveRef: RefObject<HTMLVideoElement | null>,
   options: UseVideoSyncOptions = {}
 ): UseVideoSyncReturn {
   const { syncThreshold = DEFAULT_SYNC_THRESHOLD, enabled = true } = options;
