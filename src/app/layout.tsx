@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { Header } from '@/components/layout/Header';
-import { Footer } from '@/components/layout/Footer';
+import { SessionProvider } from '@/components/auth/SessionProvider';
 
 // =============================================================================
 // Font Configuration
@@ -131,14 +130,7 @@ export default function RootLayout({
           Skip to main content
         </a>
 
-        {/* Header */}
-        <Header />
-
-        {/* Main Content */}
-        <main id="main-content">{children}</main>
-
-        {/* Footer */}
-        <Footer />
+        <SessionProvider>{children}</SessionProvider>
       </body>
     </html>
   );
