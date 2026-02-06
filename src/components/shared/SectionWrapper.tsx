@@ -80,7 +80,7 @@ export function SectionWrapper({
             id={id}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
+            viewport={{ once: false, amount: 0.1, margin: '-50px' }}
             variants={variants}
             className={cn(
                 // Responsive vertical padding using Tailwind spacing tokens
