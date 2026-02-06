@@ -57,6 +57,11 @@ export const demoContent = {
             description: "Drag the slider to compare original endoscopic footage with JEDeye's real-time semantic segmentation, identifying anatomical structures (liver, gallbladder, cystic duct) and surgical instruments.",
         },
         {
+            id: 'realtime-overwatch',
+            label: 'Real-time Overwatch',
+            description: 'JEDeye\'s real-time surgical overwatch — continuous instrument detection and annotation during a live laparoscopic procedure.',
+        },
+        {
             id: '3d-reconstruction',
             label: '3D Reconstruction',
             description: 'Watch JEDeye convert standard 2D endoscopic video into a navigable 3D digital twin using Gaussian splatting technology.',

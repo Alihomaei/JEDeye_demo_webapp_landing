@@ -70,12 +70,28 @@ export function DemoCarousel({ className }: { className?: string }) {
                                         preload="auto"
                                         className="w-full h-full object-contain"
                                     >
-                                        <source src="/videos/3d-reconstruction.mp4" type="video/mp4" />
+                                        <source src="/videos/realtime-overwatch.mp4" type="video/mp4" />
                                     </video>
                                 </div>
                             </div>
                         )}
                         {current === 2 && (
+                            <div className="max-w-[900px] mx-auto">
+                                <div className="aspect-video rounded-xl overflow-hidden bg-gray-900">
+                                    <video
+                                        autoPlay
+                                        muted
+                                        loop
+                                        playsInline
+                                        preload="auto"
+                                        className="w-full h-full object-contain"
+                                    >
+                                        <source src="/videos/3d-reconstruction.mp4" type="video/mp4" />
+                                    </video>
+                                </div>
+                            </div>
+                        )}
+                        {current === 3 && (
                             <div className="max-w-[900px] mx-auto">
                                 <div className="aspect-video rounded-xl overflow-hidden bg-gray-900">
                                     <video
