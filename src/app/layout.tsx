@@ -21,19 +21,19 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://jedeye.ai'),
   title: {
-    default: 'JEDeye | 3D Surgical Intelligence for the Modern OR',
+    default: 'JEDeye | The Operating System for Intelligent Surgery',
     template: '%s | JEDeye',
   },
   description:
-    'JEDeye transforms standard 2D endoscopic video into real-time 3D visualization and AI-powered surgical intelligence. Enhancing surgical precision, training, and quality assurance.',
+    'JEDeye is a hardware-agnostic, AI-driven SaMD that transforms standard laparoscopic video into real-time 3D intelligence, predictive safety, and automated OR logistics.',
   keywords: [
     'surgical AI',
-    'endoscopic visualization',
-    '3D surgery',
-    'monocular depth estimation',
-    'surgical training',
+    'intraoperative intelligence',
+    '3D surgical navigation',
+    'laparoscopic AI',
+    'surgical safety',
     'OR efficiency',
-    'surgical quality assurance',
+    'software as a medical device',
   ],
   authors: [{ name: 'Nezami Lab', url: 'https://nezamilab.bwh.harvard.edu/' }],
   creator: 'Nezami Lab, Harvard Medical School',
@@ -42,23 +42,23 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://jedeye.ai',
     siteName: 'JEDeye',
-    title: 'JEDeye | 3D Surgical Intelligence for the Modern OR',
+    title: 'JEDeye | The Operating System for Intelligent Surgery',
     description:
-      'Transform standard endoscopic video into real-time 3D visualization and AI-powered surgical intelligence.',
+      'JEDeye is a hardware-agnostic, AI-driven SaMD that transforms standard laparoscopic video into real-time 3D intelligence and automated OR logistics.',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'JEDeye - 3D Surgical Intelligence',
+        alt: 'JEDeye - The Operating System for Intelligent Surgery',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'JEDeye | 3D Surgical Intelligence for the Modern OR',
+    title: 'JEDeye | The Operating System for Intelligent Surgery',
     description:
-      'Transform standard endoscopic video into real-time 3D visualization and AI-powered surgical intelligence.',
+      'JEDeye is a hardware-agnostic, AI-driven SaMD that transforms standard laparoscopic video into real-time 3D intelligence and automated OR logistics.',
     images: ['/og-image.png'],
   },
   robots: {
@@ -77,7 +77,7 @@ const organizationSchema = {
   name: 'JEDeye',
   url: 'https://jedeye.ai',
   logo: 'https://jedeye.ai/images/JEDeye_transparent_logo.png',
-  description: 'AI-enhanced surgical intelligence platform',
+  description: 'Hardware-agnostic, AI-driven SaMD — the operating system for intelligent surgery',
   parentOrganization: {
     '@type': 'Organization',
     name: 'Nezami Lab',
@@ -120,6 +120,9 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
+        {/* Fixed surgical background image */}
+        <div className="page-bg" aria-hidden="true" />
+
         {/* Skip to main content link (accessibility) */}
         <a
           href="#main-content"

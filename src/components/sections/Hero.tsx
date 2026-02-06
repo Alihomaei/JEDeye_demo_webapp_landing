@@ -19,16 +19,11 @@ export function Hero() {
                 'relative min-h-screen min-h-[100dvh]',
                 'flex flex-col items-center justify-center',
                 'px-4 sm:px-6 lg:px-8',
-                'bg-gradient-to-br from-background via-background to-primary-light/20',
                 'overflow-hidden'
             )}
         >
-            {/* Decorative Background Elements */}
-            <div className="absolute inset-0 -z-10" aria-hidden="true">
-                <div className={cn('absolute -top-40 -right-40', 'h-80 w-80 sm:h-96 sm:w-96', 'rounded-full', 'bg-primary/10 blur-3xl')} />
-                <div className={cn('absolute -bottom-40 -left-40', 'h-80 w-80 sm:h-96 sm:w-96', 'rounded-full', 'bg-primary-dark/10 blur-3xl')} />
-                <div className={cn('absolute inset-0', 'bg-[linear-gradient(to_right,#8882_1px,transparent_1px),linear-gradient(to_bottom,#8882_1px,transparent_1px)]', 'bg-[size:4rem_4rem]', 'opacity-30')} />
-            </div>
+            {/* Frosted glass overlay for hero */}
+            <div className="absolute inset-0 glass-light-subtle" aria-hidden="true" />
 
             {/* Content Container — staggered entrance */}
             <motion.div
@@ -98,7 +93,7 @@ export function Hero() {
                         variant="outline"
                         size="lg"
                         onClick={handleSecondaryCta}
-                        className={cn('min-w-[200px]', 'h-12 px-8', 'text-base font-semibold', 'transition-all duration-200')}
+                        className={cn('min-w-[200px]', 'h-12 px-8', 'text-base font-semibold', 'bg-white/50 hover:bg-white/70 border-white/30', 'transition-all duration-200')}
                     >
                         {heroContent.secondaryCta}
                     </Button>

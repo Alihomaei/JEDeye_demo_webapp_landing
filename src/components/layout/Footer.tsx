@@ -15,7 +15,7 @@ export function Footer() {
     const institutionAffiliation = `${contactInfo.institution.name}, ${contactInfo.institution.affiliations.join(', ')}`;
 
     return (
-        <footer className="bg-muted border-t border-border">
+        <footer className="glass-footer border-t border-white/20">
             <div className="mx-auto max-w-container px-4 sm:px-6 lg:px-8">
                 {/* Main footer content */}
                 <div className="py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -143,7 +143,7 @@ export function Footer() {
                 </div>
 
                 {/* Bottom bar: Institution affiliation and copyright */}
-                <div className="py-6 border-t border-border">
+                <div className="py-6 border-t border-white/20">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-text-muted">
                         {/* Institution affiliation */}
                         <p>{institutionAffiliation}</p>

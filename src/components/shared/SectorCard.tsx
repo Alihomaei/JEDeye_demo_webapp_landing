@@ -43,7 +43,7 @@ export function SectorCard({
             className={cn(
                 // Base styling
                 'flex flex-col h-full',
-                'bg-white border border-border rounded-xl',
+                'glass-card rounded-xl',
                 // Shadow transition
                 'shadow-card hover:shadow-card-hover',
                 // Hover lift effect

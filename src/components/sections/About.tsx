@@ -42,8 +42,8 @@ export function About() {
                         className={cn(
                             'mt-10 lg:mt-12',
                             'rounded-xl',
-                            'border-2 border-dashed border-border',
-                            'bg-background/50',
+                            'border-2 border-dashed border-white/30',
+                            'bg-white/30',
                             'p-8 sm:p-12',
                             'text-center'
                         )}

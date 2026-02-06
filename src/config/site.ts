@@ -2,10 +2,10 @@ import type { NavLink } from '@/types';
 
 export const siteConfig = {
     name: 'JEDeye',
-    tagline: '3D Surgical Intelligence',
+    tagline: 'The Operating System for Intelligent Surgery',
     url: 'https://jedeye.ai', // Update with actual domain
     description:
-        'JEDeye transforms standard 2D endoscopic video into real-time 3D visualization and AI-powered surgical intelligence.',
+        'JEDeye is a hardware-agnostic, AI-driven SaMD that transforms standard laparoscopic video into real-time 3D intelligence, predictive safety, and automated OR logistics.',
 
     navLinks: [
         { label: 'About', href: '#about' },

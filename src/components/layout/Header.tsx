@@ -88,7 +88,7 @@ export function Header() {
                     'transition-all duration-300 ease-in-out',
                     // Background state
                     isScrolled
-                        ? 'bg-white/80 backdrop-blur-md border-b border-gray-200 shadow-sm'
+                        ? 'glass-header border-b border-white/20 shadow-sm'
                         : 'bg-transparent'
                 )}
             >

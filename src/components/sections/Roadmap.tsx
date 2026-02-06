@@ -16,7 +16,7 @@ const statusStyles = {
         text: 'text-text-primary',
     },
     upcoming: {
-        dot: 'bg-white border-gray-300',
+        dot: 'bg-white/70 border-gray-300',
         text: 'text-text-secondary',
     },
 };

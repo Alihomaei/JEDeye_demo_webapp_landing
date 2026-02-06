@@ -6,9 +6,9 @@ import type { SolutionCardContent, EngineCardContent } from '@/types';
 
 export const heroContent = {
     badge: 'Coming Soon',
-    headline: '3D Surgical Intelligence for the Modern OR',
+    headline: 'The Operating System for Intelligent Surgery',
     subheadline:
-        'JEDeye transforms standard endoscopic video into real-time 3D visualization and AI-powered insights—enhancing surgical precision, training, and quality assurance.',
+        'JEDeye is the Intra-operative Brain for laparoscopic surgery — overlaying real-time 3D intelligence, predictive safety, and automated logistics onto the surgical field. No new hardware required.',
     primaryCta: 'Join the Waitlist',
     secondaryCta: 'Learn More',
 } as const;
@@ -20,8 +20,8 @@ export const heroContent = {
 export const aboutContent = {
     heading: 'What is JEDeye?',
     paragraphs: [
-        'JEDeye is an AI-enhanced surgical intelligence platform that converts standard 2D endoscopic video into actionable 3D intelligence using advanced Monocular Depth Estimation (MDE) technology.',
-        'Unlike traditional systems that require expensive specialized equipment, JEDeye works with your existing endoscopic cameras—delivering spatial awareness, real-time guidance, and comprehensive performance analytics without hardware upgrades.',
+        'JEDeye is a hardware-agnostic, AI-driven Software as a Medical Device (SaMD) that transforms standard 2D laparoscopic video into a 3D navigational environment with predictive safety and logistical capabilities — delivering Level 4 surgical assistance: Context Awareness, Perception, and Decision Support.',
+        'Unlike legacy navigation systems that require proprietary, capital-intensive hardware towers, JEDeye integrates with your existing surgical stacks (Stryker, Storz, Olympus) via a hybrid edge-cloud architecture — bringing real-time intelligence to the OR without hardware upgrades.',
     ],
 } as const;
 
@@ -46,7 +46,7 @@ export const demoContent = {
         {
             id: 'segmentation',
             label: 'AI Segmentation',
-            description: "Drag the slider to compare original endoscopic footage with JEDeye's real-time semantic segmentation, identifying anatomical structures and instruments.",
+            description: "Drag the slider to compare original endoscopic footage with JEDeye's real-time semantic segmentation, identifying anatomical structures (liver, gallbladder, cystic duct) and surgical instruments.",
         },
         {
             id: '3d-reconstruction',
@@ -73,25 +73,25 @@ export const solutionsContent = {
             icon: 'icon-or',
             title: 'Operating Room Efficiency',
             description:
-                'Streamline surgical workflows and reduce OR costs with AI-powered visualization and real-time guidance.',
+                'Automate OR logistics with AI-powered scheduling, risk prediction, and consumable tracking.',
             benefits: [
-                'Reduce OR turnover time with intelligent workflow optimization',
-                'Enhance surgeon spatial awareness without specialized equipment',
-                'Decrease procedure duration through improved visualization',
-                'Lower equipment costs by leveraging existing endoscopic cameras',
+                'Predictive "Time to Close" optimizes OR turnover and scheduling',
+                'Automated consumable-based billing from visual instrument detection',
+                'Vision-based gauze counter eliminates expensive RFID/barcode sponges',
+                'Hardware-agnostic — works with Stryker, Storz, and Olympus stacks',
             ],
         },
         {
             id: 'insurance-qa',
             icon: 'icon-insurance',
-            title: 'Insurance & Quality Assurance',
+            title: 'Safety & Risk Management',
             description:
-                'Objective documentation and scoring for risk management and continuous quality improvement.',
+                'Proactive complication prediction and real-time safety monitoring to protect patients and reduce liability.',
             benefits: [
-                'Black box surgical recording for liability protection',
-                'Objective skill assessment using validated scoring systems (GOALS)',
-                'Automated documentation for quality audits and compliance',
-                'Data-driven insights for malpractice risk reduction',
+                'Complication risk engine predicts hemorrhage probability in real-time',
+                'Auto-alerts Blood Bank and ICU when risk thresholds are exceeded',
+                'Surgeon fatigue and tremor detection with safety threshold alerts',
+                'Black box surgical recording for objective documentation and audits',
             ],
         },
         {
@@ -99,12 +99,12 @@ export const solutionsContent = {
             icon: 'icon-education',
             title: 'Education & Training',
             description:
-                'Transform surgical education with AI-powered mentorship and competency tracking.',
+                'Transform surgical education with 3D digital twins and quantitative performance analytics.',
             benefits: [
-                'EPA-compliant competency assessment and tracking',
-                'AI-powered feedback for residents and fellows',
-                'Interactive case review with 3D visualization',
-                'Automated quiz generation for self-assessment',
+                'Kinematic analysis of instrument path efficiency and agility scoring',
+                'Interactive case review with navigable 3D reconstructions',
+                '"Body GPS" CT overlay for teaching anatomy and surgical planning',
+                'Quantitative competency tracking across residents and fellows',
             ],
         },
     ] as SolutionCardContent[],
@@ -117,14 +117,14 @@ export const solutionsContent = {
 export const howItWorksContent = {
     heading: 'The Technology',
     subheading:
-        'Four AI engines working together to transform surgical video into intelligence.',
+        'Four synchronized intelligence modules processing surgical data in real-time.',
     engines: [
         {
             id: 'vision',
             icon: 'icon-vision',
-            title: 'Computer Vision',
+            title: 'The "Eyes"',
             description:
-                'Real-time pixel-level analysis of the surgical field using state-of-the-art deep learning models.',
+                'Computer Vision — real-time pixel-level analysis of the surgical field using state-of-the-art deep learning models.',
             capabilities: [
                 'Semantic segmentation of anatomy & tools (nnU-Net)',
                 'Instrument detection & inventory tracking (YOLO)',
@@ -134,33 +134,33 @@ export const howItWorksContent = {
         {
             id: 'spatial',
             icon: 'icon-spatial',
-            title: '3D Reconstruction',
+            title: 'The "Map"',
             description:
-                'Converts standard 2D endoscopic video into a navigable 3D digital twin with pre-op CT overlay.',
+                '3D Reconstruction & Navigation — converts monocular 2D video into a navigable 3D digital twin with pre-op CT overlay.',
             capabilities: [
                 'Real-time Gaussian splatting for 3D scene reconstruction',
                 '"Body GPS" — CT-to-video registration for deep structure localization',
-                'X-ray vision for hidden anatomy (tumors, ducts, vessels)',
+                '"X-ray vision" for hidden anatomy (tumors, ducts, vessels)',
             ],
         },
         {
             id: 'scoring',
             icon: 'icon-scoring',
-            title: 'Safety & Performance',
+            title: 'The "Coach"',
             description:
-                'Continuous monitoring of surgeon dexterity and patient safety with real-time alerts.',
+                'Surgeon Performance & Safety — continuous monitoring of dexterity, fatigue, and foreign object retention.',
             capabilities: [
                 'Tremor & fatigue detection with safety threshold alerts',
-                'Kinematic analysis of instrument path efficiency',
+                'Kinematic analysis of instrument path efficiency & agility scoring',
                 'Vision-based gauze counter to prevent retained foreign objects',
             ],
         },
         {
             id: 'interaction',
             icon: 'icon-interaction',
-            title: 'Operational Intelligence',
+            title: 'The "Manager"',
             description:
-                'Automates OR logistics — from scheduling and risk prediction to billing.',
+                'Operational Intelligence — automates OR logistics from scheduling and risk prediction to billing.',
             capabilities: [
                 'Predictive "Time to Close" for OR schedule optimization',
                 'Complication risk engine with auto Blood Bank / ICU alerts',
@@ -176,30 +176,30 @@ export const howItWorksContent = {
 
 export const roadmapContent = {
     heading: 'Roadmap',
-    subheading: 'Our path from MVP to market — building the operating system for intelligent surgery.',
+    subheading: 'TRL 5 validated — our path from MVP to market as the operating system for intelligent surgery.',
     milestones: [
         {
             id: 'mvp',
             label: 'MVP Complete',
-            description: 'Core AI pipeline functional — real-time segmentation, 3D reconstruction, and live demo.',
+            description: 'Core AI pipeline functional — real-time segmentation, 3D reconstruction, and live demo. TRL 5 validated.',
             status: 'completed' as const,
         },
         {
             id: 'data',
             label: 'Institutional Data Collection',
-            description: '50+ cases per procedure type, 200+ hours of annotated surgical video across three procedures.',
+            description: '50+ cases per procedure type, 200+ hours of annotated surgical video across cholecystectomy, appendectomy, and sleeve gastrectomy.',
             status: 'active' as const,
         },
         {
             id: 'validation',
             label: 'Clinical Validation',
-            description: 'Multi-site validation studies and performance benchmarking against existing systems.',
+            description: 'Multi-site validation studies and generalizability testing beyond public datasets.',
             status: 'upcoming' as const,
         },
         {
             id: 'fda',
             label: 'FDA 510(k) Submission',
-            description: 'Regulatory clearance as a Software as a Medical Device (SaMD).',
+            description: 'Pre-submission data and regulatory clearance as a Software as a Medical Device (SaMD).',
             status: 'upcoming' as const,
         },
         {
@@ -255,13 +255,13 @@ export const partnersContent = {
     logos: [
         {
             name: 'Harvard Medical School',
-            src: null as string | null, // Replace with '/images/harvard-medical-school-logo.png' when available
+            src: '/images/HMS.png' as string | null,
             width: 220,
             height: 48,
         },
         {
             name: 'Mass General Brigham',
-            src: null as string | null, // Replace with '/images/mass-general-brigham-logo.png' when available
+            src: '/images/MGB.png' as string | null,
             width: 200,
             height: 48,
         },

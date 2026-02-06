@@ -74,7 +74,7 @@ export function Contact() {
                 {/* Left Column: Contact Form */}
                 <SlideIn direction="left" delay={0.1}>
                     <div className="order-1">
-                        <div className="rounded-xl bg-white p-6 sm:p-8 shadow-card">
+                        <div className="rounded-xl glass-card p-6 sm:p-8 shadow-card">
                             <ContactForm />
                         </div>
                     </div>
@@ -128,7 +128,7 @@ export function Contact() {
                                 </div>
                             </div>
 
-                            <div className="pt-4 border-t border-border">
+                            <div className="pt-4 border-t border-white/30">
                                 <a
                                     href={siteConfig.externalLinks.nezamiLabContact}
                                     target="_blank"

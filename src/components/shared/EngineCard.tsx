@@ -42,7 +42,7 @@ export function EngineCard({
             className={cn(
                 // Base styling - consistent with SectorCard
                 'flex flex-col h-full',
-                'bg-white border border-border rounded-xl',
+                'glass-card rounded-xl',
                 // Shadow transition
                 'shadow-card hover:shadow-card-hover',
                 // Subtle hover lift effect

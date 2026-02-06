@@ -87,8 +87,8 @@ export function SectionWrapper({
                 'py-section-mobile lg:py-section-desktop',
                 // Horizontal padding for mobile
                 'px-4 sm:px-6 lg:px-8',
-                // Background color variants
-                background === 'white' ? 'bg-white' : 'bg-muted',
+                // Glassmorphism background variants
+                background === 'white' ? 'glass-light' : 'glass-light-subtle',
                 className
             )}
         >

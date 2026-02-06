@@ -26,7 +26,7 @@ export function Team() {
             >
                 {teamContent.members.map((member) => (
                     <StaggerItem key={member.id}>
-                        <div className="flex flex-col items-center text-center bg-white rounded-xl p-6 shadow-card hover:shadow-card-hover transition-all duration-200">
+                        <div className="flex flex-col items-center text-center glass-card rounded-xl p-6 shadow-card hover:shadow-card-hover transition-all duration-200">
                             <div className="relative h-28 w-28 rounded-full overflow-hidden bg-gray-100 mb-4">
                                 {member.image ? (
                                     <Image src={member.image} alt={member.name} fill className="object-cover" />
