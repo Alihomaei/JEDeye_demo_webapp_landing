@@ -1,6 +1,6 @@
 # JEDeye Landing Page — Product Requirements Document
 
-> **Version**: 2.0 | **Date**: 2026-02-05
+> **Version**: 2.1 | **Date**: 2026-02-06
 > **Repo**: [Alihomaei/JEDeye_demo_webapp_landing](https://github.com/Alihomaei/JEDeye_demo_webapp_landing)
 > **Live**: [jedeye.app](https://jedeye.app)
 
@@ -68,7 +68,7 @@
 1. Hero
 2. Partners (logo bar — establishes credibility immediately)
 3. About
-4. Demo (segmentation slider + 3D reconstruction + pitch video)
+4. Demo (segmentation slider + real-time overwatch + 3D reconstruction + pitch video)
 5. Solutions
 6. How It Works (expanded to all 4 modules)
 7. Roadmap
@@ -105,23 +105,25 @@
 - **Placeholder**: Product diagram area (dashed border) — to be filled later
 - No changes planned unless specified later.
 
-### 5.4 Demo (existing — expand)
-**Current**: Segmentation comparison slider with legend
+### 5.4 Demo (implemented — 4-tab carousel)
+**Layout**: Tabbed carousel with Framer Motion slide transitions and prev/next navigation arrows.
 
-**Additions**:
-- **3D Reconstruction demo**: Video or interactive showcase of Gaussian splatting output
-  - `[PLACEHOLDER: video path TBD]`
-- **Pitch deck video**: Embedded 8-minute pitch video
-  - `[PLACEHOLDER: video path TBD]`
-- **Layout options**:
-  - Tabbed interface (Segmentation | 3D Recon | Pitch Video)
-  - OR stacked vertically with sub-headings
-  - To be decided during implementation
+**Tabs** (in order):
 
-**Existing assets stay**:
-- surgical-original.mp4/.webm
-- surgical-segmentation.mp4/.webm
-- Segmentation legend with 14 color-coded classes
+| # | Tab Label | Content | Video Asset | Playback |
+|---|-----------|---------|-------------|----------|
+| 1 | **AI Segmentation** | Dual-video comparison slider (react-compare-slider) with draggable handle + segmentation legend (12 color-coded anatomical/instrument classes) | `surgical-original.mp4/.webm` + `surgical-segmentation.mp4/.webm` | Autoplay, muted, loop, synced |
+| 2 | **Real-time Overwatch** | Live instrument detection and annotation during a laparoscopic procedure (stapler annotator output) | `realtime-overwatch.mp4` (H.264, re-encoded from MPEG-4 Part 2) | Autoplay, muted, loop |
+| 3 | **3D Reconstruction** | Gaussian splatting 3D digital twin from endoscopic video | `3d-reconstruction.mp4` | Autoplay, muted, loop |
+| 4 | **Pitch Video** | 8-minute investor pitch deck overview | `pitch-deck.mp4` | Controls shown, user-initiated playback |
+
+**Implementation details**:
+- Tab buttons rendered from `demoContent.slides` array in `src/config/content.ts`
+- Carousel logic in `src/components/demo/DemoCarousel.tsx`
+- Active tab highlighted with `bg-primary text-white`; inactive tabs use `bg-gray-100`
+- Each slide has a description shown below the carousel
+- All videos served from `public/videos/`
+- Videos requiring browser compatibility are re-encoded to H.264 with `faststart` flag
 
 ### 5.5 Solutions (existing — keep)
 Three sector cards:
@@ -283,11 +285,12 @@ src/
 
 | Item | Status | Notes |
 |------|--------|-------|
-| Founder names, titles, headshots | TBD | Needed for Team section |
-| 3D reconstruction demo video | TBD | File path to be provided |
-| 8-minute pitch deck video | TBD | File path to be provided |
-| Harvard Medical School logo | TBD | Need approved logo asset |
-| Mass General Brigham logo | TBD | Need approved logo asset |
+| Founder names, titles, headshots | Done | Team section implemented with 3 founders |
+| 3D reconstruction demo video | Done | `public/videos/3d-reconstruction.mp4` |
+| Real-time Overwatch demo video | Done | `public/videos/realtime-overwatch.mp4` (H.264 re-encoded) |
+| 8-minute pitch deck video | Done | `public/videos/pitch-deck.mp4` |
+| Harvard Medical School logo | Done | `public/images/HMS.jpg` |
+| Mass General Brigham logo | Done | `public/images/MGB.png` |
 | Additional partner logos | TBD | If any beyond HMS + MGB |
 | Section-specific copy changes | TBD | Review section-by-section during implementation |
 | Product diagram for About section | TBD | Currently a dashed-border placeholder |

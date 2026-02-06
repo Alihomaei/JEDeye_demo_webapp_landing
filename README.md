@@ -22,7 +22,7 @@ Investor demo landing page for **JEDeye** — the operating system for intellige
 
 - **Login gate** — Three co-founder photo cards + shared password (NextAuth.js v5 Credentials provider)
 - **Glassmorphism theme** — Blurred surgical background with glass panels
-- **AI demo** — Synchronized dual-video comparison slider (original vs. AI segmentation)
+- **AI demo carousel** — 4-tab demo: AI Segmentation (dual-video comparison slider), Real-time Overwatch (instrument detection), 3D Reconstruction (Gaussian splatting), and Pitch Video
 - **Responsive** — Mobile-first with hamburger nav, touch-friendly slider
 - **Accessible** — WCAG 2.1 AA, keyboard navigation, reduced-motion support
 - **SEO** — Open Graph, Twitter cards, JSON-LD structured data, sitemap
@@ -49,7 +49,7 @@ src/
 │   ├── auth/                   # SessionProvider, LoginForm
 │   ├── layout/                 # Header, Footer, MobileNav
 │   ├── sections/               # Hero, About, Demo, Solutions, etc.
-│   ├── demo/                   # VideoComparisonSlider, SegmentationLegend
+│   ├── demo/                   # DemoCarousel, VideoComparisonSlider, SegmentationLegend
 │   ├── forms/                  # WaitlistForm, ContactForm
 │   ├── shared/                 # SectionWrapper, SectorCard, EngineCard
 │   ├── motion/                 # FadeIn animation wrapper
