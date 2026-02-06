@@ -91,14 +91,27 @@
 }
 
 /* Fixed surgical background image covering the entire page */
+/* Two-layer approach: sharp base + blurred center via radial mask = vignette blur */
 .page-bg {
     position: fixed;
     inset: 0;
     z-index: -10;
     background: url('/images/landing-bg.jpg') center / cover no-repeat;
-    filter: blur(8px);
+    overflow: hidden;
 }
 
+/* Blurred layer — visible in center, fades to transparent at edges */
+.page-bg::before {
+    content: '';
+    position: absolute;
+    inset: -20px;
+    background: url('/images/landing-bg.jpg') center / cover no-repeat;
+    filter: blur(8px);
+    -webkit-mask-image: radial-gradient(ellipse 65% 60% at 50% 50%, black 0%, black 25%, transparent 75%);
+    mask-image: radial-gradient(ellipse 65% 60% at 50% 50%, black 0%, black 25%, transparent 75%);
+}
+
+/* Color overlay */
 .page-bg::after {
     content: '';
     position: absolute;

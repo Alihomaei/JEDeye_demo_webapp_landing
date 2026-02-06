@@ -99,6 +99,16 @@ export function useVideoSync(
     slave.addEventListener('waiting', handleSlaveWaiting);
     slave.addEventListener('canplay', handleCanPlay);
 
+    // If master is already playing when sync becomes enabled, start slave immediately
+    if (!master.paused) {
+      setIsPlaying(true);
+      slave.currentTime = master.currentTime;
+      if (slave.paused) {
+        slave.play().catch(setError);
+      }
+      animationId = requestAnimationFrame(syncLoop);
+    }
+
     return () => {
       cancelAnimationFrame(animationId);
       master.removeEventListener('play', handlePlay);

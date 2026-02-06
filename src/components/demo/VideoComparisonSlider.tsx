@@ -188,7 +188,6 @@ export function VideoComparisonSlider({ className }: VideoComparisonSliderProps)
           <div className="relative w-full h-full">
             <video
               ref={masterRef}
-              autoPlay
               muted
               loop
               playsInline
@@ -208,7 +207,6 @@ export function VideoComparisonSlider({ className }: VideoComparisonSliderProps)
           <div className="relative w-full h-full">
             <video
               ref={slaveRef}
-              autoPlay
               muted
               loop
               playsInline
