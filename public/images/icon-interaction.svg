@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Interaction Engine - Chat/Communication -->
+  <path d="M8 8h24a4 4 0 014 4v16a4 4 0 01-4 4H16l-8 8V12a4 4 0 014-4z" />
+  <circle cx="16" cy="20" r="2" fill="currentColor" />
+  <circle cx="24" cy="20" r="2" fill="currentColor" />
+  <circle cx="32" cy="20" r="2" fill="currentColor" />
+</svg>

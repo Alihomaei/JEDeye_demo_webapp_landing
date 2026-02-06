@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Spatial Engine - 3D Cube -->
+  <path d="M24 4L4 16v16l20 12 20-12V16L24 4z" />
+  <path d="M4 16l20 12 20-12" />
+  <path d="M24 28v16" />
+</svg>
