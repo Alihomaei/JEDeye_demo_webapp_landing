@@ -17,9 +17,9 @@ export default function Home() {
       <ScrollVideo>
         <Hero />
       </ScrollVideo>
+      <Demo />
       <Partners />
       <About />
-      <Demo />
       <Solutions />
       <WhyNow />
       <HowItWorks />

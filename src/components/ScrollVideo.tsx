@@ -1,8 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { cn } from '@/lib/utils';
-import { VideoModal } from './VideoModal';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -30,9 +28,6 @@ const DEFAULT_SCROLL_HEIGHT = '300vh';
 /** Children fully fade out by this scroll progress (0-1) */
 const CHILDREN_FADE_END = 0.3;
 
-/** Play button appears after this scroll progress (0-1) */
-const PLAY_BUTTON_THRESHOLD = 0.95;
-
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
@@ -40,6 +35,16 @@ const PLAY_BUTTON_THRESHOLD = 0.95;
 function frameUrl(template: string, index: number): string {
   const padded = String(index).padStart(4, '0');
   return template.replace('{{index}}', padded);
+}
+
+/**
+ * Ease-in-out cubic — slow at start/end, fast in middle.
+ * Maps linear progress [0,1] → eased progress [0,1].
+ */
+function easeInOutCubic(t: number): number {
+  return t < 0.5
+    ? 4 * t * t * t
+    : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
 
 // ---------------------------------------------------------------------------
@@ -61,11 +66,9 @@ export function ScrollVideo({
 
   const [isLoading, setIsLoading] = useState(true);
   const [loadProgress, setLoadProgress] = useState(0);
-  const [showPlayButton, setShowPlayButton] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // -----------------------------------------------------------------------
-  // Draw a frame to the canvas (cover-fit)
+  // Draw a frame to the canvas (cover-fit, no black bars)
   // -----------------------------------------------------------------------
 
   const drawFrame = useCallback((frameIndex: number) => {
@@ -79,14 +82,16 @@ export function ScrollVideo({
     const iw = img.naturalWidth;
     const ih = img.naturalHeight;
 
-    // Cover-fit: scale to fill, center
-    const scale = Math.max(cw / iw, ch / ih);
+    // Cover-fit with 2px overscan to eliminate sub-pixel gaps
+    const scale = Math.max(cw / iw, ch / ih) + 2 / Math.max(iw, ih);
     const sw = iw * scale;
     const sh = ih * scale;
     const sx = (cw - sw) / 2;
     const sy = (ch - sh) / 2;
 
-    ctx.clearRect(0, 0, cw, ch);
+    // Fill black first to prevent any flash of transparency
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, cw, ch);
     ctx.drawImage(img, sx, sy, sw, sh);
   }, []);
 
@@ -194,9 +199,10 @@ export function ScrollVideo({
         onUpdate: (self: any) => {
           const progress: number = self.progress;
 
-          // --- Frame scrubbing ---
+          // --- Eased frame scrubbing (slow start/end, fast middle) ---
+          const easedProgress = easeInOutCubic(progress);
           const frameIndex = Math.min(
-            Math.floor(progress * (frameCount - 1)),
+            Math.floor(easedProgress * (frameCount - 1)),
             frameCount - 1
           );
           if (frameIndex !== currentFrameRef.current) {
@@ -210,9 +216,6 @@ export function ScrollVideo({
             childrenRef.current.style.opacity = String(opacity);
             childrenRef.current.style.pointerEvents = opacity < 0.1 ? 'none' : 'auto';
           }
-
-          // --- Play button visibility ---
-          setShowPlayButton(progress >= PLAY_BUTTON_THRESHOLD);
         },
       });
     }
@@ -231,72 +234,39 @@ export function ScrollVideo({
   // -----------------------------------------------------------------------
 
   return (
-    <>
-      {/* Scroll container — tall spacer that drives the scrub */}
-      <div ref={containerRef} style={{ height: scrollHeight }} className="relative">
-        {/* Pinned viewport panel */}
-        <div ref={pinnedRef} className="relative w-full h-screen overflow-hidden">
-          {/* Canvas — full viewport, behind everything */}
-          <canvas
-            ref={canvasRef}
-            className="absolute inset-0"
-            style={{ width: '100%', height: '100%' }}
-            aria-hidden="true"
-          />
+    <div ref={containerRef} style={{ height: scrollHeight }} className="relative">
+      {/* Pinned viewport panel */}
+      <div ref={pinnedRef} className="relative w-full h-screen overflow-hidden">
+        {/* Canvas — full viewport, edge-to-edge */}
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 block"
+          style={{ width: '100vw', height: '100vh' }}
+          aria-hidden="true"
+        />
 
-          {/* Loading indicator */}
-          {isLoading && (
-            <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-[#0a1628]">
-              <div className="w-48 h-1.5 bg-white/20 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-primary rounded-full transition-all duration-300 ease-out"
-                  style={{ width: `${loadProgress}%` }}
-                />
-              </div>
-              <p className="mt-3 text-sm text-white/60">
-                Loading {loadProgress}%
-              </p>
+        {/* Loading indicator */}
+        {isLoading && (
+          <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-[#0a1628]">
+            <div className="w-48 h-1.5 bg-white/20 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-primary rounded-full transition-all duration-300 ease-out"
+                style={{ width: `${loadProgress}%` }}
+              />
             </div>
-          )}
-
-          {/* Overlay content (Hero section) — fades out as user scrolls */}
-          {!isLoading && children && (
-            <div ref={childrenRef} className="absolute inset-0 z-10" style={{ opacity: 1 }}>
-              {children}
-            </div>
-          )}
-
-          {/* Play button — fades in on last ~5% of scroll */}
-          <div
-            className={cn(
-              'absolute inset-0 z-20 flex items-center justify-center',
-              'transition-opacity duration-500',
-              showPlayButton ? 'opacity-100' : 'opacity-0 pointer-events-none'
-            )}
-          >
-            <button
-              className="absolute inset-0 z-20 flex items-center justify-center bg-black/50 rounded-xl"
-              aria-label="Play demo video"
-              onClick={() => setIsModalOpen(true)}
-              tabIndex={showPlayButton ? 0 : -1}
-            >
-              <div className={cn(
-                'w-20 h-20 rounded-full bg-primary',
-                'flex items-center justify-center',
-                'shadow-lg shadow-primary/30',
-                'hover:scale-110 transition-transform duration-200'
-              )}>
-                <svg className="w-10 h-10 text-white ml-1" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </div>
-            </button>
+            <p className="mt-3 text-sm text-white/60">
+              Loading {loadProgress}%
+            </p>
           </div>
-        </div>
-      </div>
+        )}
 
-      {/* Video Modal */}
-      <VideoModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-    </>
+        {/* Overlay content (Hero section) — fades out as user scrolls */}
+        {!isLoading && children && (
+          <div ref={childrenRef} className="absolute inset-0 z-10" style={{ opacity: 1 }}>
+            {children}
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
