@@ -1,4 +1,5 @@
 import { Hero } from '@/components/sections/Hero';
+import { ScrollVideo } from '@/components/ScrollVideo';
 import { Partners } from '@/components/sections/Partners';
 import { About } from '@/components/sections/About';
 import { Demo } from '@/components/sections/Demo';
@@ -13,7 +14,9 @@ import { Contact } from '@/components/sections/Contact';
 export default function Home() {
   return (
     <>
-      <Hero />
+      <ScrollVideo>
+        <Hero />
+      </ScrollVideo>
       <Partners />
       <About />
       <Demo />
