@@ -17,7 +17,11 @@ export default function Home() {
       <ScrollVideo>
         <Hero />
       </ScrollVideo>
-      <Demo />
+      {/* z-20 positions Demo above the pinned scroll video (z-10),
+          creating a glass overlay on the last frame as user scrolls */}
+      <div className="relative z-20">
+        <Demo />
+      </div>
       <Partners />
       <About />
       <Solutions />

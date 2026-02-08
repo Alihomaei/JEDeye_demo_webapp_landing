@@ -28,6 +28,9 @@ const DEFAULT_SCROLL_HEIGHT = '300vh';
 /** Children fully fade out by this scroll progress (0-1) */
 const CHILDREN_FADE_END = 0.3;
 
+/** Page background color for base canvas fill */
+const PAGE_BG = '#0a1628';
+
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
@@ -68,7 +71,7 @@ export function ScrollVideo({
   const [loadProgress, setLoadProgress] = useState(0);
 
   // -----------------------------------------------------------------------
-  // Draw a frame to the canvas (cover-fit, no black bars)
+  // Draw a frame to the canvas (blurry ambient fill + sharp foreground)
   // -----------------------------------------------------------------------
 
   const drawFrame = useCallback((frameIndex: number) => {
@@ -82,17 +85,25 @@ export function ScrollVideo({
     const iw = img.naturalWidth;
     const ih = img.naturalHeight;
 
-    // Cover-fit with 2px overscan to eliminate sub-pixel gaps
-    const scale = Math.max(cw / iw, ch / ih) + 2 / Math.max(iw, ih);
-    const sw = iw * scale;
-    const sh = ih * scale;
-    const sx = (cw - sw) / 2;
-    const sy = (ch - sh) / 2;
-
-    // Fill black first to prevent any flash of transparency
-    ctx.fillStyle = '#000';
+    // 1. Base fill with page background color
+    ctx.fillStyle = PAGE_BG;
     ctx.fillRect(0, 0, cw, ch);
-    ctx.drawImage(img, sx, sy, sw, sh);
+
+    // 2. Blurred ambient background — fills entire canvas to cover black bars
+    //    Extra overscan prevents blur edge artifacts
+    const bgScale = Math.max(cw / iw, ch / ih) * 1.3;
+    const bgW = iw * bgScale;
+    const bgH = ih * bgScale;
+    ctx.save();
+    ctx.filter = 'blur(30px) brightness(0.5)';
+    ctx.drawImage(img, (cw - bgW) / 2, (ch - bgH) / 2, bgW, bgH);
+    ctx.restore();
+
+    // 3. Sharp foreground — cover-fit with slight zoom to crop letterbox bars
+    const fgScale = Math.max(cw / iw, ch / ih) * 1.08;
+    const fgW = iw * fgScale;
+    const fgH = ih * fgScale;
+    ctx.drawImage(img, (cw - fgW) / 2, (ch - fgH) / 2, fgW, fgH);
   }, []);
 
   // -----------------------------------------------------------------------
@@ -115,7 +126,7 @@ export function ScrollVideo({
   }, [drawFrame]);
 
   // -----------------------------------------------------------------------
-  // Preload all frame images
+  // Preload frame images — show first frame immediately, rest in background
   // -----------------------------------------------------------------------
 
   useEffect(() => {
@@ -123,6 +134,7 @@ export function ScrollVideo({
     let loadedCount = 0;
 
     const images: HTMLImageElement[] = new Array(frameCount);
+    imagesRef.current = images; // Share reference so drawFrame sees frames as they load
 
     const loadImage = (index: number): Promise<void> =>
       new Promise((resolve) => {
@@ -143,21 +155,22 @@ export function ScrollVideo({
         img.src = frameUrl(framePath, index + 1); // 1-based file names
       });
 
-    // Load in batches for performance
-    const batchSize = 12;
     async function loadAll() {
-      for (let i = 0; i < frameCount; i += batchSize) {
+      // Load frame 0 first — show hero immediately once it's ready
+      await loadImage(0);
+      if (cancelled) return;
+      setIsLoading(false);
+      drawFrame(0);
+
+      // Load remaining frames in background (larger batches for speed)
+      const batchSize = 20;
+      for (let i = 1; i < frameCount; i += batchSize) {
         if (cancelled) return;
         const batch = [];
         for (let j = i; j < Math.min(i + batchSize, frameCount); j++) {
           batch.push(loadImage(j));
         }
         await Promise.all(batch);
-      }
-      if (!cancelled) {
-        imagesRef.current = images;
-        setIsLoading(false);
-        drawFrame(0);
       }
     }
 
@@ -234,7 +247,7 @@ export function ScrollVideo({
   // -----------------------------------------------------------------------
 
   return (
-    <div ref={containerRef} style={{ height: scrollHeight }} className="relative">
+    <div ref={containerRef} style={{ height: scrollHeight }} className="relative z-10">
       {/* Pinned viewport panel */}
       <div ref={pinnedRef} className="relative w-full h-screen overflow-hidden">
         {/* Canvas — full viewport, edge-to-edge */}
