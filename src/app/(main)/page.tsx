@@ -1,3 +1,6 @@
+'use client';
+
+import { useState } from 'react';
 import { Hero } from '@/components/sections/Hero';
 import { ScrollVideo } from '@/components/ScrollVideo';
 import { Partners } from '@/components/sections/Partners';
@@ -12,15 +15,15 @@ import { Waitlist } from '@/components/sections/Waitlist';
 import { Contact } from '@/components/sections/Contact';
 
 export default function Home() {
+  const [demoVisible, setDemoVisible] = useState(false);
+
   return (
     <>
-      <ScrollVideo>
+      <ScrollVideo onScrollComplete={setDemoVisible}>
         <Hero />
       </ScrollVideo>
-      {/* z-20 positions Demo above the pinned scroll video (z-10),
-          creating a glass overlay on the last frame as user scrolls */}
       <div className="relative z-20">
-        <Demo />
+        <Demo active={demoVisible} />
       </div>
       <Partners />
       <About />

@@ -7,26 +7,33 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 // ---------------------------------------------------------------------------
 
 interface ScrollVideoProps {
-  /** Total number of frames to load */
-  frameCount?: number;
-  /** URL template — use {{index}} for the zero-padded frame number */
-  framePath?: string;
+  /** Path to the video file in /public */
+  videoSrc?: string;
   /** Height of the scroll container (CSS value) */
   scrollHeight?: string;
   /** Content to overlay on top of the video (e.g. Hero section) */
   children?: React.ReactNode;
+  /** Called when scroll reaches/leaves the end of the video (true = done, false = scrolled back) */
+  onScrollComplete?: (complete: boolean) => void;
 }
 
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
 
-const DEFAULT_FRAME_COUNT = 184;
-const DEFAULT_FRAME_PATH = '/frames/frame_{{index}}.webp';
-const DEFAULT_SCROLL_HEIGHT = '300vh';
+const DEFAULT_VIDEO_SRC = '/scroll-video.mp4';
+const DEFAULT_SCROLL_HEIGHT = '400vh';
 
 /** Children fully fade out by this scroll progress (0-1) */
 const CHILDREN_FADE_END = 0.3;
+
+/**
+ * Canvas starts fading as the Demo section scrolls over the pinned area.
+ * Canvas fades at the very end of the scroll, right before the pin releases.
+ * Fast crossfade so the transition is snappy.
+ */
+const CANVAS_FADE_START = 0.85;
+const CANVAS_FADE_END = 1.0;
 
 /** Page background color for base canvas fill */
 const PAGE_BG = '#0a1628';
@@ -34,11 +41,6 @@ const PAGE_BG = '#0a1628';
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
-
-function frameUrl(template: string, index: number): string {
-  const padded = String(index).padStart(4, '0');
-  return template.replace('{{index}}', padded);
-}
 
 /**
  * Ease-in-out cubic — slow at start/end, fast in middle.
@@ -55,55 +57,56 @@ function easeInOutCubic(t: number): number {
 // ---------------------------------------------------------------------------
 
 export function ScrollVideo({
-  frameCount = DEFAULT_FRAME_COUNT,
-  framePath = DEFAULT_FRAME_PATH,
+  videoSrc = DEFAULT_VIDEO_SRC,
   scrollHeight = DEFAULT_SCROLL_HEIGHT,
   children,
+  onScrollComplete,
 }: ScrollVideoProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const pinnedRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const childrenRef = useRef<HTMLDivElement>(null);
-  const imagesRef = useRef<HTMLImageElement[]>([]);
-  const currentFrameRef = useRef(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const scrollCompleteRef = useRef(false);
+  const lastTimeRef = useRef(-1);
+  const readyRef = useRef(false);
 
   const [isLoading, setIsLoading] = useState(true);
-  const [loadProgress, setLoadProgress] = useState(0);
 
   // -----------------------------------------------------------------------
-  // Draw a frame to the canvas (blurry ambient fill + sharp foreground)
+  // Draw the current video frame to canvas (ambient blur + sharp foreground)
   // -----------------------------------------------------------------------
 
-  const drawFrame = useCallback((frameIndex: number) => {
+  const drawVideoFrame = useCallback(() => {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext('2d');
-    const img = imagesRef.current[frameIndex];
-    if (!canvas || !ctx || !img) return;
+    const video = videoRef.current;
+    if (!canvas || !ctx || !video || video.readyState < 2) return;
 
     const cw = canvas.width;
     const ch = canvas.height;
-    const iw = img.naturalWidth;
-    const ih = img.naturalHeight;
+    const iw = video.videoWidth;
+    const ih = video.videoHeight;
+    if (iw === 0 || ih === 0) return;
 
     // 1. Base fill with page background color
     ctx.fillStyle = PAGE_BG;
     ctx.fillRect(0, 0, cw, ch);
 
     // 2. Blurred ambient background — fills entire canvas to cover black bars
-    //    Extra overscan prevents blur edge artifacts
     const bgScale = Math.max(cw / iw, ch / ih) * 1.3;
     const bgW = iw * bgScale;
     const bgH = ih * bgScale;
     ctx.save();
     ctx.filter = 'blur(30px) brightness(0.5)';
-    ctx.drawImage(img, (cw - bgW) / 2, (ch - bgH) / 2, bgW, bgH);
+    ctx.drawImage(video, (cw - bgW) / 2, (ch - bgH) / 2, bgW, bgH);
     ctx.restore();
 
     // 3. Sharp foreground — cover-fit with slight zoom to crop letterbox bars
     const fgScale = Math.max(cw / iw, ch / ih) * 1.08;
     const fgW = iw * fgScale;
     const fgH = ih * fgScale;
-    ctx.drawImage(img, (cw - fgW) / 2, (ch - fgH) / 2, fgW, fgH);
+    ctx.drawImage(video, (cw - fgW) / 2, (ch - fgH) / 2, fgW, fgH);
   }, []);
 
   // -----------------------------------------------------------------------
@@ -117,66 +120,37 @@ export function ScrollVideo({
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      drawFrame(currentFrameRef.current);
+      if (readyRef.current) drawVideoFrame();
     };
 
     resize();
     window.addEventListener('resize', resize);
     return () => window.removeEventListener('resize', resize);
-  }, [drawFrame]);
+  }, [drawVideoFrame]);
 
   // -----------------------------------------------------------------------
-  // Preload frame images — show first frame immediately, rest in background
+  // Video ready handler — draw first frame and mark loading done
   // -----------------------------------------------------------------------
 
-  useEffect(() => {
-    let cancelled = false;
-    let loadedCount = 0;
+  const handleVideoReady = useCallback(() => {
+    if (readyRef.current) return; // Only fire once
+    readyRef.current = true;
 
-    const images: HTMLImageElement[] = new Array(frameCount);
-    imagesRef.current = images; // Share reference so drawFrame sees frames as they load
-
-    const loadImage = (index: number): Promise<void> =>
-      new Promise((resolve) => {
-        const img = new Image();
-        img.onload = () => {
-          if (cancelled) return;
-          images[index] = img;
-          loadedCount++;
-          setLoadProgress(Math.round((loadedCount / frameCount) * 100));
-          resolve();
-        };
-        img.onerror = () => {
-          if (cancelled) return;
-          loadedCount++;
-          setLoadProgress(Math.round((loadedCount / frameCount) * 100));
-          resolve();
-        };
-        img.src = frameUrl(framePath, index + 1); // 1-based file names
-      });
-
-    async function loadAll() {
-      // Load frame 0 first — show hero immediately once it's ready
-      await loadImage(0);
-      if (cancelled) return;
+    // Small delay to ensure the video decoder has a frame available
+    requestAnimationFrame(() => {
+      drawVideoFrame();
       setIsLoading(false);
-      drawFrame(0);
+    });
+  }, [drawVideoFrame]);
 
-      // Load remaining frames in background (larger batches for speed)
-      const batchSize = 20;
-      for (let i = 1; i < frameCount; i += batchSize) {
-        if (cancelled) return;
-        const batch = [];
-        for (let j = i; j < Math.min(i + batchSize, frameCount); j++) {
-          batch.push(loadImage(j));
-        }
-        await Promise.all(batch);
-      }
+  // Fallback: if video loaded from cache before React attached the listener,
+  // onLoadedData won't fire. Check readyState after mount.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video && video.readyState >= 2) {
+      handleVideoReady();
     }
-
-    loadAll();
-    return () => { cancelled = true; };
-  }, [frameCount, framePath, drawFrame]);
+  }, [handleVideoReady]);
 
   // -----------------------------------------------------------------------
   // GSAP ScrollTrigger setup
@@ -199,7 +173,10 @@ export function ScrollVideo({
 
       const container = containerRef.current;
       const pinned = pinnedRef.current;
-      if (!container || !pinned) return;
+      const video = videoRef.current;
+      if (!container || !pinned || !video) return;
+
+      const duration = video.duration;
 
       scrollTriggerInstance = ScrollTrigger.create({
         trigger: container,
@@ -212,15 +189,14 @@ export function ScrollVideo({
         onUpdate: (self: any) => {
           const progress: number = self.progress;
 
-          // --- Eased frame scrubbing (slow start/end, fast middle) ---
+          // --- Eased video scrubbing ---
           const easedProgress = easeInOutCubic(progress);
-          const frameIndex = Math.min(
-            Math.floor(easedProgress * (frameCount - 1)),
-            frameCount - 1
-          );
-          if (frameIndex !== currentFrameRef.current) {
-            currentFrameRef.current = frameIndex;
-            drawFrame(frameIndex);
+          const targetTime = Math.min(easedProgress * duration, duration - 0.01);
+
+          // Only seek if time changed enough (avoid excessive seeks)
+          if (Math.abs(targetTime - lastTimeRef.current) > 0.03) {
+            lastTimeRef.current = targetTime;
+            video.currentTime = targetTime;
           }
 
           // --- Children fade-out (Hero overlay) ---
@@ -229,18 +205,44 @@ export function ScrollVideo({
             childrenRef.current.style.opacity = String(opacity);
             childrenRef.current.style.pointerEvents = opacity < 0.1 ? 'none' : 'auto';
           }
+
+          // --- Canvas fade-out as Demo slides over (crossfade) ---
+          if (canvasRef.current) {
+            if (progress <= CANVAS_FADE_START) {
+              canvasRef.current.style.opacity = '1';
+            } else {
+              const fade = Math.min(1, (progress - CANVAS_FADE_START) / (CANVAS_FADE_END - CANVAS_FADE_START));
+              canvasRef.current.style.opacity = String(Math.max(0, 1 - fade));
+            }
+          }
+
+          // --- Notify parent when crossfade is 20% done (canvas at 80% opacity) ---
+          const fadeProgress = progress <= CANVAS_FADE_START
+            ? 0
+            : Math.min(1, (progress - CANVAS_FADE_START) / (CANVAS_FADE_END - CANVAS_FADE_START));
+          const showDemo = fadeProgress >= 0.2;
+          if (showDemo !== scrollCompleteRef.current) {
+            scrollCompleteRef.current = showDemo;
+            onScrollComplete?.(showDemo);
+          }
         },
       });
     }
 
+    // Re-draw on every video seek (smooth scrubbing)
+    const video = videoRef.current;
+    const onSeeked = () => drawVideoFrame();
+    video?.addEventListener('seeked', onSeeked);
+
     initGSAP();
 
     return () => {
+      video?.removeEventListener('seeked', onSeeked);
       if (scrollTriggerInstance) {
         scrollTriggerInstance.kill();
       }
     };
-  }, [isLoading, frameCount, drawFrame]);
+  }, [isLoading, drawVideoFrame, onScrollComplete]);
 
   // -----------------------------------------------------------------------
   // Render
@@ -248,6 +250,28 @@ export function ScrollVideo({
 
   return (
     <div ref={containerRef} style={{ height: scrollHeight }} className="relative z-10">
+      {/* Hidden video element — in DOM for reliable decoding */}
+      {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+      <video
+        ref={videoRef}
+        src={videoSrc}
+        muted
+        playsInline
+        preload="auto"
+        onLoadedData={handleVideoReady}
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '1px',
+          height: '1px',
+          opacity: 0,
+          pointerEvents: 'none',
+          zIndex: -1,
+        }}
+      />
+
       {/* Pinned viewport panel */}
       <div ref={pinnedRef} className="relative w-full h-screen overflow-hidden">
         {/* Canvas — full viewport, edge-to-edge */}
@@ -264,12 +288,10 @@ export function ScrollVideo({
             <div className="w-48 h-1.5 bg-white/20 rounded-full overflow-hidden">
               <div
                 className="h-full bg-primary rounded-full transition-all duration-300 ease-out"
-                style={{ width: `${loadProgress}%` }}
+                style={{ width: '100%' }}
               />
             </div>
-            <p className="mt-3 text-sm text-white/60">
-              Loading {loadProgress}%
-            </p>
+            <p className="mt-3 text-sm text-white/60">Loading…</p>
           </div>
         )}
 
