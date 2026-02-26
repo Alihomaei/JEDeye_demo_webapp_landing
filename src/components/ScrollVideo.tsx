@@ -22,7 +22,7 @@ interface ScrollVideoProps {
 // ---------------------------------------------------------------------------
 
 const DEFAULT_VIDEO_SRC = '/scroll-video.mp4';
-const DEFAULT_SCROLL_HEIGHT = '200vh';
+const DEFAULT_SCROLL_HEIGHT = '400vh';
 
 /** Children fully fade out by this scroll progress (0-1) */
 const CHILDREN_FADE_END = 0.3;

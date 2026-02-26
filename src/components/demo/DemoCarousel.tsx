@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -13,8 +13,6 @@ const slides = demoContent.slides;
 export function DemoCarousel({ className }: { className?: string }) {
     const [current, setCurrent] = useState(0);
     const [direction, setDirection] = useState(0);
-    const carouselRef = useRef<HTMLDivElement>(null);
-    const [isInView, setIsInView] = useState(false);
 
     const goTo = (index: number) => {
         setDirection(index > current ? 1 : -1);
@@ -24,39 +22,8 @@ export function DemoCarousel({ className }: { className?: string }) {
     const prev = () => goTo((current - 1 + slides.length) % slides.length);
     const next = () => goTo((current + 1) % slides.length);
 
-    // Detect when the carousel enters the viewport
-    useEffect(() => {
-        const el = carouselRef.current;
-        if (!el) return;
-        const observer = new IntersectionObserver(
-            ([entry]) => setIsInView(entry.isIntersecting),
-            { threshold: 0.1 }
-        );
-        observer.observe(el);
-        return () => observer.disconnect();
-    }, []);
-
-    // Play videos in the active slide when tab changes or section enters viewport
-    const playActiveVideos = useCallback(() => {
-        const container = carouselRef.current;
-        if (!container) return;
-        const videos = container.querySelectorAll<HTMLVideoElement>('video');
-        videos.forEach((video) => {
-            if (video.paused && video.muted) {
-                video.play().catch(() => {});
-            }
-        });
-    }, []);
-
-    useEffect(() => {
-        if (!isInView) return;
-        // Delay slightly to let AnimatePresence finish the enter animation (300ms)
-        const timer = setTimeout(playActiveVideos, 350);
-        return () => clearTimeout(timer);
-    }, [current, isInView, playActiveVideos]);
-
     return (
-        <div ref={carouselRef} className={cn('relative', className)}>
+        <div className={cn('relative', className)}>
             {/* Slide indicators / labels */}
             <div className="flex items-center justify-center gap-2 mb-6">
                 {slides.map((slide, i) => (
