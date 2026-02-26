@@ -185,6 +185,114 @@ export const howItWorksContent = {
 } as const;
 
 // =============================================================================
+// Pipeline Section Content (Under the Hood)
+// =============================================================================
+
+export const pipelineContent = {
+    heading: 'Under the Hood',
+    subheading:
+        'Eight specialized AI modules working in concert — from pixel-level perception to real-time 3D surgical intelligence.',
+    modules: [
+        {
+            id: 'pixelsense',
+            icon: 'ScanEye',
+            title: 'PixelSense',
+            description:
+                'Real-time pixel-level scene understanding — every structure labeled, every boundary mapped.',
+            capabilities: [
+                '14-class semantic map (liver, gallbladder, cystic duct, instruments, etc.)',
+                'nnU-Net architecture for surgical scenes',
+                'Frame-by-frame anatomical awareness',
+            ],
+        },
+        {
+            id: 'tiptrace',
+            icon: 'Crosshair',
+            title: 'TipTrace',
+            description:
+                'Sub-pixel instrument tip localization and motion path tracking across the surgical field.',
+            capabilities: [
+                'Keypoint detection of tool tip positions',
+                'Temporal trajectory tracing',
+                'Kinematic analysis for dexterity scoring',
+            ],
+        },
+        {
+            id: 'phasenet',
+            icon: 'Brain',
+            title: 'PhaseNet',
+            description:
+                'Automatic recognition of surgical workflow phases from video — the context engine for every downstream module.',
+            capabilities: [
+                '3D-ResNet-18 on 32-frame temporal clips',
+                '7-phase classification (Cholec80)',
+                '~80% validation accuracy',
+            ],
+        },
+        {
+            id: 'toolwatch',
+            icon: 'Wrench',
+            title: 'ToolWatch',
+            description:
+                'Real-time instrument detection and counting — automated inventory from video alone.',
+            capabilities: [
+                'YOLO-based detection of surgical tools',
+                'Instrument presence/absence tracking',
+                'Automated supply usage reporting',
+            ],
+        },
+        {
+            id: 'anatomymap',
+            icon: 'Bone',
+            title: 'AnatomyMap',
+            description:
+                'Patient-specific 3D organ models extracted from pre-operative CT — the anatomical ground truth.',
+            capabilities: [
+                'CT mesh extraction (liver, gallbladder)',
+                'STL/OBJ export for surgical planning',
+                'Patient-specific anatomy ready for intra-op overlay',
+            ],
+        },
+        {
+            id: 'depthforge',
+            icon: 'Box',
+            title: 'DepthForge',
+            description:
+                'Transforms standard 2D endoscopic video into a navigable 3D digital twin using Gaussian splatting.',
+            capabilities: [
+                'Monocular depth estimation',
+                '3D Gaussian Splatting reconstruction',
+                'Per-frame point cloud generation',
+            ],
+        },
+        {
+            id: 'timesync',
+            icon: 'Clock',
+            title: 'TimeSync',
+            description:
+                'Predicts remaining surgery time with calibrated uncertainty — powering OR scheduling in real-time.',
+            capabilities: [
+                'Mamba SSM + FiLM phase conditioning',
+                '3.9 min MAE on Cholec80 test set',
+                'Evidential regression for uncertainty',
+            ],
+        },
+        {
+            id: 'fusionlayer',
+            icon: 'Layers',
+            title: 'FusionLayer',
+            description:
+                'Overlays 3D CT anatomy onto the live 2D surgical video — X-ray vision for hidden structures.',
+            capabilities: [
+                'Rigid + non-rigid CT-to-video alignment',
+                'Per-frame deformation tracking (CPD)',
+                'Real-time organ mesh overlay on endoscopic view',
+            ],
+        },
+    ] as EngineCardContent[],
+} as const;
+
+// =============================================================================
 // Why Now Section Content
 // =============================================================================
 

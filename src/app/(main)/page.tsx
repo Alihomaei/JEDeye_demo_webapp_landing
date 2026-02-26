@@ -9,6 +9,7 @@ import { Demo } from '@/components/sections/Demo';
 import { Solutions } from '@/components/sections/Solutions';
 import { WhyNow } from '@/components/sections/WhyNow';
 import { HowItWorks } from '@/components/sections/HowItWorks';
+import { Pipeline } from '@/components/sections/Pipeline';
 import { Roadmap } from '@/components/sections/Roadmap';
 import { Team } from '@/components/sections/Team';
 import { Waitlist } from '@/components/sections/Waitlist';
@@ -30,6 +31,7 @@ export default function Home() {
       <Solutions />
       <WhyNow />
       <HowItWorks />
+      <Pipeline />
       <Roadmap />
       <Team />
       <Waitlist />
