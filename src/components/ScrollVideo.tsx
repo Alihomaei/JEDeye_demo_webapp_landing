@@ -22,11 +22,10 @@ interface ScrollVideoProps {
 // ---------------------------------------------------------------------------
 
 const DEFAULT_VIDEO_SRC = '/scroll-video.mp4';
-const DEFAULT_SCROLL_HEIGHT = '150vh';
+const DEFAULT_SCROLL_HEIGHT = '200vh';
 
-/** Hero fade-out window: stays visible until this progress, then fades to 0 by CHILDREN_FADE_END */
-const CHILDREN_FADE_START = 0.7;
-const CHILDREN_FADE_END = 0.85;
+/** Children fully fade out by this scroll progress (0-1) */
+const CHILDREN_FADE_END = 0.3;
 
 /**
  * Canvas starts fading as the Demo section scrolls over the pinned area.
@@ -201,12 +200,8 @@ export function ScrollVideo({
           }
 
           // --- Children fade-out (Hero overlay) ---
-          // Hero stays fully visible until CHILDREN_FADE_START, then fades to 0 by CHILDREN_FADE_END
-          // This syncs with the canvas fade so there's no dead zone of empty scroll
           if (childrenRef.current) {
-            const opacity = progress <= CHILDREN_FADE_START
-              ? 1
-              : Math.max(0, 1 - (progress - CHILDREN_FADE_START) / (CHILDREN_FADE_END - CHILDREN_FADE_START));
+            const opacity = Math.max(0, 1 - progress / CHILDREN_FADE_END);
             childrenRef.current.style.opacity = String(opacity);
             childrenRef.current.style.pointerEvents = opacity < 0.1 ? 'none' : 'auto';
           }
