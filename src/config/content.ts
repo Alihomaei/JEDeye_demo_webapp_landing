@@ -140,9 +140,9 @@ export const howItWorksContent = {
             description:
                 'Computer Vision — real-time pixel-level analysis of the surgical field using state-of-the-art deep learning models.',
             capabilities: [
-                'Semantic segmentation of anatomy & tools (nnU-Net)',
-                'Instrument detection & inventory tracking (YOLO)',
-                'Surgical phase recognition & workflow context (TCN)',
+                'Semantic segmentation of anatomy & tools',
+                'Instrument detection & inventory tracking',
+                'Surgical phase recognition & workflow context',
             ],
         },
         {
@@ -152,7 +152,7 @@ export const howItWorksContent = {
             description:
                 '3D Reconstruction & Navigation — converts monocular 2D video into a navigable 3D digital twin with pre-op CT overlay.',
             capabilities: [
-                'Real-time Gaussian splatting for 3D scene reconstruction',
+                'Real-time 3D scene reconstruction from monocular video',
                 '"Body GPS" — CT-to-video registration for deep structure localization',
                 '"X-ray vision" for hidden anatomy (tumors, ducts, vessels)',
             ],
@@ -200,8 +200,8 @@ export const pipelineContent = {
             description:
                 'Real-time pixel-level scene understanding — every structure labeled, every boundary mapped.',
             capabilities: [
-                '14-class semantic map (liver, gallbladder, cystic duct, instruments, etc.)',
-                'nnU-Net architecture for surgical scenes',
+                'Multi-class semantic map of anatomy and instruments',
+                'Purpose-built deep learning architecture for surgical scenes',
                 'Frame-by-frame anatomical awareness',
             ],
         },
@@ -224,9 +224,9 @@ export const pipelineContent = {
             description:
                 'Automatic recognition of surgical workflow phases from video — the context engine for every downstream module.',
             capabilities: [
-                '3D-ResNet-18 on 32-frame temporal clips',
-                '7-phase classification (Cholec80)',
-                '~80% validation accuracy',
+                'Temporal deep learning on multi-frame video clips',
+                'Multi-phase surgical workflow classification',
+                'High-accuracy real-time phase prediction',
             ],
         },
         {
@@ -236,7 +236,7 @@ export const pipelineContent = {
             description:
                 'Real-time instrument detection and counting — automated inventory from video alone.',
             capabilities: [
-                'YOLO-based detection of surgical tools',
+                'Real-time detection of surgical tools',
                 'Instrument presence/absence tracking',
                 'Automated supply usage reporting',
             ],
@@ -248,8 +248,8 @@ export const pipelineContent = {
             description:
                 'Patient-specific 3D organ models extracted from pre-operative CT — the anatomical ground truth.',
             capabilities: [
-                'CT mesh extraction (liver, gallbladder)',
-                'STL/OBJ export for surgical planning',
+                'Automated organ model extraction from CT scans',
+                '3D mesh generation for surgical planning',
                 'Patient-specific anatomy ready for intra-op overlay',
             ],
         },
@@ -258,10 +258,10 @@ export const pipelineContent = {
             icon: 'Box',
             title: 'DepthForge',
             description:
-                'Transforms standard 2D endoscopic video into a navigable 3D digital twin using Gaussian splatting.',
+                'Transforms standard 2D endoscopic video into a navigable 3D digital twin.',
             capabilities: [
-                'Monocular depth estimation',
-                '3D Gaussian Splatting reconstruction',
+                'Monocular depth estimation from standard endoscopes',
+                'Volumetric 3D scene reconstruction',
                 'Per-frame point cloud generation',
             ],
         },
@@ -272,9 +272,9 @@ export const pipelineContent = {
             description:
                 'Predicts remaining surgery time with calibrated uncertainty — powering OR scheduling in real-time.',
             capabilities: [
-                'Mamba SSM + FiLM phase conditioning',
-                '3.9 min MAE on Cholec80 test set',
-                'Evidential regression for uncertainty',
+                'Phase-conditioned temporal deep learning',
+                'Sub-4 minute mean prediction error',
+                'Built-in uncertainty estimation',
             ],
         },
         {
@@ -285,7 +285,7 @@ export const pipelineContent = {
                 'Overlays 3D CT anatomy onto the live 2D surgical video — X-ray vision for hidden structures.',
             capabilities: [
                 'Rigid + non-rigid CT-to-video alignment',
-                'Per-frame deformation tracking (CPD)',
+                'Per-frame organ deformation tracking',
                 'Real-time organ mesh overlay on endoscopic view',
             ],
         },
