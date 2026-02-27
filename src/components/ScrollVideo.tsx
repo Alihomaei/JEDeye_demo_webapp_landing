@@ -68,6 +68,7 @@ export function ScrollVideo({
   const pinnedRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const childrenRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const scrollCompleteRef = useRef(false);
   const lastTimeRef = useRef(-1);
@@ -208,6 +209,12 @@ export function ScrollVideo({
             childrenRef.current.style.pointerEvents = opacity < 0.1 ? 'none' : 'auto';
           }
 
+          // --- Dark blur overlay fade-out (matches children timing) ---
+          if (overlayRef.current) {
+            const overlayOpacity = Math.max(0, 1 - progress / CHILDREN_FADE_END);
+            overlayRef.current.style.opacity = String(overlayOpacity);
+          }
+
           // --- Canvas fade-out as Demo slides over (crossfade) ---
           if (canvasRef.current) {
             if (progress <= CANVAS_FADE_START) {
@@ -305,6 +312,21 @@ export function ScrollVideo({
               <p className="mt-3 text-sm text-white/60">Loading…</p>
             </div>
           </div>
+        )}
+
+        {/* Dark blur overlay — dims/blurs the video behind the Hero for readability */}
+        {!isLoading && (
+          <div
+            ref={overlayRef}
+            className="absolute inset-0 z-[5]"
+            aria-hidden="true"
+            style={{
+              opacity: 1,
+              background: 'radial-gradient(ellipse 80% 70% at 50% 45%, rgba(10,22,40,0.75) 0%, rgba(10,22,40,0.55) 60%, rgba(10,22,40,0.3) 100%)',
+              backdropFilter: 'blur(6px)',
+              WebkitBackdropFilter: 'blur(6px)',
+            }}
+          />
         )}
 
         {/* Overlay content (Hero section) — fades out as user scrolls */}
