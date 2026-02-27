@@ -29,14 +29,16 @@ const CHILDREN_FADE_END = 0.3;
 
 /**
  * Canvas starts fading as the Demo section scrolls over the pinned area.
- * Canvas fades at the very end of the scroll, right before the pin releases.
- * Fast crossfade so the transition is snappy.
+ * Earlier crossfade (70-90%) for a longer, smoother transition.
  */
-const CANVAS_FADE_START = 0.85;
-const CANVAS_FADE_END = 1.0;
+const CANVAS_FADE_START = 0.70;
+const CANVAS_FADE_END = 0.90;
 
 /** Page background color for base canvas fill */
 const PAGE_BG = '#0a1628';
+
+/** Poster image shown while the video loads */
+const POSTER_SRC = '/images/scroll-video-poster.jpg';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -282,16 +284,26 @@ export function ScrollVideo({
           aria-hidden="true"
         />
 
-        {/* Loading indicator */}
+        {/* Loading placeholder — poster image with subtle pulse while video loads */}
         {isLoading && (
-          <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-[#0a1628]">
-            <div className="w-48 h-1.5 bg-white/20 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-primary rounded-full transition-all duration-300 ease-out"
-                style={{ width: '100%' }}
-              />
+          <div className="absolute inset-0 z-30 bg-[#0a1628]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={POSTER_SRC}
+              alt=""
+              aria-hidden="true"
+              className="absolute inset-0 w-full h-full object-cover animate-pulse"
+              style={{ opacity: 0.7 }}
+            />
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <div className="w-48 h-1.5 bg-white/20 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-primary rounded-full transition-all duration-300 ease-out"
+                  style={{ width: '100%' }}
+                />
+              </div>
+              <p className="mt-3 text-sm text-white/60">Loading…</p>
             </div>
-            <p className="mt-3 text-sm text-white/60">Loading…</p>
           </div>
         )}
 
