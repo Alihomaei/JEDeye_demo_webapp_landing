@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -9,6 +9,63 @@ import { SegmentationLegend } from './SegmentationLegend';
 import { demoContent } from '@/config/content';
 
 const slides = demoContent.slides;
+
+/**
+ * Video slide with loading state — shows spinner until video is cached and ready,
+ * then auto-plays (or shows controls for pitch video).
+ */
+function VideoSlide({
+    src,
+    autoPlay = true,
+    controls = false,
+}: {
+    src: string;
+    autoPlay?: boolean;
+    controls?: boolean;
+}) {
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const [isReady, setIsReady] = useState(false);
+
+    const handleCanPlay = useCallback(() => {
+        setIsReady(true);
+        if (autoPlay && videoRef.current) {
+            videoRef.current.play().catch(() => {});
+        }
+    }, [autoPlay]);
+
+    // Reset ready state when src changes
+    useEffect(() => {
+        setIsReady(false);
+    }, [src]);
+
+    return (
+        <div className="max-w-[900px] mx-auto">
+            <div className="aspect-video rounded-xl overflow-hidden bg-gray-900 relative">
+                {/* Loading overlay */}
+                {!isReady && (
+                    <div className="absolute inset-0 z-10 flex items-center justify-center bg-gray-900">
+                        <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent" />
+                    </div>
+                )}
+                <video
+                    ref={videoRef}
+                    muted={autoPlay}
+                    loop={autoPlay}
+                    playsInline
+                    preload="auto"
+                    controls={controls}
+                    onCanPlay={handleCanPlay}
+                    className={cn(
+                        'w-full h-full object-contain transition-opacity duration-300',
+                        isReady ? 'opacity-100' : 'opacity-0'
+                    )}
+                >
+                    <source src={src} type="video/mp4" />
+                </video>
+            </div>
+        </div>
+    );
+}
 
 export function DemoCarousel({ className }: { className?: string }) {
     const [current, setCurrent] = useState(0);
@@ -60,50 +117,17 @@ export function DemoCarousel({ className }: { className?: string }) {
                             </div>
                         )}
                         {current === 1 && (
-                            <div className="max-w-[900px] mx-auto">
-                                <div className="aspect-video rounded-xl overflow-hidden bg-gray-900">
-                                    <video
-                                        autoPlay
-                                        muted
-                                        loop
-                                        playsInline
-                                        preload="auto"
-                                        className="w-full h-full object-contain"
-                                    >
-                                        <source src="/videos/realtime-overwatch.mp4" type="video/mp4" />
-                                    </video>
-                                </div>
-                            </div>
+                            <VideoSlide src="/videos/realtime-overwatch.mp4" />
                         )}
                         {current === 2 && (
-                            <div className="max-w-[900px] mx-auto">
-                                <div className="aspect-video rounded-xl overflow-hidden bg-gray-900">
-                                    <video
-                                        autoPlay
-                                        muted
-                                        loop
-                                        playsInline
-                                        preload="auto"
-                                        className="w-full h-full object-contain"
-                                    >
-                                        <source src="/videos/3d-reconstruction.mp4" type="video/mp4" />
-                                    </video>
-                                </div>
-                            </div>
+                            <VideoSlide src="/videos/3d-reconstruction.mp4" />
                         )}
                         {current === 3 && (
-                            <div className="max-w-[900px] mx-auto">
-                                <div className="aspect-video rounded-xl overflow-hidden bg-gray-900">
-                                    <video
-                                        controls
-                                        playsInline
-                                        preload="auto"
-                                        className="w-full h-full object-contain"
-                                    >
-                                        <source src="/videos/pitch-deck.mp4" type="video/mp4" />
-                                    </video>
-                                </div>
-                            </div>
+                            <VideoSlide
+                                src="/videos/pitch-deck.mp4"
+                                autoPlay={false}
+                                controls
+                            />
                         )}
                     </motion.div>
                 </AnimatePresence>

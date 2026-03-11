@@ -98,8 +98,8 @@ const config: Config = {
   			]
   		},
   		spacing: {
-  			'section-desktop': '6rem',
-  			'section-mobile': '3rem'
+  			'section-desktop': '3.5rem',
+  			'section-mobile': '2rem'
   		},
   		maxWidth: {
   			container: '1200px'
