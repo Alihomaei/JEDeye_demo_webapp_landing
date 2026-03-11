@@ -27,7 +27,7 @@ export function VideoComparisonSlider({ className }: VideoComparisonSliderProps)
   const prefersReducedMotion = useReducedMotion();
   
   const { play } = useVideoSync(masterRef, slaveRef, {
-    enabled: isInView && !prefersReducedMotion,
+    enabled: !prefersReducedMotion,
   });
 
   // Intersection Observer for viewport detection
@@ -72,19 +72,19 @@ export function VideoComparisonSlider({ className }: VideoComparisonSliderProps)
     }
   }, [hasInteracted]);
 
-  // Start playing when first visible (but don't pause when scrolling away)
+  // Start playing as soon as videos are ready (muted autoplay is always allowed)
   const [hasStartedPlaying, setHasStartedPlaying] = useState(false);
-  
+
   useEffect(() => {
     if (prefersReducedMotion) return;
-    if (hasStartedPlaying) return; // Only start once
-    
-    if (isInView && !isLoading && !hasError) {
+    if (hasStartedPlaying) return;
+
+    if (!isLoading && !hasError) {
       play()
         .then(() => setHasStartedPlaying(true))
         .catch(() => setAutoplayBlocked(true));
     }
-  }, [isInView, isLoading, hasError, prefersReducedMotion, play, hasStartedPlaying]);
+  }, [isLoading, hasError, prefersReducedMotion, play, hasStartedPlaying]);
 
   // Track individual video ready states for more reliable loading detection
   const [masterReady, setMasterReady] = useState(false);

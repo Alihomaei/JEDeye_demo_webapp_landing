@@ -45,13 +45,13 @@ const POSTER_SRC = '/images/scroll-video-poster.jpg';
 // ---------------------------------------------------------------------------
 
 /**
- * Ease-in-out cubic — slow at start/end, fast in middle.
+ * Gentle ease-in-out quadratic — less extreme than cubic for smoother scrubbing.
  * Maps linear progress [0,1] → eased progress [0,1].
  */
-function easeInOutCubic(t: number): number {
+function easeInOutQuad(t: number): number {
   return t < 0.5
-    ? 4 * t * t * t
-    : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    ? 2 * t * t
+    : 1 - Math.pow(-2 * t + 2, 2) / 2;
 }
 
 // ---------------------------------------------------------------------------
@@ -73,6 +73,7 @@ export function ScrollVideo({
   const scrollCompleteRef = useRef(false);
   const lastTimeRef = useRef(-1);
   const readyRef = useRef(false);
+  const rafIdRef = useRef<number>(0);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -159,6 +160,31 @@ export function ScrollVideo({
   // GSAP ScrollTrigger setup
   // -----------------------------------------------------------------------
 
+  // -----------------------------------------------------------------------
+  // Continuous rAF draw loop — redraws canvas every frame for smooth scrub
+  // -----------------------------------------------------------------------
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    let running = true;
+    const loop = () => {
+      if (!running) return;
+      drawVideoFrame();
+      rafIdRef.current = requestAnimationFrame(loop);
+    };
+    rafIdRef.current = requestAnimationFrame(loop);
+
+    return () => {
+      running = false;
+      cancelAnimationFrame(rafIdRef.current);
+    };
+  }, [isLoading, drawVideoFrame]);
+
+  // -----------------------------------------------------------------------
+  // GSAP ScrollTrigger setup
+  // -----------------------------------------------------------------------
+
   useEffect(() => {
     if (isLoading) return;
 
@@ -187,17 +213,17 @@ export function ScrollVideo({
         end: 'bottom bottom',
         pin: pinned,
         pinSpacing: false,
-        scrub: 0.5,
+        scrub: 0.3,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onUpdate: (self: any) => {
           const progress: number = self.progress;
 
-          // --- Eased video scrubbing ---
-          const easedProgress = easeInOutCubic(progress);
+          // --- Eased video scrubbing (gentler quadratic) ---
+          const easedProgress = easeInOutQuad(progress);
           const targetTime = Math.min(easedProgress * duration, duration - 0.01);
 
-          // Only seek if time changed enough (avoid excessive seeks)
-          if (Math.abs(targetTime - lastTimeRef.current) > 0.03) {
+          // Seek with a tight threshold for responsiveness
+          if (Math.abs(targetTime - lastTimeRef.current) > 0.01) {
             lastTimeRef.current = targetTime;
             video.currentTime = targetTime;
           }
@@ -238,15 +264,9 @@ export function ScrollVideo({
       });
     }
 
-    // Re-draw on every video seek (smooth scrubbing)
-    const video = videoRef.current;
-    const onSeeked = () => drawVideoFrame();
-    video?.addEventListener('seeked', onSeeked);
-
     initGSAP();
 
     return () => {
-      video?.removeEventListener('seeked', onSeeked);
       if (scrollTriggerInstance) {
         scrollTriggerInstance.kill();
       }

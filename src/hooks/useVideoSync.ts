@@ -76,16 +76,17 @@ export function useVideoSync(
       }
     };
 
-    // Handle buffering: pause both if one buffers
-    const handleWaiting = () => {
-      slave.pause();
+    // Handle buffering: when either video recovers, resume both
+    const handleCanPlayMaster = () => {
+      if (slave.paused && !master.paused) {
+        slave.play().catch(setError);
+      }
     };
 
-    const handleSlaveWaiting = () => {
-      master.pause();
-    };
-
-    const handleCanPlay = () => {
+    const handleCanPlaySlave = () => {
+      if (master.paused && !slave.paused) {
+        master.play().catch(setError);
+      }
       if (!master.paused && slave.paused) {
         slave.play().catch(setError);
       }
@@ -95,9 +96,8 @@ export function useVideoSync(
     master.addEventListener('pause', handlePause);
     master.addEventListener('seeked', handleSeeked);
     master.addEventListener('ended', handleEnded);
-    master.addEventListener('waiting', handleWaiting);
-    slave.addEventListener('waiting', handleSlaveWaiting);
-    slave.addEventListener('canplay', handleCanPlay);
+    master.addEventListener('canplay', handleCanPlayMaster);
+    slave.addEventListener('canplay', handleCanPlaySlave);
 
     // If master is already playing when sync becomes enabled, start slave immediately
     if (!master.paused) {
@@ -115,9 +115,8 @@ export function useVideoSync(
       master.removeEventListener('pause', handlePause);
       master.removeEventListener('seeked', handleSeeked);
       master.removeEventListener('ended', handleEnded);
-      master.removeEventListener('waiting', handleWaiting);
-      slave.removeEventListener('waiting', handleSlaveWaiting);
-      slave.removeEventListener('canplay', handleCanPlay);
+      master.removeEventListener('canplay', handleCanPlayMaster);
+      slave.removeEventListener('canplay', handleCanPlaySlave);
     };
   }, [masterRef, slaveRef, syncThreshold, enabled]);
 
