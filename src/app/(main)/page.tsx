@@ -1,6 +1,3 @@
-'use client';
-
-import { useState } from 'react';
 import { Hero } from '@/components/sections/Hero';
 import { ScrollVideo } from '@/components/ScrollVideo';
 import { Partners } from '@/components/sections/Partners';
@@ -16,15 +13,13 @@ import { Waitlist } from '@/components/sections/Waitlist';
 import { Contact } from '@/components/sections/Contact';
 
 export default function Home() {
-  const [demoVisible, setDemoVisible] = useState(false);
-
   return (
     <>
-      <ScrollVideo onScrollComplete={setDemoVisible}>
+      <ScrollVideo>
         <Hero />
       </ScrollVideo>
       <div className="relative z-20">
-        <Demo active={demoVisible} />
+        <Demo />
       </div>
       <Partners />
       <About />
