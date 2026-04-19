@@ -15,6 +15,8 @@ interface ScrollVideoProps {
   children?: React.ReactNode;
   /** Called when scroll reaches/leaves the end of the video (true = done, false = scrolled back) */
   onScrollComplete?: (complete: boolean) => void;
+  /** Called continuously with canvas fade progress: 0 = fade not started, 1 = canvas fully transparent */
+  onFadeProgress?: (progress: number) => void;
 }
 
 // ---------------------------------------------------------------------------
@@ -63,6 +65,7 @@ export function ScrollVideo({
   scrollHeight = DEFAULT_SCROLL_HEIGHT,
   children,
   onScrollComplete,
+  onFadeProgress,
 }: ScrollVideoProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const pinnedRef = useRef<HTMLDivElement>(null);
@@ -241,20 +244,18 @@ export function ScrollVideo({
             overlayRef.current.style.opacity = String(overlayOpacity);
           }
 
-          // --- Canvas fade-out as Demo slides over (crossfade) ---
-          if (canvasRef.current) {
-            if (progress <= CANVAS_FADE_START) {
-              canvasRef.current.style.opacity = '1';
-            } else {
-              const fade = Math.min(1, (progress - CANVAS_FADE_START) / (CANVAS_FADE_END - CANVAS_FADE_START));
-              canvasRef.current.style.opacity = String(Math.max(0, 1 - fade));
-            }
-          }
-
-          // --- Notify parent when crossfade is 20% done (canvas at 80% opacity) ---
+          // --- Canvas fade-out + expose fade progress for coordinated reveal ---
           const fadeProgress = progress <= CANVAS_FADE_START
             ? 0
             : Math.min(1, (progress - CANVAS_FADE_START) / (CANVAS_FADE_END - CANVAS_FADE_START));
+
+          if (canvasRef.current) {
+            canvasRef.current.style.opacity = String(Math.max(0, 1 - fadeProgress));
+          }
+
+          onFadeProgress?.(fadeProgress);
+
+          // --- Notify parent when crossfade is 20% done (canvas at 80% opacity) ---
           const showDemo = fadeProgress >= 0.2;
           if (showDemo !== scrollCompleteRef.current) {
             scrollCompleteRef.current = showDemo;
@@ -271,7 +272,7 @@ export function ScrollVideo({
         scrollTriggerInstance.kill();
       }
     };
-  }, [isLoading, drawVideoFrame, onScrollComplete]);
+  }, [isLoading, drawVideoFrame, onScrollComplete, onFadeProgress]);
 
   // -----------------------------------------------------------------------
   // Render
