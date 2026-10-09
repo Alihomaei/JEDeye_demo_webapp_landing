@@ -51,7 +51,19 @@ export function Evidence() {
           </div>
 
           <div key={tab.id} className="flex flex-col gap-4">
-            {tab.kind === 'compare' && <Compare a={tab.a} b={tab.b} />}
+            {tab.kind === 'compare' && (
+              <>
+                <Compare a={tab.a} b={tab.b} />
+                <ul className="flex flex-wrap gap-x-5 gap-y-1.5 px-1 text-xs text-ink-2">
+                  {tab.legend.map(([name, color]) => (
+                    <li key={name} className="flex items-center gap-1.5">
+                      <span className="inline-block h-2.5 w-2.5 rounded-sm border border-rule-strong" style={{ background: color }} />
+                      {name}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
             {tab.kind === 'pair' && (
               <>
                 <Figure label={tab.a.alt}>

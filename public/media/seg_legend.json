@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Liver",
+    "color": "#ff7272"
+  },
+  {
+    "name": "Abdominal wall",
+    "color": "#d28c8c"
+  },
+  {
+    "name": "Fat",
+    "color": "#bab74b"
+  },
+  {
+    "name": "Gallbladder",
+    "color": "#ffa0a5"
+  },
+  {
+    "name": "Connective tissue",
+    "color": "#ff5500"
+  },
+  {
+    "name": "Grasper",
+    "color": "#aaff00"
+  },
+  {
+    "name": "GI tract",
+    "color": "#e7469c"
+  },
+  {
+    "name": "L-hook electrocautery",
+    "color": "#a9ffb8"
+  },
+  {
+    "name": "Blood",
+    "color": "#ff0000"
+  }
+]
