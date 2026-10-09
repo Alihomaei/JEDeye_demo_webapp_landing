@@ -1,3 +1,4 @@
+import { ScrollHero } from '@/components/site/ScrollHero';
 import { Hero } from '@/components/site/Hero';
 import { Modules } from '@/components/site/Modules';
 import { Timeline } from '@/components/site/Timeline';
@@ -10,14 +11,16 @@ import { Closing } from '@/components/site/Closing';
 export default function Home() {
   return (
     <>
-      <Hero />
-      <Modules />
-      <Timeline />
-      <Evidence />
-      <MetricsTable />
-      <Business />
-      <Team />
-      <Closing />
+      <ScrollHero>
+        <Hero />
+        <Modules />
+        <Timeline />
+        <Evidence />
+        <MetricsTable />
+        <Business />
+        <Team />
+        <Closing />
+      </ScrollHero>
     </>
   );
 }

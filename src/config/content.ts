@@ -265,3 +265,11 @@ export const closing = {
 // Kept for the API routes and forms that still import these names.
 export const waitlistContent = closing.waitlist;
 export const contactContent = closing.contact;
+
+export const demoContent = {
+  labels: { original: 'Original endoscopy', segmentation: 'AI segmentation' },
+  fallback: {
+    loadError: 'Unable to load the demo video. Check your connection or contact us for a demonstration.',
+    autoplayBlocked: 'Tap to play',
+  },
+} as const;
