@@ -5,11 +5,11 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        paper: { DEFAULT: 'var(--paper)', 2: 'var(--paper-2)', 3: 'var(--paper-3)' },
-        ink: { DEFAULT: 'var(--ink)', 2: 'var(--ink-2)', 3: 'var(--ink-3)' },
+        paper: { DEFAULT: 'oklch(from var(--paper) l c h / <alpha-value>)', 2: 'oklch(from var(--paper-2) l c h / <alpha-value>)', 3: 'oklch(from var(--paper-3) l c h / <alpha-value>)' },
+        ink: { DEFAULT: 'oklch(from var(--ink) l c h / <alpha-value>)', 2: 'oklch(from var(--ink-2) l c h / <alpha-value>)', 3: 'oklch(from var(--ink-3) l c h / <alpha-value>)' },
         rule: { DEFAULT: 'var(--rule)', strong: 'var(--rule-strong)' },
         accent: {
-          DEFAULT: 'var(--accent)',
+          DEFAULT: 'oklch(from var(--accent) l c h / <alpha-value>)',
           strong: 'var(--accent-strong)',
           soft: 'var(--accent-soft)',
           ink: 'var(--accent-ink)',
