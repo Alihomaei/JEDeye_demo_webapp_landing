@@ -146,7 +146,7 @@ export function WaitlistForm() {
 
             {/* Email Field (Required) */}
             <div className="space-y-1.5">
-                <label htmlFor="waitlist-email" className="text-sm font-medium text-text-primary">
+                <label htmlFor="waitlist-email" className="text-sm font-medium text-ink">
                     Email <span className="text-error">*</span>
                 </label>
                 <Input
@@ -171,7 +171,7 @@ export function WaitlistForm() {
 
             {/* Name Field (Optional) */}
             <div className="space-y-1.5">
-                <label htmlFor="waitlist-name" className="text-sm font-medium text-text-primary">
+                <label htmlFor="waitlist-name" className="text-sm font-medium text-ink">
                     Name
                 </label>
                 <Input
@@ -195,7 +195,7 @@ export function WaitlistForm() {
 
             {/* Organization Field (Optional) */}
             <div className="space-y-1.5">
-                <label htmlFor="waitlist-organization" className="text-sm font-medium text-text-primary">
+                <label htmlFor="waitlist-organization" className="text-sm font-medium text-ink">
                     Organization
                 </label>
                 <Input
@@ -219,7 +219,7 @@ export function WaitlistForm() {
 
             {/* Role Field (Optional) */}
             <div className="space-y-1.5">
-                <label htmlFor="waitlist-role" className="text-sm font-medium text-text-primary">
+                <label htmlFor="waitlist-role" className="text-sm font-medium text-ink">
                     Role
                 </label>
                 <Input

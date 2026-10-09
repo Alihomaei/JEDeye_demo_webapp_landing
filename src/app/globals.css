@@ -2,179 +2,203 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ---------------------------------------------------------------------------
+   Tokens — "the clinical report". Paper tinted toward the brand teal (hue 205),
+   ink text, one teal accent reserved for data and primary actions.
+   --------------------------------------------------------------------------- */
 @layer base {
-    :root {
-        /* JEDeye Brand Colors */
-        --primary: 187 100% 33%;
-        --primary-dark: 174 100% 22%;
-        --primary-light: 187 69% 82%;
-        --primary-foreground: 210 40% 98%;
+  :root {
+    --paper: oklch(0.985 0.004 205);
+    --paper-2: oklch(0.962 0.007 205);
+    --paper-3: oklch(0.935 0.01 205);
+    --ink: oklch(0.23 0.018 235);
+    --ink-2: oklch(0.46 0.02 235);
+    --ink-3: oklch(0.62 0.016 235);
+    --rule: oklch(0.89 0.009 210);
+    --rule-strong: oklch(0.8 0.012 210);
+    --accent: oklch(0.57 0.105 205);
+    --accent-strong: oklch(0.48 0.1 205);
+    --accent-soft: oklch(0.94 0.03 205);
+    --accent-ink: oklch(0.985 0.004 205);
+    --ok: oklch(0.6 0.12 160);
+    --warn: oklch(0.62 0.14 60);
+    --danger: oklch(0.57 0.17 25);
 
-        /* Background */
-        --background: 0 0% 100%;
-        --background-alt: 210 40% 98%;
-        --foreground: 222.2 84% 4.9%;
+    /* Surgical phases (Cholec80 P0–P6), muted so the accent still wins. */
+    --phase-0: oklch(0.78 0.03 230);
+    --phase-1: oklch(0.72 0.09 205);
+    --phase-2: oklch(0.68 0.12 40);
+    --phase-3: oklch(0.7 0.1 150);
+    --phase-4: oklch(0.72 0.08 300);
+    --phase-5: oklch(0.74 0.1 85);
+    --phase-6: oklch(0.62 0.05 235);
 
-        /* Text Colors */
-        --text-primary: 222 47% 11%;
-        --text-secondary: 215 16% 47%;
-        --text-muted: 215 16% 65%;
+    /* shadcn compatibility for the existing form inputs / buttons */
+    --background: 0 0% 100%;
+    --foreground: 222 30% 15%;
+    --border: 210 16% 88%;
+    --input: 210 16% 82%;
+    --ring: 196 60% 40%;
+    --muted-foreground: 215 12% 45%;
+    --primary: 196 65% 38%;
+    --primary-foreground: 0 0% 100%;
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --radius: 0.375rem;
 
-        /* Status Colors */
-        --success: 160 84% 39%;
-        --error: 0 84% 60%;
+    --measure: 66ch;
+    --gutter: clamp(1rem, 4vw, 3rem);
+    --section: clamp(4rem, 9vw, 8.5rem);
+  }
 
-        /* shadcn/ui required variables */
-        --card: 0 0% 100% / 0;
-        --card-foreground: 222.2 84% 4.9%;
-        --popover: 0 0% 100%;
-        --popover-foreground: 222.2 84% 4.9%;
-        --secondary: 210 40% 96.1%;
-        --secondary-foreground: 222.2 47.4% 11.2%;
-        --muted: 210 40% 96.1%;
-        --muted-foreground: 215.4 16.3% 46.9%;
-        --accent: 210 40% 96.1%;
-        --accent-foreground: 222.2 47.4% 11.2%;
-        --destructive: 0 84.2% 60.2%;
-        --destructive-foreground: 210 40% 98%;
-        --border: 214.3 31.8% 91.4%;
-        --input: 214.3 31.8% 91.4%;
-        --ring: 187 100% 33%;
-        --radius: 0.5rem;
+  * {
+    border-color: var(--rule);
+  }
 
-        /* Chart colors */
-        --chart-1: 12 76% 61%;
-        --chart-2: 173 58% 39%;
-        --chart-3: 197 37% 24%;
-        --chart-4: 43 74% 66%;
-        --chart-5: 27 87% 67%;
-    }
-
-    .dark {
-        --background: 222.2 84% 4.9%;
-        --foreground: 210 40% 98%;
-        --card: 222.2 84% 4.9%;
-        --card-foreground: 210 40% 98%;
-        --popover: 222.2 84% 4.9%;
-        --popover-foreground: 210 40% 98%;
-        --primary: 187 100% 45%;
-        --primary-foreground: 222.2 47.4% 11.2%;
-        --secondary: 217.2 32.6% 17.5%;
-        --secondary-foreground: 210 40% 98%;
-        --muted: 217.2 32.6% 17.5%;
-        --muted-foreground: 215 20.2% 65.1%;
-        --accent: 217.2 32.6% 17.5%;
-        --accent-foreground: 210 40% 98%;
-        --destructive: 0 62.8% 30.6%;
-        --destructive-foreground: 210 40% 98%;
-        --border: 217.2 32.6% 17.5%;
-        --input: 217.2 32.6% 17.5%;
-        --ring: 187 100% 45%;
-        --chart-1: 220 70% 50%;
-        --chart-2: 160 60% 45%;
-        --chart-3: 30 80% 55%;
-        --chart-4: 280 65% 60%;
-        --chart-5: 340 75% 55%;
-    }
-}
-
-@layer base {
-    * {
-        @apply border-border;
-    }
-
-    body {
-        @apply text-foreground;
-        font-feature-settings: "rlig" 1, "calt" 1;
-        background-color: #0a1628;
-    }
-}
-
-/* Fixed surgical background image covering the entire page */
-/* Two-layer approach: sharp base + blurred center via radial mask = vignette blur */
-.page-bg {
-    position: fixed;
-    inset: 0;
-    z-index: -10;
-    background: url('/images/landing-bg.jpg') center / cover no-repeat;
-    overflow: hidden;
-}
-
-/* Blurred layer — visible in center, fades to transparent at edges */
-.page-bg::before {
-    content: '';
-    position: absolute;
-    inset: -20px;
-    background: url('/images/landing-bg.jpg') center / cover no-repeat;
-    filter: blur(8px);
-    -webkit-mask-image: radial-gradient(ellipse 65% 60% at 50% 50%, black 0%, black 25%, transparent 75%);
-    mask-image: radial-gradient(ellipse 65% 60% at 50% 50%, black 0%, black 25%, transparent 75%);
-}
-
-/* Color overlay */
-.page-bg::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        135deg,
-        rgba(10, 22, 40, 0.55) 0%,
-        rgba(0, 121, 107, 0.18) 50%,
-        rgba(10, 22, 40, 0.55) 100%
-    );
-}
-
-/* Glass panel utility classes */
-.glass-light {
-    background: rgba(255, 255, 255, 0.65);
-    backdrop-filter: blur(16px) saturate(1.4);
-    -webkit-backdrop-filter: blur(16px) saturate(1.4);
-}
-
-.glass-light-subtle {
-    background: rgba(255, 255, 255, 0.45);
-    backdrop-filter: blur(12px) saturate(1.3);
-    -webkit-backdrop-filter: blur(12px) saturate(1.3);
-}
-
-.glass-card {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(12px) saturate(1.4);
-    -webkit-backdrop-filter: blur(12px) saturate(1.4);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.glass-card:hover {
-    background: rgba(255, 255, 255, 0.8);
-}
-
-.glass-header {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(20px) saturate(1.5);
-    -webkit-backdrop-filter: blur(20px) saturate(1.5);
-}
-
-.glass-footer {
-    background: rgba(255, 255, 255, 0.55);
-    backdrop-filter: blur(16px) saturate(1.4);
-    -webkit-backdrop-filter: blur(16px) saturate(1.4);
-}
-
-/* Smooth scrolling */
-html {
+  html {
     scroll-behavior: smooth;
-}
+    -webkit-text-size-adjust: 100%;
+  }
 
-@media (prefers-reduced-motion: reduce) {
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+    font-feature-settings: 'cv11' 1, 'ss01' 1;
+    font-kerning: normal;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: var(--accent-soft);
+    color: var(--ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
     html {
-        scroll-behavior: auto;
+      scroll-behavior: auto;
     }
-
     *,
     *::before,
     *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
     }
+  }
+}
+
+@layer components {
+  .font-display {
+    font-family: var(--font-display), Georgia, 'Times New Roman', serif;
+    font-feature-settings: 'kern' 1, 'liga' 1;
+    letter-spacing: -0.015em;
+  }
+
+  .font-mono {
+    font-family: var(--font-mono), ui-monospace, 'SF Mono', Menlo, monospace;
+  }
+
+  .nums {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Small-caps eyebrow: the only all-caps text on the page. */
+  .eyebrow {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 0.75rem;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+
+  .wrap {
+    width: min(100% - 2 * var(--gutter), 76rem);
+    margin-inline: auto;
+  }
+
+  .section {
+    padding-block: var(--section);
+    scroll-margin-top: 3.5rem;
+  }
+
+  .prose-measure {
+    max-width: var(--measure);
+  }
+
+  .rule-top {
+    border-top: 1px solid var(--rule);
+  }
+
+  /* Staggered reveal on load: the single orchestrated motion on the page. */
+  .reveal {
+    animation: reveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: calc(var(--i, 0) * 90ms);
+  }
+
+  @keyframes reveal {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-sm font-medium transition-colors;
+    min-height: 2.75rem;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+  .btn-primary:hover {
+    background: var(--accent-strong);
+  }
+  .btn-ghost {
+    color: var(--ink);
+    box-shadow: inset 0 0 0 1px var(--rule-strong);
+  }
+  .btn-ghost:hover {
+    background: var(--paper-2);
+  }
+
+  /* Figure chrome shared by every piece of evidence on the page. */
+  .figure {
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  .figcaption {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.25rem 0.75rem;
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--rule);
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: var(--ink-2);
+  }
+  .figcaption b {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .figcaption .src {
+    grid-column: 2;
+    font-family: var(--font-mono), monospace;
+    font-size: 0.6875rem;
+    letter-spacing: 0.01em;
+    color: var(--ink-3);
+  }
 }

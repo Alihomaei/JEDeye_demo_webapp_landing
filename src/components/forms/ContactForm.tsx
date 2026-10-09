@@ -159,7 +159,7 @@ export function ContactForm() {
 
             {/* Name Field (Required) */}
             <div className="space-y-1.5">
-                <label htmlFor="contact-name" className="text-sm font-medium text-text-primary">
+                <label htmlFor="contact-name" className="text-sm font-medium text-ink">
                     Name <span className="text-error">*</span>
                 </label>
                 <Input
@@ -184,7 +184,7 @@ export function ContactForm() {
 
             {/* Email Field (Required) */}
             <div className="space-y-1.5">
-                <label htmlFor="contact-email" className="text-sm font-medium text-text-primary">
+                <label htmlFor="contact-email" className="text-sm font-medium text-ink">
                     Email <span className="text-error">*</span>
                 </label>
                 <Input
@@ -209,7 +209,7 @@ export function ContactForm() {
 
             {/* Organization Field (Optional) */}
             <div className="space-y-1.5">
-                <label htmlFor="contact-organization" className="text-sm font-medium text-text-primary">
+                <label htmlFor="contact-organization" className="text-sm font-medium text-ink">
                     Organization
                 </label>
                 <Input
@@ -233,7 +233,7 @@ export function ContactForm() {
 
             {/* Subject Field (Optional) */}
             <div className="space-y-1.5">
-                <label htmlFor="contact-subject" className="text-sm font-medium text-text-primary">
+                <label htmlFor="contact-subject" className="text-sm font-medium text-ink">
                     Subject
                 </label>
                 <Input
@@ -258,13 +258,13 @@ export function ContactForm() {
             {/* Message Field (Required) */}
             <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                    <label htmlFor="contact-message" className="text-sm font-medium text-text-primary">
+                    <label htmlFor="contact-message" className="text-sm font-medium text-ink">
                         Message <span className="text-error">*</span>
                     </label>
                     <span
                         className={cn(
                             'text-xs',
-                            messageLength > MAX_MESSAGE_LENGTH ? 'text-error' : 'text-text-muted'
+                            messageLength > MAX_MESSAGE_LENGTH ? 'text-error' : 'text-ink-3'
                         )}
                     >
                         {messageLength}/{MAX_MESSAGE_LENGTH}
