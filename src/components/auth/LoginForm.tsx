@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -28,10 +29,24 @@ const users = [
   },
 ];
 
+// Auth.js reports every sign-in failure through the same `error` field; only
+// CredentialsSignin means the password itself was rejected.
+function signInErrorMessage(error: string) {
+  switch (error) {
+    case 'CredentialsSignin':
+      return 'Invalid password. It is case-sensitive — use the eye icon to check what you typed.';
+    case 'MissingCSRF':
+      return 'Your browser did not send the sign-in cookie. Allow cookies for this site, reload the page and try again.';
+    default:
+      return `Sign-in failed because of a server problem, not your password (${error}). Please try again in a moment.`;
+  }
+}
+
 export function LoginForm() {
   const router = useRouter();
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -45,18 +60,23 @@ export function LoginForm() {
     setError('');
     setLoading(true);
 
-    const result = await signIn('credentials', {
-      userId: selectedUser,
-      password,
-      redirect: false,
-    });
+    try {
+      const result = await signIn('credentials', {
+        userId: selectedUser,
+        password: password.trim(),
+        redirect: false,
+      });
 
-    if (result?.error) {
-      setError('Invalid password. Please try again.');
+      if (result?.error) {
+        setError(signInErrorMessage(result.error));
+        setLoading(false);
+      } else {
+        router.push('/');
+        router.refresh();
+      }
+    } catch {
+      setError('Sign-in could not be completed. Check your connection and try again.');
       setLoading(false);
-    } else {
-      router.push('/');
-      router.refresh();
     }
   }
 
@@ -110,18 +130,36 @@ export function LoginForm() {
         >
           Password
         </label>
-        <Input
-          id="password"
-          type="password"
-          value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-            setError('');
-          }}
-          placeholder="Enter shared password"
-          className="h-11 bg-white/60 border-slate-300 text-slate-800 placeholder:text-slate-400"
-          required
-        />
+        <div className="relative">
+          <Input
+            id="password"
+            type={showPassword ? 'text' : 'password'}
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setError('');
+            }}
+            placeholder="Enter shared password"
+            className="h-11 pr-11 bg-white/60 border-slate-300 text-slate-800 placeholder:text-slate-400"
+            autoCapitalize="none"
+            autoCorrect="off"
+            spellCheck={false}
+            required
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((shown) => !shown)}
+            aria-label={showPassword ? 'Hide password' : 'Show password'}
+            aria-pressed={showPassword}
+            className="absolute inset-y-0 right-0 flex w-11 items-center justify-center rounded-r-md text-slate-500 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+          >
+            {showPassword ? (
+              <EyeOff className="h-4 w-4" aria-hidden />
+            ) : (
+              <Eye className="h-4 w-4" aria-hidden />
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Error message */}
