@@ -97,13 +97,11 @@ export function Figure({
   children,
   label,
   text,
-  source,
   className = '',
 }: {
   children: React.ReactNode;
   label: string;
   text?: string;
-  source?: string;
   className?: string;
 }) {
   return (
