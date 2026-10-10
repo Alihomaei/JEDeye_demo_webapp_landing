@@ -97,13 +97,11 @@ export function Figure({
   children,
   label,
   text,
-  source,
   className = '',
 }: {
   children: React.ReactNode;
   label: string;
   text?: string;
-  source?: string;
   className?: string;
 }) {
   return (
@@ -112,7 +110,6 @@ export function Figure({
       <figcaption className="figcaption">
         <b>{label}</b>
         {text ? <span>{text}</span> : <span />}
-        {source && <span className="src">{source}</span>}
       </figcaption>
     </figure>
   );

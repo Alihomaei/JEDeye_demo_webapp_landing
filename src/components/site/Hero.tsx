@@ -17,7 +17,6 @@ export function Hero() {
                 <span className="ml-1 text-[0.5em] text-ink-2">{f.unit}</span>
               </dd>
               <dt className="text-sm text-ink-2">{f.label}</dt>
-              <span className="font-mono text-[0.6875rem] text-ink-3">{f.note}</span>
             </div>
           ))}
         </dl>

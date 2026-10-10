@@ -59,7 +59,6 @@ export function Evidence() {
           <div className="flex flex-col gap-3">
             <h3 className="font-display text-[1.6rem] font-medium leading-tight">{tab.title}</h3>
             <p className="prose-measure text-ink-2">{tab.text}</p>
-            <p className="font-mono text-[0.6875rem] text-ink-3">{tab.source}</p>
           </div>
 
           <div key={tab.id} className="flex flex-col gap-4">
