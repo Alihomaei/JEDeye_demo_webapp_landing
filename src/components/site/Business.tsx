@@ -2,7 +2,7 @@ import { business } from '@/config/content';
 
 export function Business() {
   return (
-    <section id="business" className="section rule-top bg-paper-2/60">
+    <section id="business" className="section rule-top bg-paper-2/60" data-rise>
       <div className="wrap">
         <p className="eyebrow">{business.eyebrow}</p>
         <h2 className="font-display mt-4 max-w-[22ch] text-h2 font-medium">{business.heading}</h2>

@@ -21,6 +21,7 @@ export const nav = [
 
 export const hero = {
   eyebrow: 'Investor review · October 2026',
+  brand: 'JEDeye',
   headline: 'Surgical intelligence you can measure.',
   lede:
     'JEDeye reads the laparoscopic video every operating room already produces and turns it into phase recognition, remaining-time prediction, instrument analytics and a physics-based digital twin. No new hardware, no new workflow.',
@@ -156,16 +157,16 @@ export const evidence = {
       source: 'ScopeScore · CholecTrack20 videos 71 and 77',
       kind: 'pair',
       a: { id: 'tracking_3d', ratio: 1280 / 496, alt: 'Tracked tool tips beside their live 3D track.' } satisfies Clip,
-      b: { id: 'tip_trails', ratio: 960 / 540, alt: 'Speed-coloured instrument tip trails.' } satisfies Clip,
+      b: { id: 'tip_trails', ratio: 854 / 480, alt: 'Speed-coloured instrument tip trail with the per-second speed read-out.' } satisfies Clip,
     },
     {
-      id: 'navigation',
-      label: 'Navigation (concept)',
-      title: 'Margins drawn on the live view.',
-      text: 'An atlas liver registered to the scene, with a hypothetical 5 cm tumour, 1 cm margin and the distance from the instrument to the cut line. Not yet validated on patient CT.',
-      source: 'SurGPS v4 · atlas model · 2026-10-07',
+      id: 'overwatch',
+      label: 'Real-time overwatch',
+      title: 'Continuous overwatch during the case.',
+      text: 'Instrument detection and annotation running on a live laparoscopic procedure, with cost, risk and schedule read-outs alongside the remaining-time estimate.',
+      source: 'JEDeye overwatch demo · institutional case',
       kind: 'single',
-      a: { id: 'surgps_overlay', ratio: 960 / 540, alt: 'Endoscopic view with projected tumour margin and cut-distance read-out.' } satisfies Clip,
+      a: { id: 'overwatch', ratio: 1280 / 720, alt: 'Live laparoscopic view with a detected stapler outlined and a side panel of cost, risk, remaining time and schedule.' } satisfies Clip,
     },
   ],
 } as const;

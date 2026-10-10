@@ -154,6 +154,100 @@
     }
   }
 
+  /* Scroll-triggered rise for sections below the hero (class added by ScrollHero). */
+  [data-rise] {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: calc(var(--i, 0) * 80ms);
+  }
+  [data-rise].is-in {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Hero scroll cue: a line that keeps drawing itself downward. */
+  .scroll-cue-line {
+    display: block;
+    width: 1px;
+    height: 2.5rem;
+    background: linear-gradient(to bottom, currentColor, transparent);
+    transform-origin: top;
+    animation: cue 1.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  }
+  @keyframes cue {
+    0% {
+      transform: scaleY(0);
+      opacity: 0;
+    }
+    30% {
+      opacity: 1;
+    }
+    100% {
+      transform: scaleY(1);
+      opacity: 0;
+    }
+  }
+
+  /* Phase strip playhead: sweeps the band once per cycle. */
+  .playhead {
+    position: absolute;
+    top: -4px;
+    bottom: -4px;
+    left: 0;
+    width: 2px;
+    background: var(--ink);
+    box-shadow: 0 0 0 1px var(--paper);
+    animation: sweep 14s linear infinite;
+  }
+  @keyframes sweep {
+    from {
+      left: 0;
+    }
+    to {
+      left: 100%;
+    }
+  }
+
+  /* Live indicator dot. */
+  .pulse {
+    position: relative;
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 999px;
+    background: var(--accent);
+  }
+  .pulse::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: inherit;
+    border: 1px solid var(--accent);
+    animation: ping 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+  @keyframes ping {
+    from {
+      transform: scale(0.6);
+      opacity: 0.9;
+    }
+    to {
+      transform: scale(1.8);
+      opacity: 0;
+    }
+  }
+
+  /* Figures lift a touch on hover; the clip inside eases in scale. */
+  .figure {
+    transition: box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1), transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .figure:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px -16px oklch(0.3 0.04 205 / 0.35);
+  }
+
   .btn {
     @apply inline-flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-sm font-medium transition-colors;
     min-height: 2.75rem;

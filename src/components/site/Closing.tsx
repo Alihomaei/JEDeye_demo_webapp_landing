@@ -4,7 +4,7 @@ import { ContactForm } from '@/components/forms/ContactForm';
 
 export function Closing() {
   return (
-    <section id="contact" className="section rule-top bg-paper-2/60">
+    <section id="contact" className="section rule-top bg-paper-2/60" data-rise>
       <div className="wrap grid gap-14 lg:grid-cols-2 lg:gap-20">
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-3">

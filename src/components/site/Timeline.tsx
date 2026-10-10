@@ -82,7 +82,7 @@ export function Timeline() {
   const cur = data?.samples[i];
 
   return (
-    <section id="timeline" className="section rule-top" ref={ref} aria-labelledby={`${id}-h`}>
+    <section id="timeline" className="section rule-top" data-rise ref={ref} aria-labelledby={`${id}-h`}>
       <div className="wrap grid gap-8 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-14">
         <div className="flex flex-col gap-4">
           <p className="eyebrow">{timeline.eyebrow}</p>

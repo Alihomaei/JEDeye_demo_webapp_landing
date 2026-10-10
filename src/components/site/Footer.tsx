@@ -6,7 +6,7 @@ export function Footer() {
       <div className="wrap flex flex-col gap-6 py-10 text-sm text-ink-2 md:flex-row md:items-end md:justify-between">
         <div className="flex flex-col gap-1">
           <span className="font-display text-base font-semibold text-ink">JEDeye</span>
-          <span>Nezami Lab · Mass General Brigham · Harvard Medical School</span>
+          <span>Division of General and GI Surgery · Mass General Brigham</span>
           <a href={`mailto:${contactInfo.email}`} className="underline-offset-4 hover:underline">
             {contactInfo.email}
           </a>

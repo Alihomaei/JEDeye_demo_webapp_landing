@@ -8,7 +8,7 @@ import { Media } from './Media';
  */
 export function Modules() {
   return (
-    <section id="modules" className="section rule-top">
+    <section id="modules" className="section rule-top" data-rise>
       <div className="wrap">
         <div className="grid gap-4 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-14">
           <div>
@@ -24,9 +24,8 @@ export function Modules() {
             return (
               <li
                 key={m.n}
-                className={`grid gap-6 border-t border-rule py-10 lg:grid-cols-12 lg:gap-10 lg:py-12 ${
-                  flip ? '' : ''
-                }`}
+                data-rise
+                className="grid gap-6 border-t border-rule py-10 lg:grid-cols-12 lg:gap-10 lg:py-12"
               >
                 <div className={`flex gap-5 lg:col-span-5 ${flip ? 'lg:order-2 lg:col-start-8' : ''}`}>
                   <span className="nums font-mono mt-1 text-sm text-ink-3">{m.n}</span>
@@ -82,11 +81,17 @@ const PHASES = [
 function PhaseStrip() {
   return (
     <div className="figure p-5">
-      <p className="mb-4 text-sm text-ink-2">The seven phases of a cholecystectomy, in typical proportion</p>
-      <div className="flex h-10 w-full overflow-hidden rounded-sm">
-        {PHASES.map(([name, pct], i) => (
-          <div key={name} title={name} style={{ width: `${pct}%`, background: `var(--phase-${i})` }} />
-        ))}
+      <p className="mb-4 flex items-center gap-2 text-sm text-ink-2">
+        <span className="pulse" aria-hidden="true" />
+        The seven phases of a cholecystectomy, in typical proportion
+      </p>
+      <div className="relative">
+        <div className="flex h-10 w-full overflow-hidden rounded-sm">
+          {PHASES.map(([name, pct], i) => (
+            <div key={name} title={name} style={{ width: `${pct}%`, background: `var(--phase-${i})` }} />
+          ))}
+        </div>
+        <span className="playhead" aria-hidden="true" />
       </div>
       <ol className="mt-4 grid grid-cols-2 gap-x-6 gap-y-1.5 text-xs text-ink-2 sm:grid-cols-3">
         {PHASES.map(([name, pct], i) => (

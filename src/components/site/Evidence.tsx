@@ -11,7 +11,7 @@ export function Evidence() {
   const tab = evidence.tabs[active];
 
   return (
-    <section id="evidence" className="section rule-top bg-paper-2/60">
+    <section id="evidence" className="section rule-top bg-paper-2/60" data-rise>
       <div className="wrap">
         <div className="grid gap-4 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-14">
           <div>

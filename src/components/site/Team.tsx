@@ -3,7 +3,7 @@ import { team } from '@/config/content';
 
 export function Team() {
   return (
-    <section id="team" className="section rule-top">
+    <section id="team" className="section rule-top" data-rise>
       <div className="wrap">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>

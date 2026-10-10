@@ -2,7 +2,7 @@ import { metricsTable } from '@/config/content';
 
 export function MetricsTable() {
   return (
-    <section className="section rule-top">
+    <section className="section rule-top" data-rise>
       <div className="wrap grid gap-8 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-14">
         <div className="flex flex-col gap-4">
           <p className="eyebrow">{metricsTable.eyebrow}</p>
@@ -30,7 +30,7 @@ export function MetricsTable() {
                     <td className={`py-2.5 pr-4 text-ink-2 ${first ? 'border-t border-rule' : ''}`}>{r.metric}</td>
                     <td className={`whitespace-nowrap py-2.5 pr-4 font-medium text-ink ${first ? 'border-t border-rule' : ''}`}>{r.value}</td>
                     <td className={`py-2.5 pr-4 text-ink-2 ${first ? 'border-t border-rule' : ''}`}>{r.test}</td>
-                    <td className={`whitespace-nowrap py-2.5 font-mono text-xs text-ink-3 ${first ? 'border-t border-rule' : ''}`}>{r.date}</td>
+                    <td className={`whitespace-nowrap py-2.5 text-sm text-ink-2 ${first ? 'border-t border-rule' : ''}`}>{r.date}</td>
                   </tr>
                 );
               })}
