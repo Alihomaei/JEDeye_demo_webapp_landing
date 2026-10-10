@@ -160,6 +160,25 @@ export const evidence = {
       b: { id: 'tip_trails', ratio: 854 / 480, alt: 'Speed-coloured instrument tip trail with the per-second speed read-out.' } satisfies Clip,
     },
     {
+      id: 'costcal',
+      label: 'CostCal',
+      title: 'What the case costs, as it happens.',
+      text: 'CostCal watches the video and keeps a running bill: a per-minute fee on scope-in time plus each single-use instrument the moment it is confirmed in use. The remaining-time predictor turns that into a forecast of the final bill. Below, the public detector that finds the suction and the clip applier, and how the two recognition approaches compare.',
+      kind: 'costcal',
+      a: { id: 'costcal_detect', ratio: 854 / 480, alt: 'Approach A detector on Cholec80 video 49: the clip applier and the suction-irrigator found and named.' } satisfies Clip,
+      comparison: {
+        caption: 'Frame-level recognition on 6,485 held-out public frames (CholecInstanceSeg and PhaKIR). A: one model finds and names the instrument. B: an instrument detector, then a type classifier.',
+        rows: [
+          ['Suction-irrigator', 'F1 at a fixed threshold', '0.71', '0.62'],
+          ['Suction-irrigator', 'Average precision', '0.68', '0.66'],
+          ['Clip applier', 'F1 at a fixed threshold', '0.88', '0.78'],
+          ['Clip applier', 'Average precision', '0.86', '0.86'],
+          ['Any instrument', 'Found at all (IoU ≥ 0.5)', '69%', '70%'],
+          ['Time per frame', 'RTX 5090, half precision', '2.6 ms', '7.8 ms'],
+        ],
+      },
+    },
+    {
       id: 'overwatch',
       label: 'Real-time overwatch',
       title: 'Continuous overwatch during the case.',
