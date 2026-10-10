@@ -13,7 +13,7 @@ export function Header() {
       <div className="wrap flex h-14 items-center justify-between gap-6">
         <Link href="/" className="flex items-center gap-2.5" aria-label="JEDeye home">
           <Image src="/images/JEDeye_transparent_logo.png" alt="" width={28} height={28} priority />
-          <span className="font-display text-lg font-semibold tracking-tight">JEDeye</span>
+          <span className="font-brand text-lg">JEDeye</span>
         </Link>
 
         <nav aria-label="Sections" className="hidden items-center gap-7 text-sm text-ink-2 md:flex">
