@@ -88,7 +88,17 @@ export function Evidence() {
                 </Figure>
               </>
             )}
-            {tab.kind === 'scene' && <TwinScene />}
+            {tab.kind === 'scene' && (
+              <>
+                <TwinScene />
+                <Figure label={tab.a.alt}>
+                  <Media clip={tab.a} />
+                </Figure>
+                <Figure label={tab.b.alt}>
+                  <Media clip={tab.b} />
+                </Figure>
+              </>
+            )}
             {tab.kind === 'single' && (
               <Figure label={tab.a.alt}>
                 <Media clip={tab.a} />
