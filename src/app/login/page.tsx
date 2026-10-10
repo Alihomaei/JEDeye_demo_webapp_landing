@@ -9,7 +9,7 @@ export default function LoginPage() {
       <div className="w-full max-w-lg">
         <div className="mb-8 flex items-center gap-3">
           <Image src="/images/JEDeye_transparent_logo.png" alt="" width={32} height={32} priority />
-          <span className="font-display text-xl font-semibold">JEDeye</span>
+          <span className="font-brand text-xl">JEDeye</span>
         </div>
         <p className="eyebrow">Investor review</p>
         <h1 className="font-display mt-3 text-h2 font-medium">Sign in to continue.</h1>

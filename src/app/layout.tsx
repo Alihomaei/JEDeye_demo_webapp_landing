@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
-import { Geist, Source_Serif_4 } from 'next/font/google';
+import { Geist, Inter, Source_Serif_4 } from 'next/font/google';
 import './globals.css';
 import { SessionProvider } from '@/components/auth/SessionProvider';
 
 const body = Geist({ subsets: ['latin'], display: 'swap', variable: '--font-body' });
+const brand = Inter({ subsets: ['latin'], weight: ['700'], display: 'swap', variable: '--font-brand' });
 const display = Source_Serif_4({
   subsets: ['latin'],
   display: 'swap',
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${body.variable} ${display.variable}`}>
+    <html lang="en" className={`${body.variable} ${brand.variable} ${display.variable}`}>
       <body>
         <a
           href="#main-content"

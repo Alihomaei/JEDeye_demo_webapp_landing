@@ -258,7 +258,7 @@ export function ScrollHero({ children }: { children: React.ReactNode }) {
           <p className="eyebrow reveal !text-[oklch(0.85_0.02_205)]" style={{ ['--i' as string]: 0 }}>
             {hero.eyebrow}
           </p>
-          <h1 className="font-display reveal mt-6 text-[clamp(4.5rem,2rem+12vw,11rem)] font-semibold leading-none tracking-[-0.03em]" style={{ ['--i' as string]: 1 }}>
+          <h1 className="font-brand reveal mt-6 text-6xl leading-none text-balance sm:text-7xl lg:text-9xl" style={{ ['--i' as string]: 1 }}>
             {hero.brand}
           </h1>
           <p className="font-display reveal mt-4 max-w-[22ch] text-[clamp(1.5rem,1rem+2vw,2.5rem)] font-medium leading-tight text-[oklch(0.93_0.012_205)]" style={{ ['--i' as string]: 2 }}>
