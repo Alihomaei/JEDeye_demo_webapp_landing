@@ -5,26 +5,27 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Eye, EyeOff } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 
 const users = [
   {
     id: 'founder-1',
     name: 'Ali Tavakkoli, MD',
-    title: 'Chief, Professor of Surgery',
+    short: 'Ali Tavakkoli',
+    title: 'Chief of Surgery',
     image: '/images/team/AT.jpg',
   },
   {
     id: 'founder-2',
     name: 'Farhad R. Nezami, PhD',
-    title: 'Assistant Professor of Surgery',
+    short: 'Farhad Nezami',
+    title: 'Assistant Professor',
     image: '/images/team/FRN.webp',
   },
   {
     id: 'founder-3',
     name: 'Ali Homaei, MD, MBA',
-    title: 'Postdoctoral Fellow of Surgery',
+    short: 'Ali Homaei',
+    title: 'Postdoctoral Fellow',
     image: '/images/team/AH.jpg',
   },
 ];
@@ -81,103 +82,86 @@ export function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
-      {/* User selection cards */}
-      <div>
-        <label className="block text-sm font-medium text-ink mb-3">
-          Select your profile
-        </label>
-        <div className="grid grid-cols-3 gap-3 sm:gap-4">
-          {users.map((user) => (
+    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+      {/* Profile picker: avatars in a row, selection shown by a ring. */}
+      <div role="radiogroup" aria-label="Profile" className="grid grid-cols-3 gap-2">
+        {users.map((user) => {
+          const active = selectedUser === user.id;
+          return (
             <button
               key={user.id}
               type="button"
+              role="radio"
+              aria-checked={active}
               onClick={() => {
                 setSelectedUser(user.id);
                 setError('');
               }}
-              className={`rounded-md border border-rule bg-paper p-3 sm:p-4 text-center transition-all duration-200 cursor-pointer ${
-                selectedUser === user.id
-                  ? 'ring-2 ring-accent'
-                  : 'hover:bg-paper-2'
+              className={`group flex flex-col items-center gap-2.5 rounded-2xl px-2 py-3 transition-colors duration-200 ${
+                active ? 'bg-paper' : 'hover:bg-paper/60'
               }`}
             >
-              <div className="relative w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 sm:mb-3 rounded-full overflow-hidden">
-                <Image
-                  src={user.image}
-                  alt={user.name}
-                  fill
-                  className="object-cover"
-                  sizes="80px"
-                />
-              </div>
-              <p className="text-xs sm:text-sm font-semibold text-ink leading-tight">
-                {user.name}
-              </p>
-              <p className="text-[10px] sm:text-xs text-ink-2 mt-0.5 leading-tight">
-                {user.title}
-              </p>
+              <span
+                className={`relative block h-[4.25rem] w-[4.25rem] overflow-hidden rounded-full transition-all duration-300 ease-out ${
+                  active ? 'scale-[1.06] ring-[3px] ring-accent ring-offset-2 ring-offset-paper' : 'ring-1 ring-rule-strong group-hover:ring-ink-3'
+                }`}
+              >
+                <Image src={user.image} alt="" fill className="object-cover" sizes="68px" />
+              </span>
+              <span className="flex flex-col">
+                <span className={`text-[0.8125rem] font-medium leading-tight ${active ? 'text-ink' : 'text-ink-2'}`}>{user.short}</span>
+                <span className="mt-0.5 text-[0.6875rem] leading-tight text-ink-3">{user.title}</span>
+              </span>
             </button>
-          ))}
-        </div>
+          );
+        })}
       </div>
 
-      {/* Password field */}
-      <div>
-        <label
-          htmlFor="password"
-          className="block text-sm font-medium text-ink mb-2"
-        >
+      {/* Password */}
+      <div className="relative">
+        <label htmlFor="password" className="sr-only">
           Password
         </label>
-        <div className="relative">
-          <Input
-            id="password"
-            type={showPassword ? 'text' : 'password'}
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              setError('');
-            }}
-            placeholder="Enter shared password"
-            className="h-11 pr-11 bg-paper border-rule-strong text-ink placeholder:text-ink-3"
-            autoCapitalize="none"
-            autoCorrect="off"
-            spellCheck={false}
-            required
-          />
-          <button
-            type="button"
-            onClick={() => setShowPassword((shown) => !shown)}
-            aria-label={showPassword ? 'Hide password' : 'Show password'}
-            aria-pressed={showPassword}
-            className="absolute inset-y-0 right-0 flex w-11 items-center justify-center rounded-r-md text-ink-2 hover:text-ink focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-          >
-            {showPassword ? (
-              <EyeOff className="h-4 w-4" aria-hidden />
-            ) : (
-              <Eye className="h-4 w-4" aria-hidden />
-            )}
-          </button>
-        </div>
+        <input
+          id="password"
+          type={showPassword ? 'text' : 'password'}
+          value={password}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setError('');
+          }}
+          placeholder="Password"
+          className="field h-12 w-full rounded-xl pl-4 pr-12 text-[0.9375rem] text-ink placeholder:text-ink-3"
+          autoCapitalize="none"
+          autoCorrect="off"
+          spellCheck={false}
+          autoComplete="current-password"
+          required
+        />
+        <button
+          type="button"
+          onClick={() => setShowPassword((shown) => !shown)}
+          aria-label={showPassword ? 'Hide password' : 'Show password'}
+          aria-pressed={showPassword}
+          className="absolute inset-y-0 right-0 flex w-12 items-center justify-center rounded-r-xl text-ink-3 hover:text-ink focus-visible:outline-none"
+        >
+          {showPassword ? <EyeOff className="h-[18px] w-[18px]" aria-hidden /> : <Eye className="h-[18px] w-[18px]" aria-hidden />}
+        </button>
       </div>
 
-      {/* Error message */}
       {error && (
-        <p className="text-sm text-danger bg-paper-2 rounded-lg px-3 py-2">
+        <p role="alert" className="-mt-2 rounded-xl bg-[oklch(0.97_0.02_25)] px-3.5 py-2.5 text-[0.8125rem] leading-snug text-danger">
           {error}
         </p>
       )}
 
-      {/* Submit */}
-      <Button
+      <button
         type="submit"
         disabled={loading || !selectedUser}
-        className="w-full h-11 btn-primary font-medium"
-        size="lg"
+        className="h-12 w-full rounded-xl bg-ink text-[0.9375rem] font-medium text-paper transition-[background-color,transform] duration-200 hover:bg-[oklch(0.3_0.03_230)] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40"
       >
-        {loading ? 'Signing in...' : 'Sign In'}
-      </Button>
+        {loading ? 'Signing in…' : 'Continue'}
+      </button>
     </form>
   );
 }
