@@ -1,34 +1,23 @@
 import Image from 'next/image';
 import { LoginForm } from '@/components/auth/LoginForm';
 
-export const metadata = {
-  title: 'Sign In',
-};
+export const metadata = { title: 'Sign in' };
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12">
-      <div className="glass-light rounded-2xl shadow-xl w-full max-w-lg p-6 sm:p-8">
-        {/* Logo */}
-        <div className="flex justify-center mb-6">
-          <Image
-            src="/images/JEDeye_transparent_logo.png"
-            alt="JEDeye"
-            width={160}
-            height={48}
-            priority
-          />
+    <main className="grid min-h-screen place-items-center px-4 py-12">
+      <div className="w-full max-w-lg">
+        <div className="mb-8 flex items-center gap-3">
+          <Image src="/images/JEDeye_transparent_logo.png" alt="" width={32} height={32} priority />
+          <span className="font-display text-xl font-semibold">JEDeye</span>
         </div>
-
-        <h1 className="text-xl font-bold text-slate-800 text-center mb-1">
-          Investor Demo
-        </h1>
-        <p className="text-sm text-slate-500 text-center mb-8">
-          Select your profile and enter the shared password
-        </p>
-
-        <LoginForm />
+        <p className="eyebrow">Investor review</p>
+        <h1 className="font-display mt-3 text-h2 font-medium">Sign in to continue.</h1>
+        <p className="mt-2 text-ink-2">Choose your profile and enter the shared password.</p>
+        <div className="mt-8 rule-top pt-8">
+          <LoginForm />
+        </div>
       </div>
-    </div>
+    </main>
   );
 }

@@ -1,440 +1,276 @@
-import type { SolutionCardContent, EngineCardContent } from '@/types';
+/**
+ * All page copy, metrics and media references. Every number here is traceable to
+ * a results file in the JEDeye monorepo (see `source` fields); update the source
+ * when you update the number.
+ */
 
-// =============================================================================
-// Hero Section Content
-// =============================================================================
+export type Clip = {
+  /** Basename under /public/media, without extension. */
+  id: string;
+  /** Intrinsic aspect ratio of the encoded clip, width / height. */
+  ratio: number;
+  alt: string;
+};
 
-export const heroContent = {
-    badge: 'Coming Soon',
-    headline: 'JEDeye',
-    subheadline_top: 'The Operating System for Intelligent Surgery',
-    description:
-        'JEDeye is the Intra-operative Brain for laparoscopic surgery — overlaying real-time 3D intelligence, predictive safety, and automated logistics onto the surgical field. No new hardware required.',
-    primaryCta: 'Join the Waitlist',
-    secondaryCta: 'Learn More',
+export const nav = [
+  { href: '#modules', label: 'Modules' },
+  { href: '#evidence', label: 'Evidence' },
+  { href: '#business', label: 'Business' },
+  { href: '#team', label: 'Team' },
+] as const;
+
+export const hero = {
+  eyebrow: 'Investor review · October 2026',
+  brand: 'JEDeye',
+  headline: 'Surgical intelligence you can measure.',
+  lede:
+    'JEDeye reads the laparoscopic video every operating room already produces and turns it into phase recognition, remaining-time prediction, instrument analytics and a physics-based digital twin. No new hardware, no new workflow.',
+  primaryCta: { label: 'Request a pilot', href: '#contact' },
+  secondaryCta: { label: 'See the evidence', href: '#evidence' },
+  clip: {
+    id: 'twin_orbit',
+    ratio: 960 / 540,
+    alt: 'Orbit around the photoreal digital twin of a liver and gallbladder reconstructed from laparoscopic video.',
+  } satisfies Clip,
+  clipCaption: {
+    label: 'Built from video.',
+    text: 'The deformable digital twin JEDeye reconstructs from Cholec80 video 75, orbited in real time.',
+    source: 'Nico/perception/renders/blender_twin · 2026-10-07',
+  },
+  facts: [
+    { value: '89.2', unit: '%', label: 'phase recognition accuracy', note: 'Cholec80, 32 held-out videos' },
+    { value: '4.3', unit: 'min', label: 'remaining-time error (MAE)', note: 'same test set, offline model' },
+    { value: '6.3', unit: 'mm', label: 'depth RMSE, zero-shot', note: 'SCARED benchmark' },
+  ],
 } as const;
 
-// =============================================================================
-// About Section Content
-// =============================================================================
-
-export const aboutContent = {
-    heading: 'What is JEDeye?',
-    paragraphs: [
-        'JEDeye is a hardware-agnostic, AI-driven Software as a Medical Device (SaMD) that transforms standard 2D laparoscopic video into a 3D navigational environment with predictive safety and logistical capabilities — delivering Level 4 surgical assistance: Context Awareness, Perception, and Decision Support.',
-        'Unlike legacy navigation systems that require proprietary, capital-intensive hardware towers, JEDeye integrates with your existing surgical stacks (Stryker, Storz, Olympus) via a hybrid edge-cloud architecture — bringing real-time intelligence to the OR without hardware upgrades.',
-    ],
-    stats: [
-        { value: '$46/min', label: 'Average OR operating cost', source: 'Literature synthesis' },
-        { value: '$230K', label: 'Potential savings per OR/year', source: 'Based on 5 min/case efficiency gain' },
-        { value: '$10.1M', label: 'Single bile duct injury verdict', source: 'Georgia Court of Appeals' },
-    ],
-    positioning:
-        'Most surgical AI is retrospective analytics — dashboards nobody reads. JEDeye delivers real-time assurance: the software upgrade for thousands of legacy endoscopic towers already installed worldwide.',
+export const modules = {
+  eyebrow: 'What the system sees',
+  heading: 'Six models, one video feed.',
+  intro:
+    'Each module is trained and tested separately on public surgical datasets, then run together on the same frames. The numbers below are from held-out test videos, not training data.',
+  items: [
+    {
+      n: '01',
+      name: 'Segmentation',
+      claim: 'Labels anatomy and instruments on every frame.',
+      detail:
+        'Liver, gallbladder, cystic structures and six tool classes, segmented at video rate. This is the ground layer every other module reads.',
+      stat: { value: '0.98', label: 'tool mask mAP50' },
+      figure: { src: '/media/fig_seg.webp', ratio: 1720 / 480, alt: 'Three frames with anatomy and instrument segmentation masks.' },
+    },
+    {
+      n: '02',
+      name: 'Phase recognition',
+      claim: 'Knows which step of the operation is happening.',
+      detail:
+        'A bidirectional Mamba sequence model over ImageNet features recognises the seven phases of cholecystectomy. The live (causal) variant runs during surgery at 87.1%.',
+      stat: { value: '89.2%', label: 'accuracy, +10 pts over the 3D-CNN baseline' },
+    },
+    {
+      n: '03',
+      name: 'Remaining time',
+      claim: 'Predicts minutes to close, with calibrated uncertainty.',
+      detail:
+        'Phase-conditioned prediction with an evidential head. Error shrinks to 2.9 min in the middle of the case, where scheduling decisions are made.',
+      stat: { value: '4.52 min', label: 'MAE for the live model' },
+      figure: { src: '/media/chart_hero_prediction.webp', ratio: 2071 / 871, alt: 'Predicted versus true remaining time over a surgery.' },
+    },
+    {
+      n: '04',
+      name: 'Digital twin',
+      claim: 'Rebuilds the scene in 3D and simulates tissue physics.',
+      detail:
+        'Monocular depth, 4D Gaussian splats and a SOFA finite-element liver and gallbladder, driven by the video. 776 frames simulated at 46 fps.',
+      stat: { value: '2.65 mm', label: 'Chamfer distance to CT-derived ground truth' },
+      clip: { id: 'fourdgs_orbit', ratio: 854 / 480, alt: 'Moving orbit through the 4D Gaussian-splat reconstruction of the scene.' } satisfies Clip,
+    },
+    {
+      n: '05',
+      name: 'Instrument tracking',
+      claim: 'Tracks tool tips in 2D and lifts them into 3D.',
+      detail:
+        'Tip trajectories give economy of motion, smoothness and camera handling per phase: the raw material for objective skill scores.',
+      stat: { value: '98.5%', label: 'instrument role identified correctly' },
+      figure: { src: '/media/tracking_sample.webp', ratio: 2640 / 944, alt: 'A frame with tracked tool tips, their 2D paths and 3D paths.' },
+    },
+    {
+      n: '06',
+      name: 'Navigation',
+      claim: 'Projects hidden structures onto the surgeon’s view.',
+      detail:
+        'Registers an organ model to the live scene and draws tumour margins and cut distances on the video. Concept stage: shown with an atlas model, not patient CT.',
+      stat: { value: '0.8 mm', label: 'median target displacement over a clip' },
+      figure: { src: '/media/surgps_frame.webp', ratio: 1200 / 674, alt: 'Endoscopic view with a projected tumour, margin ring and distance read-out.' },
+      concept: true,
+    },
+  ],
 } as const;
 
-// =============================================================================
-// Demo Section Content
-// =============================================================================
+export const timeline = {
+  eyebrow: 'Live read-out',
+  heading: 'One surgery, second by second.',
+  intro:
+    'Drag through a held-out test case. The top band is the phase the model recognised; the curve is its remaining-time prediction with a 95% band, against what actually happened.',
+  dataUrl: '/data/video49_timeline.json',
+  source: 'time_predictor · causal model · Cholec80 video 49',
+} as const;
+
+export const evidence = {
+  eyebrow: 'Evidence',
+  heading: 'Inspect the outputs.',
+  intro: 'Each panel is a real model output on public surgical video, trimmed and re-encoded for the web. Nothing is staged.',
+  tabs: [
+    {
+      id: 'segmentation',
+      label: 'Segmentation',
+      title: 'Original against segmented, same frames.',
+      text: 'Drag the divider. Frame for frame, the same 15 seconds with the model’s labels drawn on top.',
+      source: 'nnU-Net (CholecSeg8k) · Cholec80 video 75 · frames 511–870',
+      legend: [
+        ['Liver', '#ff7272'],
+        ['Gallbladder', '#ffa0a5'],
+        ['Fat', '#bab74b'],
+        ['Connective tissue', '#ff5500'],
+        ['Grasper', '#aaff00'],
+        ['L-hook', '#a9ffb8'],
+      ],
+      kind: 'compare',
+      a: { id: 'seg_original', ratio: 854 / 480, alt: 'Original endoscopic video.' } satisfies Clip,
+      b: { id: 'seg_segmented', ratio: 854 / 480, alt: 'The same video with segmentation overlays.' } satisfies Clip,
+    },
+    {
+      id: 'twin',
+      label: 'Digital twin',
+      title: 'Physics that follows the video.',
+      text: 'The twin’s liver and gallbladder deform as instruments push on them. The heat-map shows displacement in millimetres.',
+      source: 'Nico/perception · SOFA + Unity HDRP · 2026-10-07',
+      kind: 'pair',
+      a: { id: 'hero_twin_vs_video', ratio: 1440 / 270, alt: 'Laparoscopic video on the left; the twin reconstructed from it on the right.' } satisfies Clip,
+      b: { id: 'twin_heatmap', ratio: 1200 / 338, alt: 'Digital twin with a liver displacement heat-map in millimetres.' } satisfies Clip,
+    },
+    {
+      id: 'tracking',
+      label: 'Instrument tracking',
+      title: 'From pixels to trajectories.',
+      text: 'Hook and grasper tips tracked on video, then plotted in 3D. Speed-coloured trails show how economically each tool moves.',
+      source: 'ScopeScore · CholecTrack20 videos 71 and 77',
+      kind: 'pair',
+      a: { id: 'tracking_3d', ratio: 1280 / 496, alt: 'Tracked tool tips beside their live 3D track.' } satisfies Clip,
+      b: { id: 'tip_trails', ratio: 854 / 480, alt: 'Speed-coloured instrument tip trail with the per-second speed read-out.' } satisfies Clip,
+    },
+    {
+      id: 'overwatch',
+      label: 'Real-time overwatch',
+      title: 'Continuous overwatch during the case.',
+      text: 'Instrument detection and annotation running on a live laparoscopic procedure, with cost, risk and schedule read-outs alongside the remaining-time estimate.',
+      source: 'JEDeye overwatch demo · institutional case',
+      kind: 'single',
+      a: { id: 'overwatch', ratio: 1280 / 720, alt: 'Live laparoscopic view with a detected stapler outlined and a side panel of cost, risk, remaining time and schedule.' } satisfies Clip,
+    },
+  ],
+} as const;
+
+export const metricsTable = {
+  eyebrow: 'Measurements',
+  heading: 'Every number, with its test.',
+  rows: [
+    { module: 'Phase recognition', metric: 'Accuracy (offline / live)', value: '89.2% / 87.1%', test: 'Cholec80, videos 49–80 held out', date: '2026-04' },
+    { module: 'Phase recognition', metric: 'Macro F1', value: '0.795', test: 'Same split', date: '2026-04' },
+    { module: 'Remaining time', metric: 'MAE (offline / live)', value: '4.28 / 4.52 min', test: 'Same split, 32 videos', date: '2026-04' },
+    { module: 'Remaining time', metric: 'MAE at 50–60% progress', value: '2.86 min', test: 'Live model', date: '2026-04' },
+    { module: 'Depth', metric: 'AbsRel / RMSE / δ<1.25', value: '0.080 / 6.3 mm / 95%', test: 'SCARED, zero-shot', date: '2026-07' },
+    { module: 'Reconstruction', metric: 'Chamfer / F1@5 mm', value: '2.65 mm / 86%', test: 'SCARED', date: '2026-07' },
+    { module: 'Digital twin', metric: 'Simulation rate', value: '46 fps', test: '776 frames, SOFA FEM', date: '2026-09' },
+    { module: 'Instrument tracking', metric: 'Role correct / tips in box', value: '98.5% / 58%', test: 'CholecTrack20', date: '2026-10' },
+    { module: 'Tool segmentation', metric: 'Mask mAP50', value: '0.98–0.99', test: 'Validation frames', date: '2026-10' },
+    { module: 'Navigation', metric: 'Landmark error (median)', value: '9 px · 0.23 cm', test: 'Video 75 clip, atlas model', date: '2026-10' },
+  ],
+  footnote:
+    'Offline models see the whole video; live models see only the past, as they would in the OR. Validation-frame metrics come from the training videos and are marked as such.',
+} as const;
+
+export const business = {
+  eyebrow: 'Business',
+  heading: 'Efficiency is the wedge. Assurance is the engine.',
+  levers: [
+    {
+      name: 'Time',
+      text: 'Predicted time-to-close feeds the OR board. Five minutes saved per case at $46 per OR minute is about $230K per room per year.',
+    },
+    {
+      name: 'Cost',
+      text: 'Instrument and consumable use counted from video, not by hand: automated cost-per-case and supply reporting.',
+    },
+    {
+      name: 'Risk',
+      text: 'Objective recording, skill metrics and complication signals. A single prevented bile-duct injury is worth more than a decade of licences.',
+    },
+  ],
+  whyNow: {
+    heading: 'Why now',
+    items: [
+      {
+        title: 'Training mandate',
+        text: 'By July 2028 the American Board of Surgery requires EPA data for every general-surgery resident. JEDeye generates it from the video.',
+      },
+      {
+        title: 'Insurer-funded recording',
+        text: 'Since January 2025 MedPro Group subsidises surgical video recording for liability reduction. Risk managers, not only CIOs, now have a budget line.',
+      },
+    ],
+  },
+  roadmap: {
+    heading: 'Roadmap',
+    items: [
+      { when: 'Done', what: 'Core pipeline on public data; TRL 5; peer-reviewed publication', status: 'done' },
+      { when: 'Now', what: 'Institutional data collection: 50+ cases per procedure, 200+ annotated hours', status: 'active' },
+      { when: 'Next', what: 'Multi-site pilots: residency EPA workflow and OR-efficiency workflow', status: 'next' },
+      { when: 'Then', what: 'FDA 510(k) for time-critical safety claims; Phase 1 ships as decision support', status: 'next' },
+      { when: 'Launch', what: 'SaaS at $100K per OR per year, sold through risk and quality budgets', status: 'next' },
+    ],
+  },
+} as const;
+
+export const team = {
+  eyebrow: 'Team',
+  heading: 'Surgeons and engineers in the same lab.',
+  members: [
+    { name: 'Ali Tavakkoli, MD', role: 'Chief and Professor of Surgery', org: 'Mass General Brigham · Harvard Medical School', image: '/images/team/AT.jpg' },
+    { name: 'Farhad R. Nezami, PhD', role: 'Assistant Professor of Surgery', org: 'MIT · Mass General Brigham · Harvard Medical School', image: '/images/team/FRN.webp' },
+    { name: 'Ali Homaei, MD, MBA', role: 'Postdoctoral Fellow in Surgery', org: 'Mass General Brigham · Harvard Medical School', image: '/images/team/AH.jpg' },
+  ],
+  affiliations: [
+    { name: 'Harvard Medical School', src: '/images/HMS.jpg', width: 220, height: 48 },
+    { name: 'Mass General Brigham', src: '/images/MGB.png', width: 200, height: 48 },
+  ],
+} as const;
+
+export const closing = {
+  waitlist: {
+    eyebrow: 'Updates',
+    heading: 'Hear when results land.',
+    text: 'Occasional notes on new validation results and pilot openings. No marketing cadence.',
+    successMessage: 'You are on the list.',
+    submitButton: 'Keep me posted',
+  },
+  contact: {
+    eyebrow: 'Contact',
+    heading: 'Talk to the founders.',
+    text: 'Pilots, data partnerships, investment. We reply ourselves.',
+    successMessage: 'Sent. We will reply from a personal address.',
+    submitButton: 'Send',
+  },
+} as const;
+
+// Kept for the API routes and forms that still import these names.
+export const waitlistContent = closing.waitlist;
+export const contactContent = closing.contact;
 
 export const demoContent = {
-    heading: 'See It In Action',
-    intro: "Explore JEDeye's AI capabilities across multiple demos — from real-time segmentation to 3D reconstruction.",
-    legendTitle: 'Segmentation Key',
-    labels: {
-        original: 'Original Endoscopy',
-        segmentation: 'AI Segmentation',
-    },
-    fallback: {
-        loadError:
-            'Unable to load demo video. Please check your connection or contact us for a demonstration.',
-        autoplayBlocked: 'Tap to play demo',
-    },
-    slides: [
-        {
-            id: 'segmentation',
-            label: 'AI Segmentation',
-            description: "Drag the slider to compare original endoscopic footage with JEDeye's real-time semantic segmentation, identifying anatomical structures (liver, gallbladder, cystic duct) and surgical instruments.",
-        },
-        {
-            id: 'realtime-overwatch',
-            label: 'Real-time Overwatch',
-            description: 'JEDeye\'s real-time surgical overwatch — continuous instrument detection and annotation during a live laparoscopic procedure.',
-        },
-        {
-            id: '3d-reconstruction',
-            label: '3D Reconstruction',
-            description: 'Watch JEDeye convert standard 2D endoscopic video into a navigable 3D digital twin using Gaussian splatting technology.',
-        },
-        {
-            id: 'pitch-video',
-            label: 'Pitch Video',
-            description: 'An 8-minute overview of JEDeye — the problem, the technology, and the vision for intelligent surgery.',
-        },
-    ],
-} as const;
-
-// =============================================================================
-// Solutions Section Content
-// =============================================================================
-
-export const solutionsContent = {
-    heading: 'Three Levers of Value',
-    subheading: 'Efficiency is the wedge — assurance is the engine. JEDeye delivers ROI across time, cost, and risk.',
-    cards: [
-        {
-            id: 'time',
-            icon: 'icon-or',
-            title: 'Time',
-            description:
-                'Predictive scheduling and turnover optimization. Five minutes saved per case at $46/min = $230K per OR per year.',
-            benefits: [
-                'Predictive "Time to Close" updates the OR schedule board in real-time',
-                'Automated phase recognition tracks case progress against historical benchmarks',
-                'Turnover prediction reduces idle time between procedures',
-                'Works with existing Stryker, Storz, and Olympus stacks — no new hardware',
-            ],
-        },
-        {
-            id: 'cost',
-            icon: 'icon-insurance',
-            title: 'Cost',
-            description:
-                'Visual supply tracking and automated billing. Every clip, staple, and sponge counted by AI — not by hand.',
-            benefits: [
-                'YOLO-based instrument detection generates cost reports automatically',
-                'Vision-based gauze counter eliminates expensive RFID/barcode sponges',
-                'Real-time cost-per-case forecast vs. preference card baseline',
-                'Second revenue lever: de-identified benchmarking data for device companies',
-            ],
-        },
-        {
-            id: 'risk',
-            icon: 'icon-education',
-            title: 'Risk',
-            description:
-                'Complication prediction and training compliance. A single prevented "never event" pays for the platform for years.',
-            benefits: [
-                'Risk engine predicts hemorrhage probability — auto-alerts Blood Bank and ICU',
-                'Surgeon fatigue and tremor detection with real-time safety threshold alerts',
-                'Black box surgical recording for objective documentation and liability protection',
-                'ABS EPA-compliant competency tracking for residency training programs',
-            ],
-        },
-    ] as SolutionCardContent[],
-} as const;
-
-// =============================================================================
-// How It Works Section Content
-// =============================================================================
-
-export const howItWorksContent = {
-    heading: 'The Technology',
-    subheading:
-        'Four synchronized intelligence modules processing surgical data in real-time.',
-    engines: [
-        {
-            id: 'vision',
-            icon: 'icon-vision',
-            title: 'The "Eyes"',
-            description:
-                'Computer Vision — real-time pixel-level analysis of the surgical field using state-of-the-art deep learning models.',
-            capabilities: [
-                'Semantic segmentation of anatomy & tools',
-                'Instrument detection & inventory tracking',
-                'Surgical phase recognition & workflow context',
-            ],
-        },
-        {
-            id: 'spatial',
-            icon: 'icon-spatial',
-            title: 'The "Map"',
-            description:
-                '3D Reconstruction & Navigation — converts monocular 2D video into a navigable 3D digital twin with pre-op CT overlay.',
-            capabilities: [
-                'Real-time 3D scene reconstruction from monocular video',
-                '"Body GPS" — CT-to-video registration for deep structure localization',
-                '"X-ray vision" for hidden anatomy (tumors, ducts, vessels)',
-            ],
-        },
-        {
-            id: 'scoring',
-            icon: 'icon-scoring',
-            title: 'The "Coach"',
-            description:
-                'Surgeon Performance & Safety — continuous monitoring of dexterity, fatigue, and foreign object retention.',
-            capabilities: [
-                'Tremor & fatigue detection with safety threshold alerts',
-                'Kinematic analysis of instrument path efficiency & agility scoring',
-                'Vision-based gauze counter to prevent retained foreign objects',
-            ],
-        },
-        {
-            id: 'interaction',
-            icon: 'icon-interaction',
-            title: 'The "Manager"',
-            description:
-                'Operational Intelligence — automates OR logistics from scheduling and risk prediction to billing.',
-            capabilities: [
-                'Predictive "Time to Close" for OR schedule optimization',
-                'Complication risk engine with auto Blood Bank / ICU alerts',
-                'Automated consumable-based billing from visual detection',
-            ],
-        },
-    ] as EngineCardContent[],
-} as const;
-
-// =============================================================================
-// Pipeline Section Content (Under the Hood)
-// =============================================================================
-
-export const pipelineContent = {
-    heading: 'Under the Hood',
-    subheading:
-        'Eight specialized AI modules working in concert — from pixel-level perception to real-time 3D surgical intelligence.',
-    modules: [
-        {
-            id: 'pixelsense',
-            icon: 'ScanEye',
-            title: 'PixelSense',
-            description:
-                'Real-time pixel-level scene understanding — every structure labeled, every boundary mapped.',
-            capabilities: [
-                'Multi-class semantic map of anatomy and instruments',
-                'Purpose-built deep learning architecture for surgical scenes',
-                'Frame-by-frame anatomical awareness',
-            ],
-        },
-        {
-            id: 'tiptrace',
-            icon: 'Crosshair',
-            title: 'TipTrace',
-            description:
-                'Sub-pixel instrument tip localization and motion path tracking across the surgical field.',
-            capabilities: [
-                'Keypoint detection of tool tip positions',
-                'Temporal trajectory tracing',
-                'Kinematic analysis for dexterity scoring',
-            ],
-        },
-        {
-            id: 'phasenet',
-            icon: 'Brain',
-            title: 'PhaseNet',
-            description:
-                'Automatic recognition of surgical workflow phases from video — the context engine for every downstream module.',
-            capabilities: [
-                'Temporal deep learning on multi-frame video clips',
-                'Multi-phase surgical workflow classification',
-                'High-accuracy real-time phase prediction',
-            ],
-        },
-        {
-            id: 'toolwatch',
-            icon: 'Wrench',
-            title: 'ToolWatch',
-            description:
-                'Real-time instrument detection and counting — automated inventory from video alone.',
-            capabilities: [
-                'Real-time detection of surgical tools',
-                'Instrument presence/absence tracking',
-                'Automated supply usage reporting',
-            ],
-        },
-        {
-            id: 'anatomymap',
-            icon: 'Bone',
-            title: 'AnatomyMap',
-            description:
-                'Patient-specific 3D organ models extracted from pre-operative CT — the anatomical ground truth.',
-            capabilities: [
-                'Automated organ model extraction from CT scans',
-                '3D mesh generation for surgical planning',
-                'Patient-specific anatomy ready for intra-op overlay',
-            ],
-        },
-        {
-            id: 'depthforge',
-            icon: 'Box',
-            title: 'DepthForge',
-            description:
-                'Transforms standard 2D endoscopic video into a navigable 3D digital twin.',
-            capabilities: [
-                'Monocular depth estimation from standard endoscopes',
-                'Volumetric 3D scene reconstruction',
-                'Per-frame point cloud generation',
-            ],
-        },
-        {
-            id: 'timesync',
-            icon: 'Clock',
-            title: 'TimeSync',
-            description:
-                'Predicts remaining surgery time with calibrated uncertainty — powering OR scheduling in real-time.',
-            capabilities: [
-                'Phase-conditioned temporal deep learning',
-                'Sub-4 minute mean prediction error',
-                'Built-in uncertainty estimation',
-            ],
-        },
-        {
-            id: 'fusionlayer',
-            icon: 'Layers',
-            title: 'FusionLayer',
-            description:
-                'Overlays 3D CT anatomy onto the live 2D surgical video — X-ray vision for hidden structures.',
-            capabilities: [
-                'Rigid + non-rigid CT-to-video alignment',
-                'Per-frame organ deformation tracking',
-                'Real-time organ mesh overlay on endoscopic view',
-            ],
-        },
-    ] as EngineCardContent[],
-} as const;
-
-// =============================================================================
-// Why Now Section Content
-// =============================================================================
-
-export const whyNowContent = {
-    heading: 'Why Now',
-    subheading: 'Two forcing functions are creating a time-sensitive market opening.',
-    drivers: [
-        {
-            id: 'epa',
-            title: 'ABS EPA Training Mandate',
-            description: 'By July 2028, the American Board of Surgery requires Entrustable Professional Activities (EPA) data for all general surgery residents. Hundreds of thousands of assessments are already being collected nationally — but manual entry is unsustainable at scale.',
-            highlight: 'JEDeye automates EPA compliance from surgical video.',
-            timeline: '2023: EPAs go live | 2025: National rollout | 2028: Mandatory for board qualification',
-        },
-        {
-            id: 'insurer',
-            title: 'Insurer-Subsidized Black Box Adoption',
-            description: 'In January 2025, MedPro Group (Berkshire Hathaway) partnered with SST to subsidize surgical video recording for liability reduction. The signal is clear: insurers will pay for surgical risk assurance technology.',
-            highlight: 'We sell to risk managers and captives — not just CIOs.',
-            timeline: 'Training mandates + insurer subsidies = a time-sensitive opening',
-        },
-    ],
-} as const;
-
-// =============================================================================
-// Roadmap Section Content
-// =============================================================================
-
-export const roadmapContent = {
-    heading: 'Roadmap',
-    subheading: 'TRL 5 validated — our path from MVP to market as the operating system for intelligent surgery.',
-    milestones: [
-        {
-            id: 'mvp',
-            label: 'MVP Complete',
-            description: 'Core AI pipeline functional — real-time segmentation, 3D reconstruction, and live demo. TRL 5 validated. Published in Nature Scientific Reports.',
-            status: 'completed' as const,
-        },
-        {
-            id: 'data',
-            label: 'Institutional Data Collection',
-            description: '50+ cases per procedure type, 200+ hours of annotated surgical video across cholecystectomy, appendectomy, and sleeve gastrectomy.',
-            status: 'active' as const,
-        },
-        {
-            id: 'pilots',
-            label: 'Multi-Site Pilots',
-            description: 'Residency program workflow pilot (EPA evidence drafts) and efficiency workflow pilot (turnover prediction). PSO-ready architecture.',
-            status: 'upcoming' as const,
-        },
-        {
-            id: 'fda',
-            label: 'FDA 510(k) Submission',
-            description: 'Phase 1 ships as Clinical Decision Support (no FDA needed). Phase 2 pursues clearance for time-critical safety claims.',
-            status: 'upcoming' as const,
-        },
-        {
-            id: 'launch',
-            label: 'Market Launch',
-            description: 'Commercial deployment at $100K/OR/year SaaS. Insurance-aligned buying path targeting risk managers.',
-            status: 'upcoming' as const,
-        },
-    ],
-} as const;
-
-// =============================================================================
-// Team Section Content
-// =============================================================================
-
-export const teamContent = {
-    heading: 'Our Team',
-    subheading: 'Built by surgeons, engineers, and researchers at the intersection of AI and medicine.',
-    members: [
-        {
-            id: 'founder-1',
-            name: 'Ali Tavakkoli, MD',
-            title: 'Chief, Professor of Surgery',
-            credential: 'Mass General Brigham, Harvard Medical School',
-            image: '/images/team/AT.jpg' as string | null,
-            linkedin: null as string | null,
-        },
-        {
-            id: 'founder-2',
-            name: 'Farhad R. Nezami, PhD',
-            title: 'Assistant Professor of Surgery',
-            credential: 'MIT, Mass General Brigham, Harvard Medical School',
-            image: '/images/team/FRN.webp' as string | null,
-            linkedin: null as string | null,
-        },
-        {
-            id: 'founder-3',
-            name: 'Ali Homaei, MD, MBA',
-            title: 'Postdoctoral Fellow of Surgery',
-            credential: 'Mass General Brigham, Harvard Medical School',
-            image: '/images/team/AH.jpg' as string | null,
-            linkedin: null as string | null,
-        },
-    ],
-} as const;
-
-// =============================================================================
-// Partners Section Content
-// =============================================================================
-
-export const partnersContent = {
-    label: 'Affiliated with',
-    logos: [
-        {
-            name: 'Harvard Medical School',
-            src: '/images/HMS.jpg' as string | null,
-            width: 220,
-            height: 48,
-        },
-        {
-            name: 'Mass General Brigham',
-            src: '/images/MGB.png' as string | null,
-            width: 200,
-            height: 48,
-        },
-    ],
-} as const;
-
-// =============================================================================
-// Waitlist Section Content
-// =============================================================================
-
-export const waitlistContent = {
-    heading: 'Be the First to Know',
-    subheading:
-        "Join our waitlist to receive updates on JEDeye's launch and early access opportunities.",
-    successMessage: "Thank you! You're on the waitlist.",
-    submitButton: 'Join Waitlist',
-} as const;
-
-// =============================================================================
-// Contact Section Content
-// =============================================================================
-
-export const contactContent = {
-    heading: 'Get in Touch',
-    subheading:
-        "Have questions about JEDeye or interested in partnership opportunities? We'd love to hear from you.",
-    successMessage: "Message sent! We'll be in touch soon.",
-    submitButton: 'Send Message',
+  labels: { original: 'Original endoscopy', segmentation: 'AI segmentation' },
+  fallback: {
+    loadError: 'Unable to load the demo video. Check your connection or contact us for a demonstration.',
+    autoplayBlocked: 'Tap to play',
+  },
 } as const;

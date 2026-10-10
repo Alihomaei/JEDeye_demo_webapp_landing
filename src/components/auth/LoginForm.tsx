@@ -84,7 +84,7 @@ export function LoginForm() {
     <form onSubmit={handleSubmit} className="space-y-8">
       {/* User selection cards */}
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-3">
+        <label className="block text-sm font-medium text-ink mb-3">
           Select your profile
         </label>
         <div className="grid grid-cols-3 gap-3 sm:gap-4">
@@ -96,10 +96,10 @@ export function LoginForm() {
                 setSelectedUser(user.id);
                 setError('');
               }}
-              className={`glass-card rounded-xl p-3 sm:p-4 text-center transition-all duration-200 cursor-pointer ${
+              className={`rounded-md border border-rule bg-paper p-3 sm:p-4 text-center transition-all duration-200 cursor-pointer ${
                 selectedUser === user.id
-                  ? 'ring-2 ring-[hsl(187,100%,33%)] shadow-lg scale-[1.02]'
-                  : 'hover:shadow-md'
+                  ? 'ring-2 ring-accent'
+                  : 'hover:bg-paper-2'
               }`}
             >
               <div className="relative w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 sm:mb-3 rounded-full overflow-hidden">
@@ -111,10 +111,10 @@ export function LoginForm() {
                   sizes="80px"
                 />
               </div>
-              <p className="text-xs sm:text-sm font-semibold text-slate-800 leading-tight">
+              <p className="text-xs sm:text-sm font-semibold text-ink leading-tight">
                 {user.name}
               </p>
-              <p className="text-[10px] sm:text-xs text-slate-500 mt-0.5 leading-tight">
+              <p className="text-[10px] sm:text-xs text-ink-2 mt-0.5 leading-tight">
                 {user.title}
               </p>
             </button>
@@ -126,7 +126,7 @@ export function LoginForm() {
       <div>
         <label
           htmlFor="password"
-          className="block text-sm font-medium text-slate-700 mb-2"
+          className="block text-sm font-medium text-ink mb-2"
         >
           Password
         </label>
@@ -140,7 +140,7 @@ export function LoginForm() {
               setError('');
             }}
             placeholder="Enter shared password"
-            className="h-11 pr-11 bg-white/60 border-slate-300 text-slate-800 placeholder:text-slate-400"
+            className="h-11 pr-11 bg-paper border-rule-strong text-ink placeholder:text-ink-3"
             autoCapitalize="none"
             autoCorrect="off"
             spellCheck={false}
@@ -151,7 +151,7 @@ export function LoginForm() {
             onClick={() => setShowPassword((shown) => !shown)}
             aria-label={showPassword ? 'Hide password' : 'Show password'}
             aria-pressed={showPassword}
-            className="absolute inset-y-0 right-0 flex w-11 items-center justify-center rounded-r-md text-slate-500 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            className="absolute inset-y-0 right-0 flex w-11 items-center justify-center rounded-r-md text-ink-2 hover:text-ink focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           >
             {showPassword ? (
               <EyeOff className="h-4 w-4" aria-hidden />
@@ -164,7 +164,7 @@ export function LoginForm() {
 
       {/* Error message */}
       {error && (
-        <p className="text-sm text-red-600 bg-red-50/80 rounded-lg px-3 py-2">
+        <p className="text-sm text-danger bg-paper-2 rounded-lg px-3 py-2">
           {error}
         </p>
       )}
@@ -173,7 +173,7 @@ export function LoginForm() {
       <Button
         type="submit"
         disabled={loading || !selectedUser}
-        className="w-full h-11 bg-[hsl(187,100%,33%)] hover:bg-[hsl(187,100%,28%)] text-white font-medium"
+        className="w-full h-11 btn-primary font-medium"
         size="lg"
       >
         {loading ? 'Signing in...' : 'Sign In'}

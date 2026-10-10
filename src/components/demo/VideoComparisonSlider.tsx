@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { ReactCompareSlider, ReactCompareSliderHandle } from 'react-compare-slider';
 import { useVideoSync } from '@/hooks/useVideoSync';
-import { useReducedMotion } from 'framer-motion';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { cn } from '@/lib/utils';
 import { demoContent } from '@/config/content';
 
@@ -136,8 +136,9 @@ export function VideoComparisonSlider({ className }: VideoComparisonSliderProps)
   if (prefersReducedMotion) {
     return (
       <div className={cn('relative aspect-video max-w-[900px] mx-auto rounded-xl overflow-hidden shadow-lg', className)}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/videos/demo-poster.jpg"
+          src="/media/seg_original_poster.webp"
           alt="Comparison of original surgical video and AI segmentation"
           className="w-full h-full object-cover"
         />
@@ -160,7 +161,8 @@ export function VideoComparisonSlider({ className }: VideoComparisonSliderProps)
       {/* Loading state */}
       {isLoading && (
         <div className="absolute inset-0 z-10 flex items-center justify-center bg-gray-900 rounded-xl">
-          <img src="/videos/demo-poster.jpg" alt="" className="absolute inset-0 w-full h-full object-cover opacity-50" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/media/seg_original_poster.webp" alt="" className="absolute inset-0 w-full h-full object-cover opacity-50" />
           <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent" />
         </div>
       )}
@@ -192,13 +194,13 @@ export function VideoComparisonSlider({ className }: VideoComparisonSliderProps)
               loop
               playsInline
               preload="auto"
-              poster="/videos/demo-poster.jpg"
+              poster="/media/seg_original_poster.webp"
               onCanPlay={handleMasterCanPlay}
               onError={handleError}
               className="w-full h-full object-cover"
             >
-              <source src="/videos/surgical-original.webm" type="video/webm" />
-              <source src="/videos/surgical-original.mp4" type="video/mp4" />
+              <source src="/media/seg_original.webm" type="video/webm" />
+              <source src="/media/seg_original.mp4" type="video/mp4" />
             </video>
             <VideoLabel position="left" text={demoContent.labels.original} />
           </div>
@@ -211,13 +213,13 @@ export function VideoComparisonSlider({ className }: VideoComparisonSliderProps)
               loop
               playsInline
               preload="auto"
-              poster="/videos/demo-poster.jpg"
+              poster="/media/seg_original_poster.webp"
               onCanPlay={handleSlaveCanPlay}
               onError={handleError}
               className="w-full h-full object-cover"
             >
-              <source src="/videos/surgical-segmentation.webm" type="video/webm" />
-              <source src="/videos/surgical-segmentation.mp4" type="video/mp4" />
+              <source src="/media/seg_segmented.webm" type="video/webm" />
+              <source src="/media/seg_segmented.mp4" type="video/mp4" />
             </video>
             <VideoLabel position="right" text={demoContent.labels.segmentation} />
           </div>

@@ -2,11 +2,14 @@
 
 import { useEffect, useState, useCallback, RefObject } from 'react';
 
-const DEFAULT_SYNC_THRESHOLD = 0.05; // 50ms
+/** Drift above this is corrected by seeking the slave. */
+const SEEK_THRESHOLD = 0.12;
+/** Drift above this (and below SEEK_THRESHOLD) is corrected by nudging playback rate. */
+const NUDGE_THRESHOLD = 0.02;
 
 export interface UseVideoSyncOptions {
-  syncThreshold?: number;  // Default: 0.05 (50ms)
-  enabled?: boolean;       // Default: true
+  syncThreshold?: number;
+  enabled?: boolean;
 }
 
 export interface UseVideoSyncReturn {
@@ -18,44 +21,56 @@ export interface UseVideoSyncReturn {
   restart: () => void;
 }
 
+/**
+ * Keeps two frame-aligned clips on the same timestamp. The master owns the
+ * loop; the slave is rewound with it and nudged (never seeked) for small drift,
+ * so the overlay never flickers mid-slide.
+ */
 export function useVideoSync(
   masterRef: RefObject<HTMLVideoElement | null>,
   slaveRef: RefObject<HTMLVideoElement | null>,
   options: UseVideoSyncOptions = {}
 ): UseVideoSyncReturn {
-  const { syncThreshold = DEFAULT_SYNC_THRESHOLD, enabled = true } = options;
-  
+  const { syncThreshold = SEEK_THRESHOLD, enabled = true } = options;
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [isSynced, setIsSynced] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     if (!enabled) return;
-    
+
     const master = masterRef.current;
     const slave = slaveRef.current;
     if (!master || !slave) return;
 
-    let animationId: number;
+    // The master loops; the slave follows it so both wrap on the same frame.
+    slave.loop = false;
+    let animationId = 0;
 
     const syncLoop = () => {
-      if (!master || !slave) return;
-      
-      const drift = Math.abs(master.currentTime - slave.currentTime);
+      const delta = master.currentTime - slave.currentTime; // >0: slave behind
+      const drift = Math.abs(delta);
       setIsSynced(drift <= syncThreshold);
-      
+
       if (drift > syncThreshold) {
         slave.currentTime = master.currentTime;
+        slave.playbackRate = 1;
+      } else if (drift > NUDGE_THRESHOLD) {
+        slave.playbackRate = delta > 0 ? 1.08 : 0.92;
+      } else {
+        slave.playbackRate = 1;
       }
-      
-      if (!master.paused) {
-        animationId = requestAnimationFrame(syncLoop);
-      }
+
+      if (slave.paused && !master.paused) slave.play().catch(() => undefined);
+      if (!master.paused) animationId = requestAnimationFrame(syncLoop);
     };
 
     const handlePlay = () => {
       setIsPlaying(true);
+      slave.currentTime = master.currentTime;
       slave.play().catch(setError);
+      cancelAnimationFrame(animationId);
       animationId = requestAnimationFrame(syncLoop);
     };
 
@@ -69,25 +84,19 @@ export function useVideoSync(
       slave.currentTime = master.currentTime;
     };
 
-    const handleEnded = () => {
-      if (master.loop) {
-        slave.currentTime = 0;
-        master.currentTime = 0;
+    // Slave reaches its end a hair before/after the master wraps: hold it on
+    // the last frame until the master comes back around, then rewind both.
+    const handleSlaveEnded = () => {
+      if (master.currentTime < 1) {
+        slave.currentTime = master.currentTime;
+        if (!master.paused) slave.play().catch(() => undefined);
       }
     };
 
-    // Handle buffering: when either video recovers, resume both
-    const handleCanPlayMaster = () => {
-      if (slave.paused && !master.paused) {
-        slave.play().catch(setError);
-      }
-    };
-
-    const handleCanPlaySlave = () => {
-      if (master.paused && !slave.paused) {
-        master.play().catch(setError);
-      }
+    // Buffering recovery: when either side can play again, keep them together.
+    const handleCanPlay = () => {
       if (!master.paused && slave.paused) {
+        slave.currentTime = master.currentTime;
         slave.play().catch(setError);
       }
     };
@@ -95,42 +104,37 @@ export function useVideoSync(
     master.addEventListener('play', handlePlay);
     master.addEventListener('pause', handlePause);
     master.addEventListener('seeked', handleSeeked);
-    master.addEventListener('ended', handleEnded);
-    master.addEventListener('canplay', handleCanPlayMaster);
-    slave.addEventListener('canplay', handleCanPlaySlave);
+    master.addEventListener('canplay', handleCanPlay);
+    slave.addEventListener('canplay', handleCanPlay);
+    slave.addEventListener('ended', handleSlaveEnded);
 
-    // If master is already playing when sync becomes enabled, start slave immediately
-    if (!master.paused) {
-      setIsPlaying(true);
-      slave.currentTime = master.currentTime;
-      if (slave.paused) {
-        slave.play().catch(setError);
-      }
-      animationId = requestAnimationFrame(syncLoop);
-    }
+    if (!master.paused) handlePlay();
 
     return () => {
       cancelAnimationFrame(animationId);
       master.removeEventListener('play', handlePlay);
       master.removeEventListener('pause', handlePause);
       master.removeEventListener('seeked', handleSeeked);
-      master.removeEventListener('ended', handleEnded);
-      master.removeEventListener('canplay', handleCanPlayMaster);
-      slave.removeEventListener('canplay', handleCanPlaySlave);
+      master.removeEventListener('canplay', handleCanPlay);
+      slave.removeEventListener('canplay', handleCanPlay);
+      slave.removeEventListener('ended', handleSlaveEnded);
     };
   }, [masterRef, slaveRef, syncThreshold, enabled]);
 
   const play = useCallback(async () => {
     const master = masterRef.current;
-    if (master) {
-      try {
-        await master.play();
-      } catch (err) {
-        setError(err as Error);
-        throw err;
-      }
+    const slave = slaveRef.current;
+    if (!master) return;
+    try {
+      // Start both from the first frame so the overlay lines up from the first scrub.
+      master.currentTime = 0;
+      if (slave) slave.currentTime = 0;
+      await master.play();
+    } catch (err) {
+      setError(err as Error);
+      throw err;
     }
-  }, [masterRef]);
+  }, [masterRef, slaveRef]);
 
   const pause = useCallback(() => {
     masterRef.current?.pause();

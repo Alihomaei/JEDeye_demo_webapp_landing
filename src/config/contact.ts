@@ -1,5 +1,5 @@
 export const contactInfo = {
-    email: 'frikhtegarnezami@bwh.harvard.edu',
+    email: 'atavakkoli@mgb.org',
     phone: '(+1) 617-525-3542',
     address: {
         street: '45 Francis Street',

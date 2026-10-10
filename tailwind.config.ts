@@ -1,138 +1,59 @@
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
-  darkMode: ['class'],
-  content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
+  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
-  	extend: {
-  		colors: {
-  			primary: {
-  				DEFAULT: 'hsl(var(--primary))',
-  				dark: '#00796B',
-  				light: '#B2EBF2',
-  				foreground: 'hsl(var(--primary-foreground))'
-  			},
-  			background: 'hsl(var(--background))',
-  			text: {
-  				primary: '#1E293B',
-  				secondary: '#64748B',
-  				muted: '#94A3B8'
-  			},
-  			success: '#10B981',
-  			error: '#EF4444',
-  			border: 'hsl(var(--border))',
-  			foreground: 'hsl(var(--foreground))',
-  			card: {
-  				DEFAULT: 'hsl(var(--card))',
-  				foreground: 'hsl(var(--card-foreground))'
-  			},
-  			popover: {
-  				DEFAULT: 'hsl(var(--popover))',
-  				foreground: 'hsl(var(--popover-foreground))'
-  			},
-  			secondary: {
-  				DEFAULT: 'hsl(var(--secondary))',
-  				foreground: 'hsl(var(--secondary-foreground))'
-  			},
-  			muted: {
-  				DEFAULT: 'hsl(var(--muted))',
-  				foreground: 'hsl(var(--muted-foreground))'
-  			},
-  			accent: {
-  				DEFAULT: 'hsl(var(--accent))',
-  				foreground: 'hsl(var(--accent-foreground))'
-  			},
-  			destructive: {
-  				DEFAULT: 'hsl(var(--destructive))',
-  				foreground: 'hsl(var(--destructive-foreground))'
-  			},
-  			input: 'hsl(var(--input))',
-  			ring: 'hsl(var(--ring))',
-  			chart: {
-  				'1': 'hsl(var(--chart-1))',
-  				'2': 'hsl(var(--chart-2))',
-  				'3': 'hsl(var(--chart-3))',
-  				'4': 'hsl(var(--chart-4))',
-  				'5': 'hsl(var(--chart-5))'
-  			}
-  		},
-  		fontFamily: {
-  			sans: [
-  				'Inter',
-  				'system-ui',
-  				'sans-serif'
-  			]
-  		},
-  		fontSize: {
-  			'hero-desktop': [
-  				'3.5rem',
-  				{
-  					lineHeight: '1.1',
-  					fontWeight: '700'
-  				}
-  			],
-  			'hero-mobile': [
-  				'2.25rem',
-  				{
-  					lineHeight: '1.2',
-  					fontWeight: '700'
-  				}
-  			],
-  			'section-desktop': [
-  				'2.25rem',
-  				{
-  					lineHeight: '1.2',
-  					fontWeight: '600'
-  				}
-  			],
-  			'section-mobile': [
-  				'1.75rem',
-  				{
-  					lineHeight: '1.3',
-  					fontWeight: '600'
-  				}
-  			]
-  		},
-  		spacing: {
-  			'section-desktop': '3.5rem',
-  			'section-mobile': '2rem'
-  		},
-  		maxWidth: {
-  			container: '1200px'
-  		},
-  		borderRadius: {
-  			lg: 'var(--radius)',
-  			xl: '0.75rem',
-  			'2xl': '1rem',
-  			md: 'calc(var(--radius) - 2px)',
-  			sm: 'calc(var(--radius) - 4px)'
-  		},
-  		boxShadow: {
-  			card: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
-  			'card-hover': '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)'
-  		},
-  		animation: {
-  			'fade-in-up': 'fadeInUp 0.5s ease-out'
-  		},
-  		keyframes: {
-  			fadeInUp: {
-  				'0%': {
-  					opacity: '0',
-  					transform: 'translateY(20px)'
-  				},
-  				'100%': {
-  					opacity: '1',
-  					transform: 'translateY(0)'
-  				}
-  			}
-  		}
-  	}
+    extend: {
+      colors: {
+        paper: { DEFAULT: 'oklch(from var(--paper) l c h / <alpha-value>)', 2: 'oklch(from var(--paper-2) l c h / <alpha-value>)', 3: 'oklch(from var(--paper-3) l c h / <alpha-value>)' },
+        ink: { DEFAULT: 'oklch(from var(--ink) l c h / <alpha-value>)', 2: 'oklch(from var(--ink-2) l c h / <alpha-value>)', 3: 'oklch(from var(--ink-3) l c h / <alpha-value>)' },
+        rule: { DEFAULT: 'var(--rule)', strong: 'var(--rule-strong)' },
+        accent: {
+          DEFAULT: 'oklch(from var(--accent) l c h / <alpha-value>)',
+          strong: 'var(--accent-strong)',
+          soft: 'var(--accent-soft)',
+          ink: 'var(--accent-ink)',
+        },
+        ok: 'var(--ok)',
+        warn: 'var(--warn)',
+        danger: 'var(--danger)',
+        // shadcn-compatible aliases used by ui/input, ui/button, ui/textarea
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+        primary: { DEFAULT: 'hsl(var(--primary))', foreground: 'hsl(var(--primary-foreground))' },
+        muted: { DEFAULT: 'var(--paper-2)', foreground: 'hsl(var(--muted-foreground))' },
+        destructive: {
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
+        },
+        secondary: { DEFAULT: 'var(--paper-2)', foreground: 'var(--ink)' },
+        accentui: { DEFAULT: 'var(--paper-2)', foreground: 'var(--ink)' },
+        card: { DEFAULT: 'var(--paper)', foreground: 'var(--ink)' },
+        error: 'var(--danger)',
+        success: 'var(--ok)',
+      },
+      fontFamily: {
+        sans: ['var(--font-body)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        display: ['var(--font-display)', 'Georgia', 'serif'],
+        mono: ['var(--font-body)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+      },
+      fontSize: {
+        // Five steps, ≥1.25 ratio; headings fluid, body fixed.
+        xs: ['0.75rem', { lineHeight: '1.4' }],
+        sm: ['0.875rem', { lineHeight: '1.5' }],
+        base: ['1rem', { lineHeight: '1.6' }],
+        lg: ['1.25rem', { lineHeight: '1.45' }],
+        h2: ['clamp(1.75rem, 1.3rem + 1.6vw, 2.5rem)', { lineHeight: '1.12' }],
+        display: ['clamp(2.5rem, 1.6rem + 3.4vw, 4.5rem)', { lineHeight: '1.02' }],
+      },
+      borderRadius: { lg: 'var(--radius)', md: 'calc(var(--radius) - 2px)', sm: 'calc(var(--radius) - 4px)' },
+      maxWidth: { measure: 'var(--measure)' },
+    },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [],
 };
 
 export default config;
