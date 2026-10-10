@@ -5,6 +5,7 @@ import { evidence } from '@/config/content';
 import { Figure, Media } from './Media';
 import dynamic from 'next/dynamic';
 import { VideoComparisonSlider } from '@/components/demo/VideoComparisonSlider';
+import { CostCal } from './CostCal';
 
 // three.js and the model only load when this tab is opened.
 const TwinScene = dynamic(() => import('@/components/twin/TwinScene'), {
@@ -96,6 +97,37 @@ export function Evidence() {
                 <Figure label={tab.b.alt}>
                   <Media clip={tab.b} />
                 </Figure>
+              </>
+            )}
+            {tab.kind === 'costcal' && (
+              <>
+                <CostCal />
+                <Figure label={tab.a.alt}>
+                  <Media clip={tab.a} />
+                </Figure>
+                <div className="figure p-5">
+                  <table className="nums w-full border-collapse text-sm">
+                    <thead>
+                      <tr className="text-left text-[0.6875rem] uppercase tracking-wider text-ink-3">
+                        <th className="border-b border-rule-strong py-2 pr-4 font-normal">Instrument</th>
+                        <th className="border-b border-rule-strong py-2 pr-4 font-normal">Measure</th>
+                        <th className="border-b border-rule-strong py-2 pr-4 font-normal">A</th>
+                        <th className="border-b border-rule-strong py-2 font-normal">B</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {tab.comparison.rows.map((r, i) => (
+                        <tr key={i}>
+                          <td className="border-t border-rule py-2 pr-4 text-ink">{r[0]}</td>
+                          <td className="border-t border-rule py-2 pr-4 text-ink-2">{r[1]}</td>
+                          <td className="border-t border-rule py-2 pr-4 font-medium text-ink">{r[2]}</td>
+                          <td className="border-t border-rule py-2 text-ink-2">{r[3]}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <p className="mt-3 text-xs leading-snug text-ink-3">{tab.comparison.caption}</p>
+                </div>
               </>
             )}
             {tab.kind === 'single' && (

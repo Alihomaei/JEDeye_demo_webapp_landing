@@ -258,6 +258,29 @@
     box-shadow: 0 12px 32px -16px oklch(0.3 0.04 205 / 0.35);
   }
 
+  /* Sign-in: frosted card and a quiet inset field. */
+  .login-card {
+    background: oklch(from var(--paper) l c h / 0.78);
+    backdrop-filter: blur(28px) saturate(1.4);
+    -webkit-backdrop-filter: blur(28px) saturate(1.4);
+    border: 1px solid oklch(1 0 0 / 0.6);
+    border-radius: 1.75rem;
+    box-shadow:
+      0 1px 0 oklch(1 0 0 / 0.5) inset,
+      0 30px 80px -30px oklch(0.15 0.04 230 / 0.55);
+  }
+  .field {
+    background: oklch(from var(--paper) l c h / 0.9);
+    border: 1px solid var(--rule-strong);
+    box-shadow: 0 1px 2px oklch(0.2 0.03 230 / 0.04) inset;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .field:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+
   .btn {
     @apply inline-flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-sm font-medium transition-colors;
     min-height: 2.75rem;
