@@ -52,15 +52,33 @@ export const modules = {
   items: [
     {
       n: '01',
-      name: 'Segmentation',
-      claim: 'Labels anatomy and instruments on every frame.',
+      name: 'CostCal',
+      claim: 'Keeps a running bill of the case as it happens.',
       detail:
-        'Liver, gallbladder, cystic structures and six tool classes, segmented at video rate. This is the ground layer every other module reads.',
-      stat: { value: '0.98', label: 'tool mask mAP50' },
-      figure: { src: '/media/fig_seg.webp', ratio: 1720 / 480, alt: 'Three frames with anatomy and instrument segmentation masks.' },
+        'A per-minute fee on scope time plus each single-use instrument the moment it is confirmed in use, with the remaining-time model turning it into a forecast of the final bill. Every charge is traceable to the frames that caused it.',
+      stat: { value: '0.88', label: 'F1 recognising the clip applier on held-out public frames' },
+      clip: { id: 'costcal_detect', ratio: 854 / 480, alt: 'Detector finding and naming the clip applier and the suction-irrigator on a public cholecystectomy.' } satisfies Clip,
     },
     {
       n: '02',
+      name: 'Instrument tracking',
+      claim: 'Tracks tool tips in 2D and lifts them into 3D.',
+      detail:
+        'Tip trajectories give economy of motion, smoothness and camera handling per phase: the raw material for objective skill scores.',
+      stat: { value: '98.5%', label: 'instrument role identified correctly' },
+      clip: { id: 'tip_trails', ratio: 854 / 480, alt: 'Speed-coloured instrument tip trail with the per-second speed read-out.' } satisfies Clip,
+    },
+    {
+      n: '03',
+      name: '4D reconstruction',
+      claim: 'Rebuilds the scene in 3D, frame by frame, and simulates tissue physics.',
+      detail:
+        'Monocular depth, 4D Gaussian splats and a SOFA finite-element liver and gallbladder, driven by the video. 776 frames simulated at 46 fps.',
+      stat: { value: '2.65 mm', label: 'Chamfer distance to CT-derived ground truth' },
+      clip: { id: 'fourdgs_orbit', ratio: 854 / 480, alt: 'Moving orbit through the 4D Gaussian-splat reconstruction of the scene.' } satisfies Clip,
+    },
+    {
+      n: '04',
       name: 'Phase recognition',
       claim: 'Knows which step of the operation is happening.',
       detail:
@@ -68,31 +86,13 @@ export const modules = {
       stat: { value: '89.2%', label: 'accuracy, +10 pts over the 3D-CNN baseline' },
     },
     {
-      n: '03',
+      n: '05',
       name: 'Remaining time',
       claim: 'Predicts minutes to close, with calibrated uncertainty.',
       detail:
         'Phase-conditioned prediction with an evidential head. Error shrinks to 2.9 min in the middle of the case, where scheduling decisions are made.',
       stat: { value: '4.52 min', label: 'MAE for the live model' },
       figure: { src: '/media/chart_hero_prediction.webp', ratio: 2071 / 871, alt: 'Predicted versus true remaining time over a surgery.' },
-    },
-    {
-      n: '04',
-      name: 'Digital twin',
-      claim: 'Rebuilds the scene in 3D and simulates tissue physics.',
-      detail:
-        'Monocular depth, 4D Gaussian splats and a SOFA finite-element liver and gallbladder, driven by the video. 776 frames simulated at 46 fps.',
-      stat: { value: '2.65 mm', label: 'Chamfer distance to CT-derived ground truth' },
-      clip: { id: 'fourdgs_orbit', ratio: 854 / 480, alt: 'Moving orbit through the 4D Gaussian-splat reconstruction of the scene.' } satisfies Clip,
-    },
-    {
-      n: '05',
-      name: 'Instrument tracking',
-      claim: 'Tracks tool tips in 2D and lifts them into 3D.',
-      detail:
-        'Tip trajectories give economy of motion, smoothness and camera handling per phase: the raw material for objective skill scores.',
-      stat: { value: '98.5%', label: 'instrument role identified correctly' },
-      figure: { src: '/media/tracking_sample.webp', ratio: 2640 / 944, alt: 'A frame with tracked tool tips, their 2D paths and 3D paths.' },
     },
     {
       n: '06',
