@@ -101,8 +101,10 @@
     letter-spacing: -0.015em;
   }
 
+  /* Formerly monospace; the site now sets everything in the body face. */
   .font-mono {
-    font-family: var(--font-mono), ui-monospace, 'SF Mono', Menlo, monospace;
+    font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+    font-variant-numeric: tabular-nums;
   }
 
   .nums {
@@ -111,10 +113,11 @@
 
   /* Small-caps eyebrow: the only all-caps text on the page. */
   .eyebrow {
-    font-family: var(--font-mono), ui-monospace, monospace;
+    font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
     font-size: 0.75rem;
+    font-weight: 500;
     line-height: 1;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--ink-2);
   }
@@ -290,7 +293,6 @@
   }
   .figcaption .src {
     grid-column: 2;
-    font-family: var(--font-mono), monospace;
     font-size: 0.6875rem;
     letter-spacing: 0.01em;
     color: var(--ink-3);

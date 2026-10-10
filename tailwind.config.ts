@@ -38,7 +38,7 @@ const config: Config = {
       fontFamily: {
         sans: ['var(--font-body)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         display: ['var(--font-display)', 'Georgia', 'serif'],
-        mono: ['var(--font-mono)', 'ui-monospace', 'monospace'],
+        mono: ['var(--font-body)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
       fontSize: {
         // Five steps, ≥1.25 ratio; headings fluid, body fixed.

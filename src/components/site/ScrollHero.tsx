@@ -222,9 +222,9 @@ export function ScrollHero({ children }: { children: React.ReactNode }) {
         src="/hero-frames/last_blur.webp"
         alt=""
         className="absolute inset-0 h-full w-full object-cover"
-        style={{ filter: 'blur(18px) saturate(1.1)', transform: 'scale(1.08)' }}
+        style={{ filter: 'blur(6px) saturate(1.15)', transform: 'scale(1.04)' }}
       />
-      <div className="absolute inset-0" style={{ background: 'oklch(from var(--paper) l c h / 0.84)' }} />
+      <div className="absolute inset-0" style={{ background: 'oklch(0.97 0.012 230 / 0.66)' }} />
     </div>
 
     <div ref={wrapRef} style={{ height: `${PIN_VH}vh` }} className="relative">
