@@ -160,6 +160,14 @@ export const evidence = {
       b: { id: 'tip_trails', ratio: 854 / 480, alt: 'Speed-coloured instrument tip trail with the per-second speed read-out.' } satisfies Clip,
     },
     {
+      id: 'twin3d',
+      label: 'Interactive twin',
+      title: 'Turn it over yourself.',
+      text: 'The liver and gallbladder atlas the twin pipeline registers to each patient, with a grasper and an L-hook. Rotate the organs, zoom in, and drag the instruments around the gallbladder.',
+      source: 'Nico/perception/organ_meshes · instrument_models · 0.7 MB, loads on open',
+      kind: 'scene',
+    },
+    {
       id: 'overwatch',
       label: 'Real-time overwatch',
       title: 'Continuous overwatch during the case.',

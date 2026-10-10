@@ -3,7 +3,18 @@
 import { useId, useState } from 'react';
 import { evidence } from '@/config/content';
 import { Figure, Media } from './Media';
+import dynamic from 'next/dynamic';
 import { VideoComparisonSlider } from '@/components/demo/VideoComparisonSlider';
+
+// three.js and the model only load when this tab is opened.
+const TwinScene = dynamic(() => import('@/components/twin/TwinScene'), {
+  ssr: false,
+  loading: () => (
+    <div className="figure flex items-center justify-center text-sm text-ink-2" style={{ aspectRatio: '16 / 10' }}>
+      Loading the twin…
+    </div>
+  ),
+});
 
 export function Evidence() {
   const [active, setActive] = useState(0);
@@ -77,6 +88,7 @@ export function Evidence() {
                 </Figure>
               </>
             )}
+            {tab.kind === 'scene' && <TwinScene />}
             {tab.kind === 'single' && (
               <Figure label={tab.a.alt}>
                 <Media clip={tab.a} />
