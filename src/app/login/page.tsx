@@ -5,7 +5,7 @@ export const metadata = { title: 'Sign in' };
 
 export default function LoginPage() {
   return (
-    <main className="relative grid min-h-[100dvh] place-items-center overflow-hidden px-4 py-10">
+    <main className="relative isolate grid min-h-[100dvh] place-items-center overflow-hidden px-4 py-10">
       {/* The last frame of the OR sequence, softened, behind a frosted card. */}
       <div className="absolute inset-0 -z-10" aria-hidden="true">
         {/* eslint-disable-next-line @next/next/no-img-element */}
