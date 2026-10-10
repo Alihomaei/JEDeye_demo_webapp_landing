@@ -13,6 +13,7 @@ export type Clip = {
 };
 
 export const nav = [
+  { href: '#pitch', label: 'Pitch' },
   { href: '#modules', label: 'Modules' },
   { href: '#evidence', label: 'Evidence' },
   { href: '#business', label: 'Business' },

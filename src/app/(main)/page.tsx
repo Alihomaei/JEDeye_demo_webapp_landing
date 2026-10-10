@@ -1,5 +1,6 @@
 import { ScrollHero } from '@/components/site/ScrollHero';
 import { Hero } from '@/components/site/Hero';
+import { Pitch } from '@/components/site/Pitch';
 import { Modules } from '@/components/site/Modules';
 import { Timeline } from '@/components/site/Timeline';
 import { Evidence } from '@/components/site/Evidence';
@@ -13,6 +14,7 @@ export default function Home() {
     <>
       <ScrollHero>
         <Hero />
+        <Pitch />
         <Modules />
         <Timeline />
         <Evidence />
