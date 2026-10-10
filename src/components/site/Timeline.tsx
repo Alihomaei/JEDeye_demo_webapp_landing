@@ -181,7 +181,6 @@ export function Timeline() {
           <div className="flex flex-col gap-2 border-t border-rule px-4 py-3">
             <label htmlFor={`${id}-scrub`} className="flex items-center justify-between text-xs text-ink-2">
               <span>Scrub through the case</span>
-              <span className="font-mono text-ink-3">{timeline.source}</span>
             </label>
             <input
               id={`${id}-scrub`}

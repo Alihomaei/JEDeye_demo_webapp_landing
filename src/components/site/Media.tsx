@@ -112,7 +112,6 @@ export function Figure({
       <figcaption className="figcaption">
         <b>{label}</b>
         {text ? <span>{text}</span> : <span />}
-        {source && <span className="src">{source}</span>}
       </figcaption>
     </figure>
   );
